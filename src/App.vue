@@ -2,7 +2,8 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <a @click.prevent="onLogout" href="#">Logout</a>
     </div>
     <router-view/>
   </div>
@@ -27,3 +28,15 @@
   }
 }
 </style>
+
+<script>
+export default {
+  name: 'App',
+
+  methods: {
+    onLogout() {
+      this.$store.dispatch('logout');
+    },
+  },
+};
+</script>

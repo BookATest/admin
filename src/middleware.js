@@ -8,12 +8,12 @@ export default function (router) {
       const { meta: { auth } } = to;
 
       // If the router required authenticated user and the user is not authenticated.
-      if (auth && !store.getters.isAuthenticated) {
+      if (auth && !store.state.isAuthenticated) {
         return next({ name: 'login' });
       }
 
       // If the router required guest user and the user is authenticated.
-      if (!auth && store.getters.isAuthenticated) {
+      if (!auth && store.state.isAuthenticated) {
         return next({ name: 'home' });
       }
     }
