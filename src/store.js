@@ -29,12 +29,13 @@ export default new Vuex.Store({
      */
     authenticate(context, payload = { provider: 'oauth2' }) {
       auth.authenticate(payload.provider).then(() => {
+        // Update the authentication state.
         context.commit('isAuthenticated', {
           isAuthenticated: auth.isAuthenticated(),
         });
 
         // Custom authenticate logic here.
-        // TODO: First fetch the user object and cache in local storage.
+        // TODO: First fetch the user object and cache in local storage, then push.
         router.push({ name: 'home' });
       });
     },
@@ -44,14 +45,19 @@ export default new Vuex.Store({
      * @param {object} context
      * @param {object} payload
      */
-    logout(context, payload = { url: `${process.env.VUE_APP_API_URI}/auth/logout` }) {
-      auth.logout(payload).then(() => {
-        context.commit('isAuthenticated', {
-          isAuthenticated: auth.isAuthenticated(),
-        });
+    logout(context, payload = { url: `${process.env.VUE_APP_API_URI}/v1/users/user/sessions` }) {
+      // Clear the user sessions on the API.
+      Vue.axios.delete(payload.url).then(() => {
+        // Clear the token cached locally.
+        auth.logout().then(() => {
+          // Update the authentication state.
+          context.commit('isAuthenticated', {
+            isAuthenticated: auth.isAuthenticated(),
+          });
 
-        // Custom logout logic here.
-        router.push({ name: 'login' });
+          // Custom logout logic here.
+          router.push({ name: 'login' });
+        });
       });
     },
   },

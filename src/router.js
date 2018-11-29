@@ -12,25 +12,19 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: () => import('./views/Login.vue'),
-      meta: {
-        auth: false,
-      },
+      meta: { auth: false },
     },
     {
       path: '/',
       name: 'home',
       component: () => import('./views/Home.vue'),
-      meta: {
-        auth: true,
-      },
+      meta: { auth: true },
     },
     {
       path: '/about',
       name: 'about',
       component: () => import('./views/About.vue'),
-      meta: {
-        auth: true,
-      },
+      meta: { auth: true },
     },
   ],
 });
