@@ -42,9 +42,10 @@ export default new Vuex.Store({
     /**
      * Logout logic.
      * @param {object} context
+     * @param {object} payload
      */
-    logout(context) {
-      auth.logout({ url: `${process.env.VUE_APP_API_URI}/auth/logout` }).then(() => {
+    logout(context, payload = { url: `${process.env.VUE_APP_API_URI}/auth/logout` }) {
+      auth.logout(payload).then(() => {
         context.commit('isAuthenticated', {
           isAuthenticated: auth.isAuthenticated(),
         });
