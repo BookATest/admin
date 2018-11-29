@@ -22,13 +22,13 @@ export default new Vuex.Store({
   },
   actions: {
     /**
-     * Login logic.
+     * Authenticate logic.
      * @param {object} context
-     * @param {object} payload
+     * @param {object} provider
      */
-    login(context, payload) {
-      auth.login(payload.user, payload.requestOptions).then(() => {
-        // Custom login logic here.
+    authenticate(context, provider = 'oauth2') {
+      auth.authenticate(provider).then(() => {
+        // Custom authentication logic here.
       });
     },
 
