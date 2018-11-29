@@ -9,6 +9,10 @@ export default new Vuex.Store({
     //
   },
   getters: {
+    /**
+     * Returns if the user is authenticated or not.
+     * @returns {boolean}
+     */
     isAuthenticated() {
       return auth.isAuthenticated();
     },
@@ -24,21 +28,16 @@ export default new Vuex.Store({
      */
     login(context, payload) {
       auth.login(payload.user, payload.requestOptions).then(() => {
-        context.commit('isAuthenticated', {
-          isAuthenticated: auth.isAuthenticated(),
-        });
+        // Custom login logic here.
       });
     },
 
     /**
      * Logout logic.
-     * @param {object} context
      */
-    logout(context) {
+    logout() {
       auth.logout({ url: '/auth/logout' }).then(() => {
-        context.commit('isAuthenticated', {
-          isAuthenticated: auth.isAuthenticated(),
-        });
+        // Custom logout logic here.
       });
     },
   },
