@@ -9,9 +9,7 @@ export default new Vuex.Store({
   state: {
     isAuthenticated: auth.isAuthenticated(),
   },
-  getters: {
-    //
-  },
+
   mutations: {
     /**
      * Update the authentication state.
@@ -22,19 +20,21 @@ export default new Vuex.Store({
       state.isAuthenticated = payload.isAuthenticated;
     },
   },
+
   actions: {
     /**
      * Authenticate logic.
      * @param {object} context
-     * @param {object} provider
+     * @param {object} payload
      */
-    authenticate(context, provider = 'oauth2') {
-      auth.authenticate(provider).then(() => {
+    authenticate(context, payload = { provider: 'oauth2' }) {
+      auth.authenticate(payload.provider).then(() => {
         context.commit('isAuthenticated', {
           isAuthenticated: auth.isAuthenticated(),
         });
 
         // Custom authenticate logic here.
+        // TODO: First fetch the user object and cache in local storage.
         router.push({ name: 'home' });
       });
     },
