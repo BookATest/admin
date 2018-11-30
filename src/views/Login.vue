@@ -12,6 +12,10 @@
 export default {
   name: 'LoginView',
 
+  metaInfo: {
+    title: 'Login',
+  },
+
   methods: {
     onSubmit() {
       this.$store.dispatch('authenticate');

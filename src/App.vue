@@ -33,6 +33,11 @@
 export default {
   name: 'App',
 
+  metaInfo: {
+    title: 'Home',
+    titleTemplate: '%s | Book A Test',
+  },
+
   methods: {
     onLogout() {
       this.$store.dispatch('logout');
