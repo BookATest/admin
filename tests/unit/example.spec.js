@@ -1,12 +1,14 @@
 import { shallowMount } from '@vue/test-utils';
-import HelloWorld from '@/components/HelloWorld.vue';
+import SideBar from '@/components/SideBar.vue';
 
-describe('HelloWorld.vue', () => {
-  it('renders props.msg when passed', () => {
-    const msg = 'new message';
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg },
+describe('SideBar.vue', () => {
+  it('renders props.menu when passed', () => {
+    const menu = [
+      { name: 'Test', icon: 'icon--test', to: { name: 'test' } },
+    ];
+    const wrapper = shallowMount(SideBar, {
+      propsData: { menu },
     });
-    expect(wrapper.text()).toMatch(msg);
+    expect(wrapper.text()).toMatch(menu[0].name);
   });
 });

@@ -13,6 +13,7 @@ module.exports = {
     'no-param-reassign': ['error', { props: false }],
     'consistent-return': 'off',
     'prefer-destructuring': 'off',
+    'max-len': 'off',
   },
   parserOptions: {
     parser: 'babel-eslint',
