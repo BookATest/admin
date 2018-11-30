@@ -9,7 +9,11 @@
         <div class="main">
 
           <!-- Calendar - Search -->
-          <bat-search/>
+          <bat-search
+            :search.sync="search"
+            :clinic-id.sync="clinicId"
+            :user-id.sync="userId"
+          />
 
           <!-- Calendar - Controls -->
           <bat-controls/>
@@ -41,6 +45,15 @@ export default {
 
   components: {
     BatControls, BatSearch, BatSideBar, BatTable,
+  },
+
+  data() {
+    return {
+      search: '',
+      clinicId: '',
+      userId: '',
+      date: this.$moment().startOf('day'),
+    };
   },
 };
 </script>

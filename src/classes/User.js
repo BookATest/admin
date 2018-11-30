@@ -1,8 +1,15 @@
 const cacheKey = 'user';
+const organisationAdmin = 'organisation_admin';
+const clinicAdmin = 'clinic_admin';
+const communityWorker = 'communityWorker';
 
 export default class User {
-  constructor() {
-    this.user = User.$fetch();
+  /**
+   * Constructor.
+   * @param {object|null} user
+   */
+  constructor(user = null) {
+    this.user = user || User.$fetch();
   }
 
   /**
@@ -27,6 +34,48 @@ export default class User {
   clear() {
     User.$clear();
     this.user = undefined;
+  }
+
+  /**
+   * Check if the user is an organisation admin.
+   * @returns {boolean}
+   */
+  isOrganisationAdmin() {
+    const foundRole = this.user.roles.find(role => role.role === organisationAdmin);
+
+    return foundRole !== undefined;
+  }
+
+  /**
+   * Check if the user is a clinic admin.
+   * @param {string}
+   * @returns {boolean}
+   */
+  isClinicAdmin(clinicId) {
+    const foundRole = this.user.roles.find(role => role.role === clinicAdmin && role.clinic_id === clinicId);
+
+    return foundRole !== undefined;
+  }
+
+  /**
+   * Check if the user is a community worker.
+   * @param {string}
+   * @returns {boolean}
+   */
+  isCommunityWorker(clinicId) {
+    const foundRole = this.user.roles.find(role => role.role === communityWorker && role.clinic_id === clinicId);
+
+    return foundRole !== undefined;
+  }
+
+  /**
+   * Get an array of all the clinic ID's that the user is a community worker at.
+   * @returns {array}
+   */
+  clinicIds() {
+    return this.user.roles
+      .filter(role => role.role === communityWorker)
+      .map(role => role.clinic_id);
   }
 
   /**
