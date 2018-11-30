@@ -1,41 +1,90 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <a @click.prevent="onLogout" href="#">Logout</a>
+  <div class="base-layout">
+
+    <bat-header/>
+
+    <bat-side-bar :menu="menu"/>
+
+    <div class="base-layout__main">
+      <router-view/>
     </div>
-    <router-view/>
+
   </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+@import '@/scss/main.scss';
 </style>
 
 <script>
+import BatHeader from '@/components/Header.vue';
+import BatSideBar from '@/components/SideBar.vue';
+
 export default {
   name: 'App',
 
   metaInfo: {
     title: 'Home',
     titleTemplate: '%s | Book A Test',
+  },
+
+  components: { BatHeader, BatSideBar },
+
+  data() {
+    return {
+      menu: [
+        {
+          name: 'appointments',
+          icon: 'icon--appointments',
+          to: { name: 'appointments.index' },
+        },
+        {
+          name: 'reporting',
+          icon: 'icon--reports',
+          to: { name: 'reports.index' },
+        },
+        {
+          name: 'settings',
+          icon: 'icon--settings',
+          active: false,
+          items: [
+            {
+              name: 'my profile',
+              to: { name: 'settings.my-profile' },
+            },
+            {
+              name: 'calendar',
+              to: { name: 'settings.calendar' },
+            },
+            {
+              name: 'notifications',
+              to: { name: 'settings.notifications' },
+            },
+            {
+              name: 'users',
+              to: { name: 'settings.users' },
+            },
+            {
+              name: 'location',
+              to: { name: 'settings.location' },
+            },
+            {
+              name: 'branding',
+              to: { name: 'settings.branding' },
+            },
+            {
+              name: 'configuration',
+              to: { name: 'settings.configuration' },
+            },
+          ],
+        },
+        {
+          name: 'service users',
+          icon: 'icon--users',
+          to: { name: 'service-users.index' },
+        },
+      ],
+    };
   },
 
   methods: {

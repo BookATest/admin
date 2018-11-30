@@ -21,9 +21,9 @@ const router = new Router({
       meta: { auth: true },
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('./views/About.vue'),
+      path: '/appointments',
+      name: 'appointments.index',
+      component: () => import('./views/appointments/Index.vue'),
       meta: { auth: true },
     },
   ],
