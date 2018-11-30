@@ -16,7 +16,7 @@
           />
 
           <!-- Calendar - Controls -->
-          <bat-controls/>
+          <bat-controls :date.sync="date"/>
 
           <!-- Calendar - Table -->
           <bat-table/>
@@ -52,7 +52,7 @@ export default {
       search: '',
       clinicId: '',
       userId: '',
-      date: this.$moment().startOf('day'),
+      date: this.$moment().startOf('isoWeek').format('YYYY-MM-DD'),
     };
   },
 };
