@@ -22,7 +22,7 @@
 
       <!-- Location -->
       <div class="form__drop-down">
-        <label for="dropdown"><span>location</span></label>
+        <label for="dropdown"><span>Location</span></label>
         <div>
           <select
             :value="clinicId"

@@ -19,7 +19,12 @@
           <bat-controls :date.sync="date"/>
 
           <!-- Calendar - Table -->
-          <bat-table/>
+          <bat-table
+            v-model="appointment"
+            :clinic-id="clinicId"
+            :user-id="userId"
+            :date="date"
+          />
 
         </div>
       </div>
@@ -47,12 +52,17 @@ export default {
     BatControls, BatSearch, BatSideBar, BatTable,
   },
 
+  metaInfo: {
+    title: 'Appointments',
+  },
+
   data() {
     return {
       search: '',
       clinicId: '',
       userId: '',
       date: this.$moment().startOf('isoWeek').format('YYYY-MM-DD'),
+      appointment: null,
     };
   },
 };
