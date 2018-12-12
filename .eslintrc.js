@@ -14,6 +14,7 @@ module.exports = {
     'consistent-return': 'off',
     'prefer-destructuring': 'off',
     'max-len': 'off',
+    'no-await-in-loop': 'off',
   },
   parserOptions: {
     parser: 'babel-eslint',
