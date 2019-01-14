@@ -28,21 +28,25 @@
             :value="clinicId"
             @input="$emit('update:clinicId', $event.target.value)"
           >
-            <option :value="null">All</option>
+            <option value="">Please select...</option>
             <option v-for="clinic in clinics" :key="clinic.id" :value="clinic.id">{{ clinic.name }}</option>
           </select>
         </div>
       </div>
 
       <!-- Filter -->
-      <div class="form__drop-down">
+      <div
+        class="form__drop-down"
+        :class="{ 'form__drop-down--disabled': this.clinicId === '' }"
+      >
         <label for="dropdown">Filter by</label>
         <div>
           <select
             :value="userId"
             @input="$emit('update:userId', $event.target.value)"
+            :disabled="clinicId === ''"
           >
-            <option :value="null">All</option>
+            <option value="">All</option>
             <option v-for="user in users" :key="user.id" :value="user.id">{{ user | fullName }}</option>
           </select>
         </div>
@@ -100,16 +104,16 @@ export default {
     },
 
     async fetchUsers() {
-      this.loadingUsers = true;
-
-      const params = {};
-
-      // Only filter users by ID when a clinic has been selected.
-      if (this.clinicId !== '') {
-        params['filter[clinic_id]'] = this.clinicId;
+      if (this.clinicId === '') {
+        this.users = [];
+        return;
       }
 
-      this.users = await this.fetchAll('/users', params);
+      this.loadingUsers = true;
+
+      this.users = await this.fetchAll('/users', {
+        'filter[clinic_id]': this.clinicId,
+      });
 
       this.loadingUsers = false;
     },

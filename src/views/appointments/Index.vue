@@ -20,11 +20,13 @@
 
           <!-- Calendar - Table -->
           <bat-table
+            v-if="clinicId"
             v-model="appointment"
             :clinic-id="clinicId"
             :user-id="userId"
             :date="date"
           />
+          <p v-else>Select a clinic to view appointments.</p>
 
         </div>
       </div>
