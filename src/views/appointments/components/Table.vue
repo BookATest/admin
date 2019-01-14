@@ -1,6 +1,6 @@
 <template>
   <div class="table">
-    <bat-loader v-if="loadingAppointments"/>
+    <bat-loader v-if="loadingClinic || loadingAppointments"/>
 
     <table v-else cellpadding="8" cellspacing="8">
       <thead>
@@ -295,7 +295,67 @@ export default {
     return {
       loadingAppointments: false,
       appointments: [],
+      loadingClinic: false,
+      clinic: null,
     };
+  },
+
+  computed: {
+    /**
+     * Get an array of the appointment slots.
+     */
+    appointmentSlots() {
+      const minutesInDay = 60 * 24;
+      const appointmentDuration = this.clinic.appointment_duration;
+      const slotCount = minutesInDay / appointmentDuration;
+
+      const slots = [];
+
+      for (let slot = 0; slot < slotCount; slot += 1) {
+        const time = this.$moment()
+          .startOf('day')
+          .add(slot * appointmentDuration, 'minutes')
+          .format('h:mm a');
+
+        slots.push(time);
+      }
+
+      return slots;
+    },
+
+    /**
+     * Returns the appointments grouped by date and then by slot.
+     */
+    groupedAppointments() {
+      // If no clinic selected, then return an empry array.
+      if (this.clinic === null) {
+        return [];
+      }
+
+      // Initialise the appointments array to be returned.
+      const appointments = [];
+
+      // Append the dates for the week.
+      const daysInWeek = 7;
+      for (let day = 0; day < daysInWeek; day += 1) {
+        appointments.push([]);
+
+        // Work out the nubmer of appointments slots in a day.
+        const minutesInDay = 60 * 24;
+        const appointmentDuration = this.clinic.appointment_duration;
+        const slotCount = minutesInDay / appointmentDuration;
+
+        // Append an empty array for each appointment slot.
+        for (let slot = 0; slot < slotCount; slot += 1) {
+          appointments[day].push([]);
+        }
+
+        // Add appointments to the slots.
+        // TODO
+      }
+
+      return appointments;
+    },
   },
 
   watch: {
@@ -303,13 +363,18 @@ export default {
      * Refetch the appointments when the clinic changes.
      */
     clinicId() {
-      this.fetchAppointments();
+      this.fetchClinic();
     },
 
     /**
      * Refetch the appointments when the user changes.
      */
     userId() {
+      // Do nothing if there is no clinic ID set.
+      if (this.clinicId === '') {
+        return;
+      }
+
       this.fetchAppointments();
     },
   },
@@ -324,6 +389,20 @@ export default {
       } else {
         this.$emit('input', null);
       }
+    },
+
+    /**
+     * Fetched the clinic.
+     */
+    async fetchClinic() {
+      this.loadingClinic = true;
+
+      const response = await this.$http.get(`/clinics/${this.clinicId}`);
+      this.clinic = response.data.data;
+
+      this.fetchAppointments();
+
+      this.loadingClinic = false;
     },
 
     /**
@@ -357,7 +436,7 @@ export default {
   },
 
   created() {
-    this.fetchAppointments();
+    this.fetchClinic();
   },
 };
 </script>
