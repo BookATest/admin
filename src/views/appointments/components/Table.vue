@@ -264,6 +264,11 @@
 <script>
 import BatLoader from '@/components/Loader.vue';
 
+const daysInWeek = 7;
+const minutesInDay = 60 * 24;
+const afternoonMinutes = 60 * 12;
+const eveningMinutes = 60 * 17.5;
+
 export default {
   name: 'Table',
 
@@ -305,19 +310,30 @@ export default {
      * Get an array of the appointment slots.
      */
     appointmentSlots() {
-      const minutesInDay = 60 * 24;
       const appointmentDuration = this.clinic.appointment_duration;
       const slotCount = minutesInDay / appointmentDuration;
 
-      const slots = [];
+      const slots = {
+        morning: [],
+        afternoon: [],
+        evening: [],
+      };
 
       for (let slot = 0; slot < slotCount; slot += 1) {
+        const appointmentTimeInMinutes = slot * appointmentDuration;
+
         const time = this.$moment()
           .startOf('day')
-          .add(slot * appointmentDuration, 'minutes')
+          .add(appointmentTimeInMinutes, 'minutes')
           .format('h:mm a');
 
-        slots.push(time);
+        if (appointmentTimeInMinutes >= eveningMinutes) {
+          slots.evening.push(time);
+        } else if (appointmentTimeInMinutes >= afternoonMinutes) {
+          slots.afternoon.push(time);
+        } else {
+          slots.morning.push(time);
+        }
       }
 
       return slots;
@@ -336,12 +352,10 @@ export default {
       const appointments = [];
 
       // Append the dates for the week.
-      const daysInWeek = 7;
       for (let day = 0; day < daysInWeek; day += 1) {
         appointments.push([]);
 
         // Work out the nubmer of appointments slots in a day.
-        const minutesInDay = 60 * 24;
         const appointmentDuration = this.clinic.appointment_duration;
         const slotCount = minutesInDay / appointmentDuration;
 
@@ -351,7 +365,14 @@ export default {
         }
 
         // Add appointments to the slots.
-        // TODO
+        this.appointments.forEach((appointment) => {
+          const midnight = this.$moment().startOf('day');
+          const appointmentTimeInMinutes = this.$moment(appointment.start_at)
+            .diff(midnight, 'minutes');
+          const slot = appointmentTimeInMinutes / appointmentDuration;
+
+          appointments[day][slot - 1].push(appointment);
+        });
       }
 
       return appointments;
