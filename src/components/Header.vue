@@ -14,8 +14,8 @@
               <h1>Yorkshire MESMAC</h1>
               <h2>Appointments</h2>
             </div>
-            <div class="main__logout">
-              <button class="button button__logout">
+            <div v-if="$store.state.isAuthenticated" class="main__logout">
+              <button class="button button__logout" @click="onLogout">
                 <img class="profile-picture" :src="apiUrl(`/users/${$store.state.user.get().id}/profile-picture.jpg`)">
                 <span class="name">{{ $store.state.user.fullName() }}</span>
                 <span class="role">{{ highestRole }}</span>
@@ -35,6 +35,10 @@ export default {
 
   computed: {
     highestRole() {
+      if (!this.$store.state.isAuthenticated) {
+        return null;
+      }
+
       if (this.$store.state.user.isOrganisationAdmin()) {
         return 'Organisation admin';
       }
@@ -48,6 +52,15 @@ export default {
       }
 
       return 'Backend user';
+    },
+  },
+
+  methods: {
+    /**
+     * Log the user out.
+     */
+    onLogout() {
+      this.$store.dispatch('logout');
     },
   },
 };
