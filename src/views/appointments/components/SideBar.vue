@@ -3,12 +3,22 @@
 
     <!-- Popup -->
     <div class="popup">
-      <!-- Available -->
-      <div class="available js--popup-block js--popup-block--available" style="display:none;">
+      <div
+        class="js--popup-block"
+        :class="{
+          'available': !booked,
+          'js--popup-block--available': !booked,
+          'booked': booked,
+          'js--popup-block--booked': booked,
+        }"
+        style="display: block;"
+      >
         <div class="popup__header">
-          <span>Available</span>
+          <span>{{ booked ? 'Booked' : 'Available' }}</span>
         </div>
-        <div class="popup__main">
+
+        <!-- Available -->
+        <div v-if="!booked" class="popup__main">
           <form>
             <div class="available--date">
               <span class="js--popup-date-text">Sunday 12 March</span>
@@ -42,14 +52,9 @@
             </div>
           </form>
         </div>
-      </div>
 
-      <!-- Booked - Edit -->
-      <div class="booked js--popup-block js--popup-block--booked" style="display:none;">
-        <div class="popup__header">
-          <span>Booked</span>
-        </div>
-        <div class="popup__main">
+        <!-- Booked -->
+        <div v-else class="popup__main">
           <div class="booked--date">
             <span class="js--popup-date-text">Sunday 12 March</span>
           </div>
@@ -72,6 +77,7 @@
             <button class="button button__inline button__inline--subtle">Cancel appointment?</button>
           </div>
         </div>
+
       </div>
     </div>
 
@@ -92,6 +98,15 @@ export default {
     appointment: {
       required: true,
       type: Object,
+    },
+  },
+
+  computed: {
+    /**
+     * Determine if the appointment has been booked.
+     */
+    booked() {
+      return this.appointment.booked_at !== null;
     },
   },
 

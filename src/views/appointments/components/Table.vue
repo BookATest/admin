@@ -253,6 +253,12 @@ export default {
      * When the user selects an appointment.
      */
     onSelect(appointment) {
+      // If the same appointment clicked, then deselect it.
+      if (this.value && (this.value.id === appointment.id)) {
+        this.$emit('input', null);
+        return;
+      }
+
       this.$emit('input', appointment);
     },
 
