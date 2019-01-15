@@ -32,6 +32,25 @@
             <bat-calendar-button
               @click="onSelect"
               :appointment="groupedAppointments[day - 1][index][0] || null"
+              :multiple="groupedAppointments[day - 1][index].length > 1"
+            />
+            <bat-calendar-button
+              v-if="groupedAppointments[day - 1][index].length > 1"
+              @click="onSelect"
+              :appointment="groupedAppointments[day - 1][index][1]"
+              :multiple="true"
+            />
+            <bat-calendar-button
+              v-if="groupedAppointments[day - 1][index].length > 2"
+              @click="onSelect"
+              :appointment="groupedAppointments[day - 1][index][2]"
+              :multiple="true"
+            />
+            <bat-calendar-button
+              v-if="groupedAppointments[day - 1][index].length > 3"
+              @click="onSelect"
+              :appointment="groupedAppointments[day - 1][index][3]"
+              :multiple="true"
             />
           </td>
         </tr>
@@ -51,6 +70,25 @@
             <bat-calendar-button
               @click="onSelect"
               :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + index][0] || null"
+              :multiple="groupedAppointments[day - 1][appointmentSlots.morning.length + index].length > 1"
+            />
+            <bat-calendar-button
+              v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + index].length > 1"
+              @click="onSelect"
+              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + index][1]"
+              :multiple="true"
+            />
+            <bat-calendar-button
+              v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + index].length > 2"
+              @click="onSelect"
+              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + index][2]"
+              :multiple="true"
+            />
+            <bat-calendar-button
+              v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + index].length > 3"
+              @click="onSelect"
+              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + index][3]"
+              :multiple="true"
             />
           </td>
         </tr>
@@ -70,6 +108,25 @@
             <bat-calendar-button
               @click="onSelect"
               :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index][0] || null"
+              :multiple="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index].length > 1"
+            />
+            <bat-calendar-button
+              v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index].length > 1"
+              @click="onSelect"
+              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index][1]"
+              :multiple="true"
+            />
+            <bat-calendar-button
+              v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index].length > 2"
+              @click="onSelect"
+              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index][2]"
+              :multiple="true"
+            />
+            <bat-calendar-button
+              v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index].length > 3"
+              @click="onSelect"
+              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index][3]"
+              :multiple="true"
             />
           </td>
         </tr>

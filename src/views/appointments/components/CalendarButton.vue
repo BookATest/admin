@@ -3,6 +3,8 @@
     @click="onClick"
     class="button button__calendar js--popup-open"
     :class="{
+      'button__calendar--mulitple': multiple,
+
       'button__calendar--not-available': !exists,
 
       'button__calendar--available-cw-initials': exists && !booked && !repeating,
@@ -31,6 +33,12 @@ export default {
     appointment: {
       required: true,
       validator: prop => typeof prop === 'object' || prop === null,
+    },
+
+    multiple: {
+      required: false,
+      type: Boolean,
+      default: false,
     },
   },
 
