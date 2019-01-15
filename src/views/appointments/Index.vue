@@ -33,7 +33,11 @@
 
       <!-- Calendar - Sidebar (Right) -->
       <div class="calendar__sidebar calendar__sidebar calendar__sidebar--active js--calendar-sidebar">
-        <bat-side-bar v-if="appointment" :appointment="appointment"/>
+        <bat-side-bar
+          v-if="appointment"
+          @close="onCloseSideBar"
+          :appointment="appointment"
+        />
       </div>
 
     </div>
@@ -66,6 +70,15 @@ export default {
       date: this.$moment().startOf('isoWeek').format('YYYY-MM-DD'),
       appointment: null,
     };
+  },
+
+  methods: {
+    /**
+     * Logic to execute when the side bar is closed.
+     */
+    onCloseSideBar() {
+      this.appointment = null;
+    },
   },
 };
 </script>

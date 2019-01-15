@@ -76,7 +76,9 @@
     </div>
 
     <div class="popup__footer">
-      <button class="js--popup-close"><span>Close</span><i class="icon icon--cross"></i></button>
+      <button @click="onClose" class="js--popup-close">
+        <span>Close</span><i class="icon icon--cross"></i>
+      </button>
     </div>
 
   </div>
@@ -90,6 +92,15 @@ export default {
     appointment: {
       required: true,
       type: Object,
+    },
+  },
+
+  methods: {
+    /**
+     * Event to emit when closed.
+     */
+    onClose() {
+      this.$emit('close');
     },
   },
 };

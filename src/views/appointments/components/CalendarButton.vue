@@ -1,5 +1,6 @@
 <template>
   <button
+    @click="onClick"
     class="button button__calendar js--popup-open"
     :class="{
       'button__calendar--not-available': !exists,
@@ -59,6 +60,15 @@ export default {
       return this.appointment
         ? this.appointment.user_first_name.charAt(0) + this.appointment.user_last_name.charAt(0)
         : '';
+    },
+  },
+
+  methods: {
+    /**
+     * Event to emit when the appointment has been clicked.
+     */
+    onClick() {
+      this.$emit('click', this.appointment);
     },
   },
 };

@@ -29,7 +29,10 @@
             <bat-time :meridiem="slot.meridiem">{{ slot.time }}</bat-time>
           </td>
           <td colspan="1" v-for="day in 7" :key="`MorningSlot-${index}-${day}`">
-            <bat-calendar-button :appointment="groupedAppointments[day - 1][index][0] || null"/>
+            <bat-calendar-button
+              @click="onSelect"
+              :appointment="groupedAppointments[day - 1][index][0] || null"
+            />
           </td>
         </tr>
         <!-- Afternoon heading -->
@@ -45,7 +48,10 @@
             <bat-time :meridiem="slot.meridiem">{{ slot.time }}</bat-time>
           </td>
           <td colspan="1" v-for="day in 7" :key="`AfternoonSlot-${index}-${day}`">
-            <bat-calendar-button :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length - 1 + index][0] || null"/>
+            <bat-calendar-button
+              @click="onSelect"
+              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length - 1 + index][0] || null"
+            />
           </td>
         </tr>
         <!-- Evening heading -->
@@ -61,7 +67,10 @@
             <bat-time :meridiem="slot.meridiem">{{ slot.time }}</bat-time>
           </td>
           <td colspan="1" v-for="day in 7" :key="`EveningSlot-${index}-${day}`">
-            <bat-calendar-button :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length - 1 + appointmentSlots.afternoon.length - 1 + index][0] || null"/>
+            <bat-calendar-button
+              @click="onSelect"
+              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length - 1 + appointmentSlots.afternoon.length - 1 + index][0] || null"
+            />
           </td>
         </tr>
       </tbody>
@@ -244,11 +253,7 @@ export default {
      * When the user selects an appointment.
      */
     onSelect(appointment) {
-      if (this.value === null) {
-        this.$emit('input', appointment);
-      } else {
-        this.$emit('input', null);
-      }
+      this.$emit('input', appointment);
     },
 
     /**
