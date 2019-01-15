@@ -88,7 +88,6 @@ export default new Vuex.Store({
 
       // Remove the settings to local storage.
       localStorage.removeItem(cacheKey);
-      context.commit('settings', null);
 
       context.dispatch('loadSettings', null);
     },
