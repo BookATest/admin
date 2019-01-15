@@ -574,6 +574,10 @@
           color: $blueViolet;
           text-align: center;
 
+          &:not(.button__calendar--mulitple) {
+            padding: 0 20px;
+          }
+
           &:after {
             content: '\e812';
             font-family: "fontello";

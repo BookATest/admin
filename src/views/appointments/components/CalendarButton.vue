@@ -19,7 +19,7 @@
       'button__calendar--booked-cw-initials-repeat': exists && booked && repeating,
       'button__calendar--booked-cw-initials-repeat--default': exists && booked && repeating,
     }"
-    :disabled="!exists"
+    :disabled="!exists && !editMode"
   >
     <span v-if="exists">{{ userInitials }}</span>
   </button>
@@ -39,6 +39,11 @@ export default {
       required: false,
       type: Boolean,
       default: false,
+    },
+
+    editMode: {
+      required: true,
+      type: Boolean,
     },
   },
 

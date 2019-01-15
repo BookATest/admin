@@ -31,24 +31,28 @@
           <td colspan="1" v-for="day in 7" :key="`MorningSlot-${index}-${day}`">
             <bat-calendar-button
               @click="onSelect"
+              :edit-mode="editMode"
               :appointment="groupedAppointments[day - 1][index][0] || null"
               :multiple="groupedAppointments[day - 1][index].length > 1"
             />
             <bat-calendar-button
               v-if="groupedAppointments[day - 1][index].length > 1"
               @click="onSelect"
+              :edit-mode="editMode"
               :appointment="groupedAppointments[day - 1][index][1] || null"
               :multiple="true"
             />
             <bat-calendar-button
               v-if="groupedAppointments[day - 1][index].length > 1"
               @click="onSelect"
+              :edit-mode="editMode"
               :appointment="groupedAppointments[day - 1][index][2] || null"
               :multiple="true"
             />
             <bat-calendar-button
               v-if="groupedAppointments[day - 1][index].length > 1"
               @click="onSelect"
+              :edit-mode="editMode"
               :appointment="groupedAppointments[day - 1][index][3] || null"
               :multiple="true"
             />
@@ -69,24 +73,28 @@
           <td colspan="1" v-for="day in 7" :key="`AfternoonSlot-${index}-${day}`">
             <bat-calendar-button
               @click="onSelect"
+              :edit-mode="editMode"
               :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + index][0] || null"
               :multiple="groupedAppointments[day - 1][appointmentSlots.morning.length + index].length > 1"
             />
             <bat-calendar-button
               v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + index].length > 1"
               @click="onSelect"
+              :edit-mode="editMode"
               :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + index][1] || null"
               :multiple="true"
             />
             <bat-calendar-button
               v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + index].length > 1"
               @click="onSelect"
+              :edit-mode="editMode"
               :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + index][2] || null"
               :multiple="true"
             />
             <bat-calendar-button
               v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + index].length > 1"
               @click="onSelect"
+              :edit-mode="editMode"
               :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + index][3] || null"
               :multiple="true"
             />
@@ -107,24 +115,28 @@
           <td colspan="1" v-for="day in 7" :key="`EveningSlot-${index}-${day}`">
             <bat-calendar-button
               @click="onSelect"
+              :edit-mode="editMode"
               :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index][0] || null"
               :multiple="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index].length > 1"
             />
             <bat-calendar-button
               v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index].length > 1"
               @click="onSelect"
+              :edit-mode="editMode"
               :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index][1] || null"
               :multiple="true"
             />
             <bat-calendar-button
               v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index].length > 1"
               @click="onSelect"
+              :edit-mode="editMode"
               :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index][2] || null"
               :multiple="true"
             />
             <bat-calendar-button
               v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index].length > 1"
               @click="onSelect"
+              :edit-mode="editMode"
               :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index][3] || null"
               :multiple="true"
             />
