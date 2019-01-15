@@ -70,8 +70,8 @@ export default {
               to: { name: 'settings.users' },
             },
             {
-              name: 'location',
-              to: { name: 'settings.location' },
+              name: 'locations',
+              to: { name: 'settings.locations' },
             },
             {
               name: 'branding',
