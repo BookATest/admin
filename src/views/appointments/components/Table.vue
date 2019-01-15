@@ -230,6 +230,13 @@ export default {
 
       this.fetchAppointments();
     },
+
+    /**
+     * Refetch the appointments when the date changes.
+     */
+    date() {
+      this.fetchAppointments();
+    },
   },
 
   methods: {
