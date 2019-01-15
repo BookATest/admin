@@ -3,7 +3,7 @@
 
     <bat-header/>
 
-    <bat-side-bar :menu="menu"/>
+    <bat-side-bar v-if="$store.state.isAuthenticated" :menu="menu"/>
 
     <div class="base-layout__main">
       <router-view/>
