@@ -10,6 +10,7 @@ export default new Vuex.Store({
   state: {
     isAuthenticated: auth.isAuthenticated(),
     user: new User(),
+    settings: null,
   },
 
   mutations: {
@@ -25,7 +26,7 @@ export default new Vuex.Store({
     /**
      * Update the user state.
      * @param {object} state
-     * @param {obejct|null} payload
+     * @param {object|null} payload
      */
     user(state, payload) {
       if (payload !== null) {
@@ -34,9 +35,64 @@ export default new Vuex.Store({
         state.user.clear();
       }
     },
+
+    /**
+     * Update the authentication state.
+     * @param {object} state
+     * @param {object|null} payload
+     */
+    settings(state, payload) {
+      state.settings = payload;
+    },
   },
 
   actions: {
+    /**
+     * Logic for loading the settings.
+     * @param {object} context
+     */
+    loadSettings(context) {
+      const cacheKey = 'settings';
+      const exists = localStorage.getItem(cacheKey) !== null;
+
+      // First, attempt to load the settings from local storage.
+      if (exists) {
+        // Retrieve the serialised JSON string from local storage and parse it.
+        const settings = JSON.parse(
+          localStorage.getItem(cacheKey),
+        );
+
+        context.commit('settings', settings);
+
+        return;
+      }
+
+      // Otherwise, request them from the API and persist them to local storage.
+      Vue.axios.get(`${process.env.VUE_APP_API_URI}/v1/settings`).then((response) => {
+        // Extract the settings from the request.
+        const settings = response.data.data;
+
+        // Persist the settings to local storage.
+        localStorage.setItem(cacheKey, JSON.stringify(settings));
+
+        context.commit('settings', settings);
+      });
+    },
+
+    /**
+     * Clear the settings from local storage and re-fetch them.
+     * @param {object} context
+     */
+    reloadSettings(context) {
+      const cacheKey = 'settings';
+
+      // Remove the settings to local storage.
+      localStorage.removeItem(cacheKey);
+      context.commit('settings', null);
+
+      context.dispatch('loadSettings', null);
+    },
+
     /**
      * Authenticate logic.
      * @param {object} context

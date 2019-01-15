@@ -5,13 +5,13 @@
         <!-- Header -->
         <div class="header__sidebar">
           <router-link :to="{ name: 'home' }">
-            <img src="@/assets/images/logos/logo-yorkshire-masmac.png" alt="Book a Test"/>
+            <img :src="apiUrl('/settings/logo.png')" :alt="$store.state.settings.name"/>
           </router-link>
         </div>
         <div class="header__main">
           <div class="main">
             <div class="main__title">
-              <h1>Yorkshire MESMAC</h1>
+              <h1>{{ $store.state.settings.name }}</h1>
               <h2>Appointments</h2>
             </div>
             <div v-if="$store.state.isAuthenticated" class="main__logout">
