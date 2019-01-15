@@ -196,7 +196,7 @@ export default {
 
         // Add appointments to the slots.
         this.appointments
-          .filter(appointment => this.$moment(appointment.start_at).weekday() === day)
+          .filter(appointment => this.$moment(appointment.start_at).isoWeekday() === day + 1)
           .forEach((appointment) => {
             const midnight = this.$moment(appointment.start_at).startOf('day');
             const appointmentTimeInMinutes = this.$moment(appointment.start_at)
