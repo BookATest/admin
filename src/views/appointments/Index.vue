@@ -72,6 +72,20 @@ export default {
     };
   },
 
+  watch: {
+    clinicId() {
+      this.appointment = null;
+    },
+
+    userId() {
+      this.appointment = null;
+    },
+
+    date() {
+      this.appointment = null;
+    },
+  },
+
   methods: {
     /**
      * Logic to execute when the side bar is closed.
