@@ -32,28 +32,28 @@
             <bat-calendar-button
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="groupedAppointments[day - 1][index][0] || null"
-              :multiple="groupedAppointments[day - 1][index].length > 1"
+              :appointment="getMorningAppointments(day, index)[0] || null"
+              :multiple="getMorningAppointments(day, index).length > 1"
             />
             <bat-calendar-button
-              v-if="groupedAppointments[day - 1][index].length > 1"
+              v-if="getMorningAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="groupedAppointments[day - 1][index][1] || null"
+              :appointment="getMorningAppointments(day, index)[1] || null"
               :multiple="true"
             />
             <bat-calendar-button
-              v-if="groupedAppointments[day - 1][index].length > 1"
+              v-if="getMorningAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="groupedAppointments[day - 1][index][2] || null"
+              :appointment="getMorningAppointments(day, index)[2] || null"
               :multiple="true"
             />
             <bat-calendar-button
-              v-if="groupedAppointments[day - 1][index].length > 1"
+              v-if="getMorningAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="groupedAppointments[day - 1][index][3] || null"
+              :appointment="getMorningAppointments(day, index)[3] || null"
               :multiple="true"
             />
           </td>
@@ -74,28 +74,28 @@
             <bat-calendar-button
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + index][0] || null"
-              :multiple="groupedAppointments[day - 1][appointmentSlots.morning.length + index].length > 1"
+              :appointment="getAfternoonAppointments(day, index)[0] || null"
+              :multiple="getAfternoonAppointments(day, index).length > 1"
             />
             <bat-calendar-button
-              v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + index].length > 1"
+              v-if="getAfternoonAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + index][1] || null"
+              :appointment="getAfternoonAppointments(day, index)[1] || null"
               :multiple="true"
             />
             <bat-calendar-button
-              v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + index].length > 1"
+              v-if="getAfternoonAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + index][2] || null"
+              :appointment="getAfternoonAppointments(day, index)[2] || null"
               :multiple="true"
             />
             <bat-calendar-button
-              v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + index].length > 1"
+              v-if="getAfternoonAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + index][3] || null"
+              :appointment="getAfternoonAppointments(day, index)[3] || null"
               :multiple="true"
             />
           </td>
@@ -116,28 +116,28 @@
             <bat-calendar-button
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index][0] || null"
-              :multiple="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index].length > 1"
+              :appointment="getEveningAppointments(day, index)[0] || null"
+              :multiple="getEveningAppointments(day, index).length > 1"
             />
             <bat-calendar-button
-              v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index].length > 1"
+              v-if="getEveningAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index][1] || null"
+              :appointment="getEveningAppointments(day, index)[1] || null"
               :multiple="true"
             />
             <bat-calendar-button
-              v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index].length > 1"
+              v-if="getEveningAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index][2] || null"
+              :appointment="getEveningAppointments(day, index)[2] || null"
               :multiple="true"
             />
             <bat-calendar-button
-              v-if="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index].length > 1"
+              v-if="getEveningAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index][3] || null"
+              :appointment="getEveningAppointments(day, index)[3] || null"
               :multiple="true"
             />
           </td>
@@ -328,6 +328,36 @@ export default {
   },
 
   methods: {
+    /**
+     * Get the morning appointments for the given day and slot.
+     * @param {int} day
+     * @param {int} slot
+     * @returns {array}
+     */
+    getMorningAppointments(day, slot) {
+      return this.groupedAppointments[day - 1][slot];
+    },
+
+    /**
+     * Get the afternoon appointments for the given day and slot.
+     * @param {int} day
+     * @param {int} slot
+     * @returns {array}
+     */
+    getAfternoonAppointments(day, slot) {
+      return this.groupedAppointments[day - 1][this.appointmentSlots.morning.length + slot];
+    },
+
+    /**
+     * Get the evening appointments for the given day and slot.
+     * @param {int} day
+     * @param {int} slot
+     * @returns {array}
+     */
+    getEveningAppointments(day, slot) {
+      return this.groupedAppointments[day - 1][this.appointmentSlots.morning.length + this.appointmentSlots.afternoon.length + slot];
+    },
+
     /**
      * When the user selects an appointment.
      */
