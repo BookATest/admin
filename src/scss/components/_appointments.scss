@@ -548,7 +548,7 @@
           margin: 0 auto;
         }
 
-        &:after {
+        &:disabled:after {
           content: '' !important;
         }
       }
