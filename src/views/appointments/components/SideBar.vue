@@ -21,34 +21,33 @@
         <div v-if="!booked" class="popup__main">
           <form>
             <div class="available--date">
-              <span class="js--popup-date-text">Sunday 12 March</span>
+              <span class="js--popup-date-text">{{ appointment.start_at | moment('dddd D MMMM') }}</span>
             </div>
             <div class="available--time">
-              <span class="js--popup-time-text">11:00 am</span>
+              <span class="js--popup-time-text">{{ appointment.start_at | moment('h:mm a') }}</span>
             </div>
             <hr>
             <div class="available--form">
               <div class="form__checkbox form__checkbox--disabled">
                 <div>
-                  <input id="checkbox" name="checkbox" type="checkbox" checked disabled>
+                  <input id="checkbox" name="checkbox" type="checkbox" :checked="!repeating" disabled>
                   <label for="checkbox">One off</label>
-                </div>
-              </div>
-              <div class="form__drop-down form__drop-down--disabled">
-                <label for="dropdown">Repeatable</label>
-                <div>
-                  <select id="dropdown" name="dropdown" disabled>
-                    <option>None</option>
-                    <option>Daily</option>
-                    <option>Weekly</option>
-                    <option>Monthly</option>
-                  </select>
                 </div>
               </div>
             </div>
             <hr>
             <div class="available--user">
-              <button class="button button__primary button__primary--a" disabled>Delete</button>
+              <button class="button button__primary button__primary--a" disabled>Amend</button>
+            </div>
+            <div class="available--warning">
+              <div class="card card--warning">
+                <div class="warning__icon">
+                  <i class="icon icon--warning"></i>
+                </div>
+                <div class="warning__content">
+                  <p>To manage an appointment you need to go into manage my appointment</p>
+                </div>
+              </div>
             </div>
           </form>
         </div>
@@ -56,20 +55,23 @@
         <!-- Booked -->
         <div v-else class="popup__main">
           <div class="booked--date">
-            <span class="js--popup-date-text">Sunday 12 March</span>
+            <span class="js--popup-date-text">{{ appointment.start_at | moment('dddd D MMMM') }}</span>
           </div>
           <div class="booked--time">
-            <span class="js--popup-time-text">11:00 am</span>
+            <span class="js--popup-time-text">{{ appointment.start_at | moment('h:mm a') }}</span>
           </div>
           <hr>
           <div class="booked--patient">
-            <span>patient</span><span class="js--popup-patient-text">Robert</span>
+            <span>patient</span><span class="js--popup-patient-text">{{ appointment.service_user_name }}</span>
           </div>
           <div class="booked--with">
-            <span>with</span><span class="js--popup-with-text">Alex</span>
+            <span>with</span><span class="js--popup-with-text">{{ `${appointment.user_first_name} ${appointment.user_last_name}` }}</span>
           </div>
           <div class="booked--where">
-            <span>where</span><span class="js--popup-where-text">Mesmac Leeds</span>
+            <bat-loader v-if="clinic === null"/>
+            <template v-else>
+              <span>where</span><span class="js--popup-where-text">{{ clinic.name }}</span>
+            </template>
           </div>
           <hr>
           <div class="booked--user">
@@ -91,13 +93,31 @@
 </template>
 
 <script>
+import BatLoader from '@/components/Loader.vue';
+
 export default {
   name: 'SideBar',
+
+  components: { BatLoader },
 
   props: {
     appointment: {
       required: true,
       type: Object,
+    },
+  },
+
+  data() {
+    return {
+      clinic: null,
+    };
+  },
+
+  watch: {
+    appointment(appointment) {
+      if (appointment === null) {
+        this.clinic = null;
+      }
     },
   },
 
@@ -108,6 +128,13 @@ export default {
     booked() {
       return this.appointment.booked_at !== null;
     },
+
+    /**
+     * Determine whether or not the appointment is repeating.
+     */
+    repeating() {
+      return this.appointment.is_repeating;
+    },
   },
 
   methods: {
@@ -117,6 +144,18 @@ export default {
     onClose() {
       this.$emit('close');
     },
+
+    /**
+     * Fetch the clinic for the selected appointment.
+     */
+    async fetchClinic() {
+      const response = await this.$http.get(`/clinics/${this.appointment.clinic_id}`);
+      this.clinic = response.data.data;
+    },
+  },
+
+  created() {
+    this.fetchClinic();
   },
 };
 </script>

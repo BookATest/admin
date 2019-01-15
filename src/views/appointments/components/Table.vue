@@ -50,7 +50,7 @@
           <td colspan="1" v-for="day in 7" :key="`AfternoonSlot-${index}-${day}`">
             <bat-calendar-button
               @click="onSelect"
-              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length - 1 + index][0] || null"
+              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + index][0] || null"
             />
           </td>
         </tr>
@@ -69,7 +69,7 @@
           <td colspan="1" v-for="day in 7" :key="`EveningSlot-${index}-${day}`">
             <bat-calendar-button
               @click="onSelect"
-              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length - 1 + appointmentSlots.afternoon.length - 1 + index][0] || null"
+              :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length + appointmentSlots.afternoon.length + index][0] || null"
             />
           </td>
         </tr>
