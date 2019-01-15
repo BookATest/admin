@@ -16,233 +16,53 @@
         </tr>
       </thead>
       <tbody>
+        <!-- Morning heading -->
         <tr>
           <td colspan="1"></td>
           <td colspan="7">
             <div class="pod-title"><span>Morning</span></div>
           </td>
         </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">8:00</span><span class="time time--b">am</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
+        <!-- Morning slots -->
+        <tr v-for="(slot, index) in appointmentSlots.morning" :key="`MorningSlots-${index}`">
+          <td colspan="1">
+            <bat-time :meridiem="slot.meridiem">{{ slot.time }}</bat-time>
+          </td>
+          <td colspan="1" v-for="day in 7" :key="`MorningSlot-${index}-${day}`">
+            <bat-calendar-button :appointment="groupedAppointments[day - 1][index][0] || null"/>
+          </td>
         </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">8:30</span><span class="time time--b">am</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--available-cw-initials-repeat button__calendar--available-cw-initials-repeat--default js--popup-open"><span>LM</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">9:00</span><span class="time time--b">am</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--booked-cw-initials-repeat button__calendar--booked-cw-initials-repeat--default js--popup-open"><span>ET</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--booked-cw-initials-repeat button__calendar--booked-cw-initials-repeat--default js--popup-open"><span>RW</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--booked-cw-initials-repeat button__calendar--booked-cw-initials-repeat--default js--popup-open"><span>DL</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--available-cw-initials-repeat button__calendar--available-cw-initials-repeat--default js--popup-open"><span>LM</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--available-cw-initials-repeat button__calendar--available-cw-initials-repeat--default js--popup-open"><span>LM</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--available-cw-initials-repeat button__calendar--available-cw-initials-repeat--default js--popup-open"><span>LM</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--available-cw-initials-repeat button__calendar--available-cw-initials-repeat--default js--popup-open"><span>LM</span></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">9:30</span><span class="time time--b">am</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">10:00</span><span class="time time--b">am</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">10:30</span><span class="time time--b">am</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--available-cw-initials button__calendar--available-cw-initials--default js--popup-open"><span>LM</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--available-cw-initials button__calendar--available-cw-initials--default js--popup-open"><span>LM</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--available-cw-initials button__calendar--available-cw-initials--default js--popup-open"><span>LM</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">11:00</span><span class="time time--b">am</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--available-cw-initials-repeat button__calendar--available-cw-initials-repeat--default js--popup-open"><span>LM</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--available-cw-initials-repeat button__calendar--available-cw-initials-repeat--default js--popup-open"><span>LM</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--available-cw-initials-repeat button__calendar--available-cw-initials-repeat--default js--popup-open"><span>LM</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--booked-cw-initials-repeat button__calendar--booked-cw-initials-repeat--default js--popup-open"><span>DL</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--available-cw-initials-repeat button__calendar--available-cw-initials-repeat--default js--popup-open"><span>LM</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--available-cw-initials-repeat button__calendar--available-cw-initials-repeat--default js--popup-open"><span>LM</span></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">11:30</span><span class="time time--b">am</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
+        <!-- Afternoon heading -->
         <tr>
           <td colspan="1"></td>
           <td colspan="7">
             <div class="pod-title"><span>Afternoon</span></div>
           </td>
         </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">12:00</span><span class="time time--b">pm</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
+        <!-- Afternoon slots -->
+        <tr v-for="(slot, index) in appointmentSlots.afternoon" :key="`AfternoonSlots-${index}`">
+          <td colspan="1">
+            <bat-time :meridiem="slot.meridiem">{{ slot.time }}</bat-time>
+          </td>
+          <td colspan="1" v-for="day in 7" :key="`AfternoonSlot-${index}-${day}`">
+            <bat-calendar-button :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length - 1 + index][0] || null"/>
+          </td>
         </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">12:30</span><span class="time time--b">pm</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">1:00</span><span class="time time--b">pm</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">1:30</span><span class="time time--b">pm</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">2:00</span><span class="time time--b">pm</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">2:30</span><span class="time time--b">pm</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">3:00</span><span class="time time--b">pm</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">3:30</span><span class="time time--b">pm</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">4:00</span><span class="time time--b">pm</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">4:30</span><span class="time time--b">pm</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
+        <!-- Evening heading -->
         <tr>
           <td colspan="1"></td>
           <td colspan="7">
             <div class="pod-title"><span>Evening</span></div>
           </td>
         </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">5:00</span><span class="time time--b">pm</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">5:30</span><span class="time time--b">pm</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-        </tr>
-        <tr>
-          <td colspan="1"><span class="time time--a">6:00</span><span class="time time--b">pm</span></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
-          <td colspan="1"><button class="button button__calendar button__calendar--not-available js--popup-open" disabled></button></td>
+        <!-- Evening slots -->
+        <tr v-for="(slot, index) in appointmentSlots.evening" :key="`EveningSlots-${index}`">
+          <td colspan="1">
+            <bat-time :meridiem="slot.meridiem">{{ slot.time }}</bat-time>
+          </td>
+          <td colspan="1" v-for="day in 7" :key="`EveningSlot-${index}-${day}`">
+            <bat-calendar-button :appointment="groupedAppointments[day - 1][appointmentSlots.morning.length - 1 + appointmentSlots.afternoon.length - 1 + index][0] || null"/>
+          </td>
         </tr>
       </tbody>
       <tfoot>
@@ -263,6 +83,8 @@
 
 <script>
 import BatLoader from '@/components/Loader.vue';
+import BatTime from '@/views/appointments/components/Time.vue';
+import BatCalendarButton from '@/views/appointments/components/CalendarButton.vue';
 
 const daysInWeek = 7;
 const minutesInDay = 60 * 24;
@@ -272,7 +94,7 @@ const eveningMinutes = 60 * 17.5;
 export default {
   name: 'Table',
 
-  components: { BatLoader },
+  components: { BatLoader, BatTime, BatCalendarButton },
 
   props: {
     value: {
@@ -324,15 +146,23 @@ export default {
 
         const time = this.$moment()
           .startOf('day')
-          .add(appointmentTimeInMinutes, 'minutes')
-          .format('h:mm a');
+          .add(appointmentTimeInMinutes, 'minutes');
 
         if (appointmentTimeInMinutes >= eveningMinutes) {
-          slots.evening.push(time);
+          slots.evening.push({
+            time: time.format('h:mm'),
+            meridiem: time.format('a'),
+          });
         } else if (appointmentTimeInMinutes >= afternoonMinutes) {
-          slots.afternoon.push(time);
+          slots.afternoon.push({
+            time: time.format('h:mm'),
+            meridiem: time.format('a'),
+          });
         } else {
-          slots.morning.push(time);
+          slots.morning.push({
+            time: time.format('h:mm'),
+            meridiem: time.format('a'),
+          });
         }
       }
 
@@ -365,14 +195,16 @@ export default {
         }
 
         // Add appointments to the slots.
-        this.appointments.forEach((appointment) => {
-          const midnight = this.$moment().startOf('day');
-          const appointmentTimeInMinutes = this.$moment(appointment.start_at)
-            .diff(midnight, 'minutes');
-          const slot = appointmentTimeInMinutes / appointmentDuration;
+        this.appointments
+          .filter(appointment => this.$moment(appointment.start_at).weekday() === day)
+          .forEach((appointment) => {
+            const midnight = this.$moment(appointment.start_at).startOf('day');
+            const appointmentTimeInMinutes = this.$moment(appointment.start_at)
+              .diff(midnight, 'minutes');
+            const slot = appointmentTimeInMinutes / appointmentDuration;
 
-          appointments[day][slot - 1].push(appointment);
-        });
+            appointments[day][slot].push(appointment);
+          });
       }
 
       return appointments;
@@ -433,6 +265,8 @@ export default {
       this.loadingAppointments = true;
 
       const params = {
+        sort: 'start_at',
+        append: ['user_first_name', 'user_last_name'].join(','),
         'filter[starts_after]': this.$moment(this.date).startOf('isoWeek').format('Y-MM-DD\\T00:00:00+00:00'),
         'filter[starts_before]': this.$moment(this.date).endOf('isoWeek').format('Y-MM-DD\\T23:59:59+00:00'),
       };
