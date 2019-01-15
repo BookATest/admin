@@ -46,7 +46,7 @@ export default {
         {
           name: 'settings',
           icon: 'icon--settings',
-          active: false,
+          to: { name: 'settings.index' },
           items: [
             {
               name: 'my profile',
@@ -75,6 +75,10 @@ export default {
             {
               name: 'configuration',
               to: { name: 'settings.configuration' },
+            },
+            {
+              name: 'audits',
+              to: { name: 'settings.audits' },
             },
           ],
         },
