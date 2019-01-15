@@ -28,7 +28,7 @@
             :value="clinicId"
             @input="$emit('update:clinicId', $event.target.value)"
           >
-            <option value="">Please select...</option>
+            <option value="">Select clinic...</option>
             <option v-for="clinic in clinics" :key="clinic.id" :value="clinic.id">{{ clinic.name }}</option>
           </select>
         </div>
@@ -46,7 +46,7 @@
             @input="$emit('update:userId', $event.target.value)"
             :disabled="clinicId === ''"
           >
-            <option value="">All</option>
+            <option value="">All users</option>
             <option v-for="user in users" :key="user.id" :value="user.id">{{ user | fullName }}</option>
           </select>
         </div>
