@@ -85,5 +85,12 @@
 <script>
 export default {
   name: 'SideBar',
+
+  props: {
+    appointment: {
+      required: true,
+      type: Object,
+    },
+  },
 };
 </script>

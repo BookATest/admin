@@ -5,7 +5,7 @@
     <div class="calendar calendar--default">
 
       <!-- Calendar - Main (Left) -->
-      <div class="calendar__main js--calendar__main">
+      <div class="calendar__main js--calendar__main" :class="{ 'calendar__main--w-sidebar': appointment !== null }">
         <div class="main">
 
           <!-- Calendar - Search -->
@@ -33,7 +33,7 @@
 
       <!-- Calendar - Sidebar (Right) -->
       <div class="calendar__sidebar calendar__sidebar calendar__sidebar--active js--calendar-sidebar">
-        <bat-side-bar/>
+        <bat-side-bar v-if="appointment" :appointment="appointment"/>
       </div>
 
     </div>
