@@ -68,10 +68,10 @@
             <span>with</span><span class="js--popup-with-text">{{ `${appointment.user_first_name} ${appointment.user_last_name}` }}</span>
           </div>
           <div class="booked--where">
-            <bat-loader v-if="clinic === null"/>
-            <template v-else>
-              <span>where</span><span class="js--popup-where-text">{{ clinic.name }}</span>
-            </template>
+            <span>where</span><span class="js--popup-where-text">
+              <bat-loader v-if="clinic === null"/>
+              <template v-else>{{ clinic.name }}</template>
+            </span>
           </div>
           <hr>
           <div class="booked--user">
