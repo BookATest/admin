@@ -76,7 +76,16 @@
           <hr>
           <div class="booked--user">
             <button class="button button__primary button__primary--a">View user</button>
-            <button class="button button__inline button__inline--subtle">Cancel appointment?</button>
+          </div>
+          <div class="available--warning">
+            <div class="card card--warning">
+              <div class="warning__icon">
+                <i class="icon icon--warning"></i>
+              </div>
+              <div class="warning__content">
+                <p>To cancel an appointment you need to go into manage my appointment</p>
+              </div>
+            </div>
           </div>
         </div>
 
