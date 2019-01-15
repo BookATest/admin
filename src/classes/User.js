@@ -48,22 +48,34 @@ export default class User {
 
   /**
    * Check if the user is a clinic admin.
-   * @param {string}
+   * @param {string|null}
    * @returns {boolean}
    */
   isClinicAdmin(clinicId) {
-    const foundRole = this.user.roles.find(role => role.role === clinicAdmin && role.clinic_id === clinicId);
+    let foundRole = false;
+
+    if (clinicId) {
+      foundRole = this.user.roles.find(role => role.role === clinicAdmin && role.clinic_id === clinicId);
+    } else {
+      foundRole = this.user.roles.find(role => role.role === clinicAdmin);
+    }
 
     return foundRole !== undefined;
   }
 
   /**
    * Check if the user is a community worker.
-   * @param {string}
+   * @param {string|null}
    * @returns {boolean}
    */
   isCommunityWorker(clinicId) {
-    const foundRole = this.user.roles.find(role => role.role === communityWorker && role.clinic_id === clinicId);
+    let foundRole = false;
+
+    if (clinicId) {
+      foundRole = this.user.roles.find(role => role.role === communityWorker && role.clinic_id === clinicId);
+    } else {
+      foundRole = this.user.roles.find(role => role.role === communityWorker);
+    }
 
     return foundRole !== undefined;
   }
@@ -76,6 +88,13 @@ export default class User {
     return this.user.roles
       .filter(role => role.role === communityWorker)
       .map(role => role.clinic_id);
+  }
+
+  /**
+   * @returns {string}
+   */
+  fullName() {
+    return `${this.user.first_name} ${this.user.last_name}`;
   }
 
   /**
