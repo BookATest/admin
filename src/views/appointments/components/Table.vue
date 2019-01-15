@@ -139,7 +139,12 @@
               <li><span>Available</span></li>
               <li><span>Booked</span></li>
             </ul>
-            <button class="button button__secondary button__secondary--b"><span>Manage my appointments</span></button>
+            <button v-if="!editMode" @click="onEditMode(true)" class="button button__secondary button__secondary--b">
+              <span>Manage my appointments</span>
+            </button>
+            <button v-else @click="onEditMode(false)" class="button button__secondary button__secondary--b">
+              <span>Back to view mode</span>
+            </button>
           </th>
         </tr>
       </tfoot>
@@ -181,6 +186,11 @@ export default {
     date: {
       required: true,
       type: String,
+    },
+
+    editMode: {
+      required: true,
+      type: Boolean,
     },
   },
 
@@ -362,6 +372,14 @@ export default {
       this.appointments = await this.fetchAll('/appointments', params);
 
       this.loadingAppointments = false;
+    },
+
+    /**
+     * Emit the edit mode.
+     * @param {boolean}
+     */
+    onEditMode(editMode) {
+      this.$emit('update:editMode', editMode);
     },
   },
 

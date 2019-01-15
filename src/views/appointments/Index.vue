@@ -2,7 +2,7 @@
   <div class="main">
 
     <!-- Calendar -->
-    <div class="calendar calendar--default">
+    <div class="calendar" :class="{ 'calendar--default': !editMode, 'calendar--edit': editMode }">
 
       <!-- Calendar - Main (Left) -->
       <div class="calendar__main js--calendar__main" :class="{ 'calendar__main--w-sidebar': appointment !== null }">
@@ -22,6 +22,7 @@
           <bat-table
             v-if="clinicId"
             v-model="appointment"
+            :editMode.sync="editMode"
             :clinic-id="clinicId"
             :user-id="userId"
             :date="date"
@@ -64,6 +65,7 @@ export default {
 
   data() {
     return {
+      editMode: false,
       search: '',
       clinicId: '',
       userId: '',
@@ -73,6 +75,10 @@ export default {
   },
 
   watch: {
+    editMode() {
+      this.appointment = null;
+    },
+
     clinicId() {
       this.appointment = null;
     },
