@@ -284,7 +284,7 @@ export default {
 
       const params = {
         sort: 'start_at',
-        append: ['user_first_name', 'user_last_name'].join(','),
+        append: ['service_user_name', 'user_first_name', 'user_last_name'].join(','),
         'filter[starts_after]': this.$moment(this.date).startOf('isoWeek').format('Y-MM-DD\\T00:00:00+00:00'),
         'filter[starts_before]': this.$moment(this.date).endOf('isoWeek').format('Y-MM-DD\\T23:59:59+00:00'),
       };
