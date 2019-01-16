@@ -59,14 +59,23 @@
               <hr>
 
               <div class="available--user">
-                <button class="button button__primary button__primary--a" disabled>Amend</button>
+                <button
+                  @click.prevent="onDelete"
+                  class="button button__primary button__primary--a"
+                  :disabled="deleting"
+                >
+                  <template v-if="!deleting">Delete</template>
+                  <template v-else>Deleting...</template>
+                </button>
+
+                <!-- TODO: Delete repeating appointments -->
               </div>
             </template>
 
             <!-- Booked appointments -->
             <template v-else-if="!freeSlot && booked">
               <div class="available--form">
-                <div class="form__checkbox form__checkbox">
+                <div class="form__checkbox form__checkbox--disabled">
                   <div>
                     <input id="checkbox" name="checkbox" type="checkbox" :checked="repeating" disabled>
                     <label for="checkbox">Repeating</label>
@@ -87,6 +96,19 @@
                   <bat-loader v-if="clinic === null"/>
                   <template v-else>{{ clinic.name }}</template>
                 </span>
+              </div>
+
+              <hr>
+
+              <div class="available--user">
+                <button
+                  @click.prevent="onCancel"
+                  class="button button__primary button__primary--a"
+                  :disabled="cancelling"
+                >
+                  <template v-if="!cancelling">Cancel</template>
+                  <template v-else>Cancelling...</template>
+                </button>
               </div>
             </template>
 
@@ -159,6 +181,9 @@ export default {
   data() {
     return {
       clinic: null,
+      deleting: false,
+      cancelling: false,
+      creating: false,
     };
   },
 
@@ -207,6 +232,30 @@ export default {
     async fetchClinic() {
       const response = await this.$http.get(`/clinics/${this.appointment.clinic_id}`);
       this.clinic = response.data.data;
+    },
+
+    /**
+     * Delete the appointment.
+     */
+    async onDelete() {
+      this.deleting = true;
+
+      await this.$http.delete(`/appointments/${this.appointment.id}`);
+      this.$emit('delete');
+
+      this.deleting = false;
+    },
+
+    /**
+     * Cancel the appointment.
+     */
+    async onCancel() {
+      this.cancelling = true;
+
+      await this.$http.put(`/appointments/${this.appointment.id}/cancel`);
+      this.$emit('cancel');
+
+      this.cancelling = false;
     },
   },
 

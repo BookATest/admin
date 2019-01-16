@@ -21,6 +21,7 @@
 
           <!-- Calendar - Table -->
           <bat-table
+            ref="table"
             v-if="clinicId"
             v-model="appointment"
             :editMode.sync="editMode"
@@ -38,6 +39,8 @@
         <bat-side-bar
           v-if="appointment"
           @close="onCloseSideBar"
+          @delete="onDelete"
+          @cancel="onCancel"
           :appointment="appointment"
           :edit-mode="editMode"
         />
@@ -100,6 +103,23 @@ export default {
      */
     onCloseSideBar() {
       this.appointment = null;
+    },
+
+    /**
+     * Logic for when an appointment has been deleted.
+     */
+    onDelete() {
+      this.appointment = null;
+      this.$refs.table.fetchAppointments();
+    },
+
+    /**
+     * Logic for when an appointment has been cancelled.
+     */
+    onCancel() {
+      this.appointment.service_user_id = null;
+      this.appointment.booked_at = null;
+      this.$refs.table.fetchAppointments();
     },
   },
 };
