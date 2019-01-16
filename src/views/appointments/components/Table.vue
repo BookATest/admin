@@ -415,6 +415,10 @@ export default {
      * @param {boolean}
      */
     onEditMode(editMode) {
+      if (editMode === true) {
+        this.$emit('update:userId', this.$store.state.user.get().id);
+      }
+
       this.$emit('update:editMode', editMode);
     },
 

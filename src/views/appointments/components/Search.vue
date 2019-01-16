@@ -37,14 +37,14 @@
       <!-- Filter -->
       <div
         class="form__drop-down"
-        :class="{ 'form__drop-down--disabled': this.clinicId === '' }"
+        :class="{ 'form__drop-down--disabled': clinicId === '' || editMode }"
       >
         <label for="dropdown">Filter by</label>
         <div>
           <select
             :value="userId"
             @input="$emit('update:userId', $event.target.value)"
-            :disabled="clinicId === ''"
+            :disabled="clinicId === '' || editMode"
           >
             <option value="">All users</option>
             <option v-for="user in users" :key="user.id" :value="user.id">{{ user | fullName }}</option>
@@ -75,6 +75,11 @@ export default {
     userId: {
       required: true,
       type: String,
+    },
+
+    editMode: {
+      required: true,
+      type: Boolean,
     },
   },
 

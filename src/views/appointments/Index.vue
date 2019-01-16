@@ -13,6 +13,7 @@
             :search.sync="search"
             :clinic-id.sync="clinicId"
             :user-id.sync="userId"
+            :edit-mode="editMode"
           />
 
           <!-- Calendar - Controls -->
@@ -24,7 +25,7 @@
             v-model="appointment"
             :editMode.sync="editMode"
             :clinic-id="clinicId"
-            :user-id="userId"
+            :userId.sync="userId"
             :date="date"
           />
           <p v-else>Select a clinic to view appointments.</p>
