@@ -511,6 +511,10 @@
             height: 62px;
             cursor: pointer;
 
+            &:hover {
+              background-color: rgba($mineShaft10, .2);
+            }
+
             span {
               @include innerPageHeader();
               color: $mineShaft;
