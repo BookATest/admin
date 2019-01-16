@@ -30,8 +30,8 @@
             <div class="available--form">
               <div class="form__checkbox form__checkbox--disabled">
                 <div>
-                  <input id="checkbox" name="checkbox" type="checkbox" :checked="!repeating" disabled>
-                  <label for="checkbox">One off</label>
+                  <input id="checkbox" name="checkbox" type="checkbox" :checked="repeating" disabled>
+                  <label for="checkbox">Repeating</label>
                 </div>
               </div>
             </div>

@@ -3,6 +3,7 @@
 @import "node_modules/bourbon-neat/core/neat";
 
 /* Base */
+@import "base/variables";
 @import "base/reset";
 @import "base/grid";
 @import "base/typography";

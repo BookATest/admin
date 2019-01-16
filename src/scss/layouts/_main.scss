@@ -1,7 +1,7 @@
 /* Main */
 .base-layout__main {
   @include grid-container;
-  min-height: 100vh;
+  min-height: calc(100vh - #{$headerHeight});
 
 
   .help {

@@ -1,6 +1,6 @@
 /* Header */
 .base-layout__header {
-  height: 118px;
+  height: $headerHeight;
   // Login
   &--login {
     .header {
