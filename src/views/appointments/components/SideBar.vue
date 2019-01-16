@@ -46,7 +46,7 @@
             <hr>
 
             <!-- Available appointment -->
-            <template v-if="!freeSlot && booked">
+            <template v-if="!freeSlot && !booked">
               <div class="available--form">
                 <div class="form__checkbox form__checkbox--disabled">
                   <div>
