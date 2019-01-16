@@ -32,28 +32,28 @@
             <bat-calendar-button
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="getMorningAppointments(day, index)[0] || null"
+              :appointment="getMorningAppointments(day, index)[0] || getEmptyMorningAppointment(day, index)"
               :multiple="getMorningAppointments(day, index).length > 1"
             />
             <bat-calendar-button
               v-if="getMorningAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="getMorningAppointments(day, index)[1] || null"
+              :appointment="getMorningAppointments(day, index)[1] || getEmptyMorningAppointment(day, index)"
               :multiple="true"
             />
             <bat-calendar-button
               v-if="getMorningAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="getMorningAppointments(day, index)[2] || null"
+              :appointment="getMorningAppointments(day, index)[2] || getEmptyMorningAppointment(day, index)"
               :multiple="true"
             />
             <bat-calendar-button
               v-if="getMorningAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="getMorningAppointments(day, index)[3] || null"
+              :appointment="getMorningAppointments(day, index)[3] || getEmptyMorningAppointment(day, index)"
               :multiple="true"
             />
           </td>
@@ -74,28 +74,28 @@
             <bat-calendar-button
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="getAfternoonAppointments(day, index)[0] || null"
+              :appointment="getAfternoonAppointments(day, index)[0] || getEmptyAfternoonAppointment(day, index)"
               :multiple="getAfternoonAppointments(day, index).length > 1"
             />
             <bat-calendar-button
               v-if="getAfternoonAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="getAfternoonAppointments(day, index)[1] || null"
+              :appointment="getAfternoonAppointments(day, index)[1] || getEmptyAfternoonAppointment(day, index)"
               :multiple="true"
             />
             <bat-calendar-button
               v-if="getAfternoonAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="getAfternoonAppointments(day, index)[2] || null"
+              :appointment="getAfternoonAppointments(day, index)[2] || getEmptyAfternoonAppointment(day, index)"
               :multiple="true"
             />
             <bat-calendar-button
               v-if="getAfternoonAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="getAfternoonAppointments(day, index)[3] || null"
+              :appointment="getAfternoonAppointments(day, index)[3] || getEmptyAfternoonAppointment(day, index)"
               :multiple="true"
             />
           </td>
@@ -116,28 +116,28 @@
             <bat-calendar-button
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="getEveningAppointments(day, index)[0] || null"
+              :appointment="getEveningAppointments(day, index)[0] || getEmptyEveningAppointment(day, index)"
               :multiple="getEveningAppointments(day, index).length > 1"
             />
             <bat-calendar-button
               v-if="getEveningAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="getEveningAppointments(day, index)[1] || null"
+              :appointment="getEveningAppointments(day, index)[1] || getEmptyEveningAppointment(day, index)"
               :multiple="true"
             />
             <bat-calendar-button
               v-if="getEveningAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="getEveningAppointments(day, index)[2] || null"
+              :appointment="getEveningAppointments(day, index)[2] || getEmptyEveningAppointment(day, index)"
               :multiple="true"
             />
             <bat-calendar-button
               v-if="getEveningAppointments(day, index).length > 1"
               @click="onSelect"
               :edit-mode="editMode"
-              :appointment="getEveningAppointments(day, index)[3] || null"
+              :appointment="getEveningAppointments(day, index)[3] || getEmptyEveningAppointment(day, index)"
               :multiple="true"
             />
           </td>
@@ -345,7 +345,7 @@ export default {
      * @returns {array}
      */
     getAfternoonAppointments(day, slot) {
-      return this.groupedAppointments[day - 1][this.appointmentSlots.morning.length + slot];
+      return this.getMorningAppointments(day, slot + this.appointmentSlots.morning.length);
     },
 
     /**
@@ -355,19 +355,13 @@ export default {
      * @returns {array}
      */
     getEveningAppointments(day, slot) {
-      return this.groupedAppointments[day - 1][this.appointmentSlots.morning.length + this.appointmentSlots.afternoon.length + slot];
+      return this.getMorningAppointments(day, slot + this.appointmentSlots.morning.length + this.appointmentSlots.afternoon.length);
     },
 
     /**
      * When the user selects an appointment.
      */
     onSelect(appointment) {
-      // If the same appointment clicked, then deselect it.
-      if (this.value && (this.value.id === appointment.id)) {
-        this.$emit('input', null);
-        return;
-      }
-
       this.$emit('input', appointment);
     },
 
@@ -394,8 +388,8 @@ export default {
       const params = {
         sort: 'start_at',
         append: ['service_user_name', 'user_first_name', 'user_last_name'].join(','),
-        'filter[starts_after]': this.$moment(this.date).startOf('isoWeek').format('Y-MM-DD\\T00:00:00+00:00'),
-        'filter[starts_before]': this.$moment(this.date).endOf('isoWeek').format('Y-MM-DD\\T23:59:59+00:00'),
+        'filter[starts_after]': this.$moment(this.date).startOf('isoWeek').format('Y-MM-DD[T]HH:mm:ssZ'),
+        'filter[starts_before]': this.$moment(this.date).endOf('isoWeek').format('Y-MM-DD[T]HH:mm:ssZ'),
       };
 
       // Filter clinic ID's to ones user is a community worker for.
@@ -422,6 +416,38 @@ export default {
      */
     onEditMode(editMode) {
       this.$emit('update:editMode', editMode);
+    },
+
+    /**
+     * Get an empty appointment object for the morning.
+     * @returns {object}
+     */
+    getEmptyMorningAppointment(day, slot) {
+      const startAt = this.$moment(this.date)
+        .add(day - 1, 'days')
+        .add(slot * this.clinic.appointment_duration, 'minutes');
+
+      return {
+        clinic_id: this.clinicId,
+        start_at: startAt.format('Y-MM-DD[T]HH:mm:ssZ'),
+        is_repeating: false,
+      };
+    },
+
+    /**
+     * Get an empty appointment object for the afternoon.
+     * @returns {object}
+     */
+    getEmptyAfternoonAppointment(day, slot) {
+      return this.getEmptyMorningAppointment(day, slot + this.appointmentSlots.morning.length);
+    },
+
+    /**
+     * Get an empty appointment object for the evening.
+     * @returns {object}
+     */
+    getEmptyEveningAppointment(day, slot) {
+      return this.getEmptyMorningAppointment(day, slot + this.appointmentSlots.morning.length + this.appointmentSlots.afternoon.length);
     },
   },
 

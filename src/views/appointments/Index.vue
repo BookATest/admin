@@ -38,6 +38,7 @@
           v-if="appointment"
           @close="onCloseSideBar"
           :appointment="appointment"
+          :edit-mode="editMode"
         />
       </div>
 

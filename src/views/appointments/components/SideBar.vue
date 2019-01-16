@@ -6,87 +6,122 @@
       <div
         class="js--popup-block"
         :class="{
-          'available': !booked,
-          'js--popup-block--available': !booked,
-          'booked': booked,
-          'js--popup-block--booked': booked,
+          'add-available': freeSlot,
+          'js--popup-block--add-availability': freeSlot,
+          'available': !freeSlot && !booked,
+          'js--popup-block--available': !freeSlot && !booked,
+          'booked': !freeSlot && booked,
+          'js--popup-block--booked': !freeSlot && booked,
         }"
         style="display: block;"
       >
         <div class="popup__header">
-          <span>{{ booked ? 'Booked' : 'Available' }}</span>
+          <span v-if="freeSlot">Add Availability</span>
+          <span v-else-if="!freeSlot && !booked">Available</span>
+          <span v-else-if="!freeSlot && booked">Booked</span>
         </div>
 
         <!-- Available -->
-        <div v-if="!booked" class="popup__main">
+        <div class="popup__main">
           <form>
-            <div class="available--date">
+
+            <!-- Date -->
+            <div :class="{
+              'add-availability--date': freeSlot,
+              'available--date': !freeSlot && !booked,
+              'booked--date': !freeSlot && booked,
+            }">
               <span class="js--popup-date-text">{{ appointment.start_at | moment('dddd D MMMM') }}</span>
             </div>
-            <div class="available--time">
+
+            <!-- Time -->
+            <div :class="{
+              'add-availability--time': freeSlot,
+              'available--time': !freeSlot && !booked,
+              'booked--time': !freeSlot && booked,
+            }">
               <span class="js--popup-time-text">{{ appointment.start_at | moment('h:mm a') }}</span>
             </div>
+
             <hr>
-            <div class="available--form">
-              <div class="form__checkbox form__checkbox--disabled">
-                <div>
-                  <input id="checkbox" name="checkbox" type="checkbox" :checked="repeating" disabled>
-                  <label for="checkbox">Repeating</label>
+
+            <!-- Available appointment -->
+            <template v-if="!freeSlot && booked">
+              <div class="available--form">
+                <div class="form__checkbox form__checkbox--disabled">
+                  <div>
+                    <input id="checkbox" name="checkbox" type="checkbox" :checked="repeating" disabled>
+                    <label for="checkbox">Repeating</label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <hr>
-            <div class="available--user">
-              <button class="button button__primary button__primary--a" disabled>Amend</button>
-            </div>
-            <div class="available--warning">
+
+              <hr>
+
+              <div class="available--user">
+                <button class="button button__primary button__primary--a" disabled>Amend</button>
+              </div>
+            </template>
+
+            <!-- Booked appointments -->
+            <template v-else-if="!freeSlot && booked">
+              <div class="available--form">
+                <div class="form__checkbox form__checkbox">
+                  <div>
+                    <input id="checkbox" name="checkbox" type="checkbox" :checked="repeating" disabled>
+                    <label for="checkbox">Repeating</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="booked--patient">
+                <span>patient</span><span class="js--popup-patient-text">{{ appointment.service_user_name }}</span>
+              </div>
+
+              <div class="booked--with">
+                <span>with</span><span class="js--popup-with-text">{{ `${appointment.user_first_name} ${appointment.user_last_name}` }}</span>
+              </div>
+
+              <div class="booked--where">
+                <span>where</span><span class="js--popup-where-text">
+                  <bat-loader v-if="clinic === null"/>
+                  <template v-else>{{ clinic.name }}</template>
+                </span>
+              </div>
+            </template>
+
+            <!-- Free slot -->
+            <template v-else>
+              <div class="add-availability--form">
+                <div class="form__checkbox">
+                  <div>
+                    <input id="checkbox" name="checkbox" type="checkbox" :checked="repeating">
+                    <label for="checkbox">Repeating</label>
+                  </div>
+                </div>
+              </div>
+
+              <hr>
+
+              <div class="add-availability--user">
+                <button class="button button__primary button__primary--a">Save</button>
+              </div>
+            </template>
+
+            <!-- Warning -->
+            <div v-if="!editMode" class="available--warning">
               <div class="card card--warning">
                 <div class="warning__icon">
                   <i class="icon icon--warning"></i>
                 </div>
                 <div class="warning__content">
-                  <p>To manage an appointment you need to go into manage my appointment</p>
+                  <p v-if="booked">To cancel an appointment you need to go into manage my appointment</p>
+                  <p v-else>To manage an appointment you need to go into manage my appointment</p>
                 </div>
               </div>
             </div>
-          </form>
-        </div>
 
-        <!-- Booked -->
-        <div v-else class="popup__main">
-          <div class="booked--date">
-            <span class="js--popup-date-text">{{ appointment.start_at | moment('dddd D MMMM') }}</span>
-          </div>
-          <div class="booked--time">
-            <span class="js--popup-time-text">{{ appointment.start_at | moment('h:mm a') }}</span>
-          </div>
-          <hr>
-          <div class="booked--patient">
-            <span>patient</span><span class="js--popup-patient-text">{{ appointment.service_user_name }}</span>
-          </div>
-          <div class="booked--with">
-            <span>with</span><span class="js--popup-with-text">{{ `${appointment.user_first_name} ${appointment.user_last_name}` }}</span>
-          </div>
-          <div class="booked--where">
-            <span>where</span><span class="js--popup-where-text">
-              <bat-loader v-if="clinic === null"/>
-              <template v-else>{{ clinic.name }}</template>
-            </span>
-          </div>
-          <hr>
-          <div class="booked--user">
-            <button class="button button__primary button__primary--a">View user</button>
-          </div>
-          <div class="available--warning">
-            <div class="card card--warning">
-              <div class="warning__icon">
-                <i class="icon icon--warning"></i>
-              </div>
-              <div class="warning__content">
-                <p>To cancel an appointment you need to go into manage my appointment</p>
-              </div>
-            </div>
-          </div>
+          </form>
         </div>
 
       </div>
@@ -113,6 +148,11 @@ export default {
     appointment: {
       required: true,
       type: Object,
+    },
+
+    editMode: {
+      required: true,
+      type: Boolean,
     },
   },
 
@@ -143,6 +183,13 @@ export default {
      */
     repeating() {
       return this.appointment.is_repeating;
+    },
+
+    /**
+     * Determin whether or not the slot is available.
+     */
+    freeSlot() {
+      return Object.prototype.hasOwnProperty.call(this.appointment, 'id') === false;
     },
   },
 

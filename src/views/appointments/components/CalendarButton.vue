@@ -32,7 +32,7 @@ export default {
   props: {
     appointment: {
       required: true,
-      validator: prop => typeof prop === 'object' || prop === null,
+      type: Object,
     },
 
     multiple: {
@@ -66,7 +66,7 @@ export default {
      * Determine whether or not there is an appointment for the slot.
      */
     exists() {
-      return this.appointment !== null;
+      return Object.prototype.hasOwnProperty.call(this.appointment, 'id');
     },
 
     userInitials() {
