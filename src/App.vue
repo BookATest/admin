@@ -36,6 +36,9 @@ export default {
   components: { BatLoader, BatHeader, BatSideBar },
 
   computed: {
+    /**
+     * The sidebar menu items.
+     */
     menu() {
       if (this.$store.state.isAuthenticated) {
         return [

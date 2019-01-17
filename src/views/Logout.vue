@@ -15,7 +15,7 @@ export default {
   name: 'LogoutView',
 
   metaInfo: {
-    title: 'Login',
+    title: 'Logout',
   },
 
   methods: {
