@@ -69,25 +69,27 @@
 
               <hr>
 
-              <div class="available--user">
-                <button
-                  @click.prevent="onDelete"
-                  class="button button__primary button__primary--a"
-                  :disabled="deleting"
-                >
-                  <template v-if="!deleting">Delete this</template>
-                  <template v-else>Deleting...</template>
-                </button>
+              <template v-if="!inPast">
+                <div class="available--user">
+                  <button
+                    @click.prevent="onDelete"
+                    class="button button__primary button__primary--a"
+                    :disabled="deleting"
+                  >
+                    <template v-if="!deleting">Delete this</template>
+                    <template v-else>Deleting...</template>
+                  </button>
 
-                <button
-                  @click.prevent="onDeleteAll"
-                  class="button button__primary button__primary--a"
-                  :disabled="deleting"
-                >
-                  <template v-if="!deletingAll">Delete all</template>
-                  <template v-else>Deleting...</template>
-                </button>
-              </div>
+                  <button
+                    @click.prevent="onDeleteAll"
+                    class="button button__primary button__primary--a"
+                    :disabled="deleting"
+                  >
+                    <template v-if="!deletingAll">Delete all</template>
+                    <template v-else>Deleting...</template>
+                  </button>
+                </div>
+              </template>
             </template>
 
             <!-- Booked appointments -->
@@ -118,16 +120,18 @@
 
               <hr>
 
-              <div class="available--user">
-                <button
-                  @click.prevent="onCancel"
-                  class="button button__primary button__primary--a"
-                  :disabled="cancelling"
-                >
-                  <template v-if="!cancelling">Cancel</template>
-                  <template v-else>Cancelling...</template>
-                </button>
-              </div>
+              <template v-if="!inPast">
+                <div class="available--user">
+                  <button
+                    @click.prevent="onCancel"
+                    class="button button__primary button__primary--a"
+                    :disabled="cancelling"
+                  >
+                    <template v-if="!cancelling">Cancel</template>
+                    <template v-else>Cancelling...</template>
+                  </button>
+                </div>
+              </template>
             </template>
 
             <!-- Free slot -->
@@ -143,16 +147,18 @@
 
               <hr>
 
-              <div class="add-availability--user">
-                <button
-                  @click.prevent="onCreate"
-                  class="button button__primary button__primary--a"
-                  :disabled="creating"
-                >
-                  <template v-if="!creating">Create</template>
-                  <template v-else>Creating...</template>
-                </button>
-              </div>
+              <template v-if="!inPast">
+                <div class="add-availability--user">
+                  <button
+                    @click.prevent="onCreate"
+                    class="button button__primary button__primary--a"
+                    :disabled="creating"
+                  >
+                    <template v-if="!creating">Create</template>
+                    <template v-else>Creating...</template>
+                  </button>
+                </div>
+              </template>
             </template>
 
             <!-- Warning -->
@@ -246,6 +252,13 @@ export default {
      */
     freeSlot() {
       return Object.prototype.hasOwnProperty.call(this.appointment, 'id') === false;
+    },
+
+    /**
+     * Determined whether or not the appointment is in the past.
+     */
+    inPast() {
+      return this.$moment(this.appointment.start_at).isBefore();
     },
   },
 
