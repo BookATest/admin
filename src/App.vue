@@ -43,6 +43,11 @@ export default {
       if (this.$store.state.isAuthenticated) {
         return [
           {
+            name: 'dashboard',
+            icon: 'icon--power',
+            to: { name: 'home' },
+          },
+          {
             name: 'appointments',
             icon: 'icon--appointments',
             to: { name: 'appointments.index' },
