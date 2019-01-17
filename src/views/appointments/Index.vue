@@ -29,7 +29,9 @@
             :userId.sync="userId"
             :date="date"
           />
-          <p v-else>Select a clinic to view appointments.</p>
+          <div v-else class="table">
+            <bat-body>Select a clinic to view appointments.</bat-body>
+          </div>
 
         </div>
       </div>
@@ -53,6 +55,7 @@
 </template>
 
 <script>
+import BatBody from '@/components/Body.vue';
 import BatControls from '@/views/appointments/components/Controls.vue';
 import BatSearch from '@/views/appointments/components/Search.vue';
 import BatSideBar from '@/views/appointments/components/SideBar.vue';
@@ -62,7 +65,7 @@ export default {
   name: 'AppointmentsIndex',
 
   components: {
-    BatControls, BatSearch, BatSideBar, BatTable,
+    BatBody, BatControls, BatSearch, BatSideBar, BatTable,
   },
 
   metaInfo: {
