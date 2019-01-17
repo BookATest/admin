@@ -117,7 +117,7 @@
               <div class="add-availability--form">
                 <div class="form__checkbox">
                   <div>
-                    <input id="checkbox" name="checkbox" type="checkbox" :checked="repeating">
+                    <input v-model="newAppointment.is_repeating" id="checkbox" name="checkbox" type="checkbox">
                     <label for="checkbox">Repeating</label>
                   </div>
                 </div>
@@ -126,7 +126,14 @@
               <hr>
 
               <div class="add-availability--user">
-                <button class="button button__primary button__primary--a">Save</button>
+                <button
+                  @click.prevent="onCreate"
+                  class="button button__primary button__primary--a"
+                  :disabled="creating"
+                >
+                  <template v-if="!creating">Create</template>
+                  <template v-else>Creating...</template>
+                </button>
               </div>
             </template>
 
@@ -184,11 +191,16 @@ export default {
       deleting: false,
       cancelling: false,
       creating: false,
+      newAppointment: {
+        is_repeating: false,
+      },
     };
   },
 
   watch: {
     appointment(appointment) {
+      this.newAppointment.is_repeating = false;
+
       if (appointment === null) {
         this.clinic = null;
       }
@@ -256,6 +268,23 @@ export default {
       this.$emit('cancel');
 
       this.cancelling = false;
+    },
+
+    /**
+     * Create an appointment.
+     */
+    async onCreate() {
+      this.creating = true;
+
+      await this.$http.post('/appointments', {
+        clinic_id: this.appointment.clinic_id,
+        start_at: this.appointment.start_at,
+        is_repeating: this.newAppointment.is_repeating,
+      });
+      this.newAppointment.is_repeating = false;
+      this.$emit('create');
+
+      this.creating = false;
     },
   },
 

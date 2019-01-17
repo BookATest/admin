@@ -41,6 +41,7 @@
           @close="onCloseSideBar"
           @delete="onDelete"
           @cancel="onCancel"
+          @create="onCreate"
           :appointment="appointment"
           :edit-mode="editMode"
         />
@@ -116,10 +117,17 @@ export default {
     /**
      * Logic for when an appointment has been cancelled.
      */
-    onCancel() {
-      this.appointment.service_user_id = null;
-      this.appointment.booked_at = null;
-      this.$refs.table.fetchAppointments();
+    async onCancel() {
+      await this.$refs.table.fetchAppointments();
+      this.appointment = this.$refs.table.appointments.find(appointment => appointment.user_id === this.$store.state.user.get().id && appointment.start_at === this.appointment.start_at);
+    },
+
+    /**
+     * Logic for when an appointment has been created.
+     */
+    async onCreate() {
+      await this.$refs.table.fetchAppointments();
+      this.appointment = this.$refs.table.appointments.find(appointment => appointment.user_id === this.$store.state.user.get().id && appointment.start_at === this.appointment.start_at);
     },
   },
 };
