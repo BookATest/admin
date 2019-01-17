@@ -1,13 +1,17 @@
 <template>
   <div class="base-layout">
 
-    <bat-header/>
+    <bat-loader v-if="$store.state.settings === null"/>
 
-    <bat-side-bar :menu="menu"/>
+    <template v-else>
+      <bat-header/>
 
-    <div class="base-layout__main">
-      <router-view/>
-    </div>
+      <bat-side-bar v-if="$store.state.isAuthenticated" :menu="menu"/>
+
+      <div class="base-layout__main">
+        <router-view/>
+      </div>
+    </template>
 
   </div>
 </template>
@@ -17,6 +21,7 @@
 </style>
 
 <script>
+import BatLoader from '@/components/Loader.vue';
 import BatHeader from '@/components/Header.vue';
 import BatSideBar from '@/components/SideBar.vue';
 
@@ -28,7 +33,7 @@ export default {
     titleTemplate: '%s | Book A Test',
   },
 
-  components: { BatHeader, BatSideBar },
+  components: { BatLoader, BatHeader, BatSideBar },
 
   data() {
     return {
@@ -46,7 +51,7 @@ export default {
         {
           name: 'settings',
           icon: 'icon--settings',
-          active: false,
+          to: { name: 'settings.index' },
           items: [
             {
               name: 'my profile',
@@ -65,8 +70,8 @@ export default {
               to: { name: 'settings.users' },
             },
             {
-              name: 'location',
-              to: { name: 'settings.location' },
+              name: 'locations',
+              to: { name: 'settings.locations' },
             },
             {
               name: 'branding',
@@ -75,6 +80,10 @@ export default {
             {
               name: 'configuration',
               to: { name: 'settings.configuration' },
+            },
+            {
+              name: 'audits',
+              to: { name: 'settings.audits' },
             },
           ],
         },
@@ -88,9 +97,23 @@ export default {
   },
 
   methods: {
+    /**
+     * Log the user out.
+     */
     onLogout() {
       this.$store.dispatch('logout');
     },
+
+    /**
+     * Load the settings from the API.
+     */
+    loadSettings() {
+      this.$store.dispatch('loadSettings');
+    },
+  },
+
+  created() {
+    this.loadSettings();
   },
 };
 </script>

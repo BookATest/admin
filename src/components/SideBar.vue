@@ -10,24 +10,15 @@
               <li
                 v-for="(item, index) in menu"
                 :key="`side-bar-top-level-${index}`"
-                :class="{
-                  'submenu': item.items !== undefined,
-                  'submenu--active': item.active,
-                  'submenu--isactive': item.items === undefined && expanded,
-                }"
+                :class="{ 'submenu': item.items !== undefined }"
               >
                 <!-- For items with no submenu -->
-                <router-link v-if="item.to !== undefined" :to="item.to">
+                <router-link :to="item.to">
                   <i class="icon" :class="item.icon"></i><span>{{ item.name }}</span>
                 </router-link>
 
                 <!-- For items with a submenu -->
-                <template v-else-if="item.items !== undefined">
-                  <a @click.prevent="toggleSubMenu(item)" href="#">
-                    <i class="icon" :class="item.icon"></i><span>{{ item.name }}</span>
-                  </a>
-
-                  <!-- Second level item -->
+                <template v-if="item.items !== undefined">
                   <ul>
                     <li
                       v-for="(item, index) in item.items"
@@ -68,26 +59,6 @@ export default {
     menu: {
       required: true,
       type: Array,
-    },
-  },
-
-  computed: {
-    expanded() {
-      let expanded = false;
-
-      this.menu.forEach((item) => {
-        if (item.active) {
-          expanded = true;
-        }
-      });
-
-      return expanded;
-    },
-  },
-
-  methods: {
-    toggleSubMenu(item) {
-      item.active = !item.active;
     },
   },
 };
