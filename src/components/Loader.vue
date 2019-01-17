@@ -1,5 +1,5 @@
 <template>
-  <bat-body class="body">
+  <bat-body flush>
     Loading<span v-for="(dot, index) in dots" :key="index">.</span>
   </bat-body>
 </template>
