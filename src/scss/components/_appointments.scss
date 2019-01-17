@@ -441,8 +441,8 @@
               text-align: center;
 
               button {
-                &:nth-child(1) {
-                  margin: 0 0 24px;
+                &:not(:nth-child(1)) {
+                  margin-top: 24px;
                 }
               }
             }
@@ -489,8 +489,8 @@
               text-align: center;
 
               button {
-                &:nth-child(1) {
-                  margin: 0 0 24px;
+                &:not(:nth-child(1)) {
+                  margin-top: 24px;
                 }
               }
             }

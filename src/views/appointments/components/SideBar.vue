@@ -67,9 +67,9 @@
                 </span>
               </div>
 
-              <hr>
-
               <template v-if="!inPast">
+                <hr>
+
                 <div class="available--user">
                   <button
                     @click.prevent="onDelete"
@@ -81,6 +81,7 @@
                   </button>
 
                   <button
+                    v-if="repeating"
                     @click.prevent="onDeleteAll"
                     class="button button__primary button__primary--a"
                     :disabled="deleting"
@@ -118,9 +119,9 @@
                 </span>
               </div>
 
-              <hr>
-
               <template v-if="!inPast">
+                <hr>
+
                 <div class="available--user">
                   <button
                     @click.prevent="onCancel"
@@ -145,9 +146,9 @@
                 </div>
               </div>
 
-              <hr>
-
               <template v-if="!inPast">
+                <hr>
+
                 <div class="add-availability--user">
                   <button
                     @click.prevent="onCreate"
@@ -162,17 +163,21 @@
             </template>
 
             <!-- Warning -->
-            <div v-if="!editMode" class="available--warning">
-              <div class="card card--warning">
-                <div class="warning__icon">
-                  <i class="icon icon--warning"></i>
-                </div>
-                <div class="warning__content">
-                  <p v-if="booked">To cancel an appointment you need to go into manage my appointment</p>
-                  <p v-else>To manage an appointment you need to go into manage my appointment</p>
+            <template v-if="!editMode">
+              <hr>
+
+              <div class="available--warning">
+                <div class="card card--warning">
+                  <div class="warning__icon">
+                    <i class="icon icon--warning"></i>
+                  </div>
+                  <div class="warning__content">
+                    <p v-if="booked">To cancel an appointment you need to go into manage my appointment</p>
+                    <p v-else>To manage an appointment you need to go into manage my appointment</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </template>
 
           </form>
         </div>
