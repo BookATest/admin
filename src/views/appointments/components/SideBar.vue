@@ -75,11 +75,18 @@
                   class="button button__primary button__primary--a"
                   :disabled="deleting"
                 >
-                  <template v-if="!deleting">Delete</template>
+                  <template v-if="!deleting">Delete this</template>
                   <template v-else>Deleting...</template>
                 </button>
 
-                <!-- TODO: Delete repeating appointments -->
+                <button
+                  @click.prevent="onDeleteAll"
+                  class="button button__primary button__primary--a"
+                  :disabled="deleting"
+                >
+                  <template v-if="!deletingAll">Delete all</template>
+                  <template v-else>Deleting...</template>
+                </button>
               </div>
             </template>
 
@@ -200,6 +207,7 @@ export default {
     return {
       clinic: null,
       deleting: false,
+      deletingAll: false,
       cancelling: false,
       creating: false,
       newAppointment: {
@@ -266,6 +274,20 @@ export default {
       await this.$http.delete(`/appointments/${this.appointment.id}`);
       this.$emit('delete');
 
+      this.deleting = false;
+    },
+
+    /**
+     * Delete the appointment schedule.
+     */
+    async onDeleteAll() {
+      this.deletingAll = true;
+      this.deleting = true;
+
+      await this.$http.delete(`/appointments/${this.appointment.id}/schedule`);
+      this.$emit('delete');
+
+      this.deletingAll = false;
       this.deleting = false;
     },
 
