@@ -13,9 +13,13 @@
                 :class="{ 'submenu': item.items !== undefined }"
               >
                 <!-- For items with no submenu -->
-                <router-link :to="item.to">
+                <router-link v-if="item.to !== undefined" :to="item.to">
                   <i class="icon" :class="item.icon"></i><span>{{ item.name }}</span>
                 </router-link>
+
+                <a v-else @click="item.onClick" href="javascript:;">
+                  <i class="icon" :class="item.icon"></i><span>{{ item.name }}</span>
+                </a>
 
                 <!-- For items with a submenu -->
                 <template v-if="item.items !== undefined">

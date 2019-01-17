@@ -1,10 +1,12 @@
 <template>
   <div class="home">
-    <h2>Welcome {{ name }}</h2>
+    <bat-body>Dashboard</bat-body>
   </div>
 </template>
 
 <script>
+import BatBody from '@/components/Body.vue';
+
 export default {
   name: 'home',
 
@@ -12,10 +14,6 @@ export default {
     title: 'Home',
   },
 
-  computed: {
-    name() {
-      return `${this.$store.state.user.get().first_name} ${this.$store.state.user.get().last_name}`;
-    },
-  },
+  components: { BatBody },
 };
 </script>
