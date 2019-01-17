@@ -1,6 +1,7 @@
 <template>
   <bat-base-layout-main-container>
-    <bat-body>You have been logged out. Click below to login:</bat-body>
+    <bat-body>You have been logged out.</bat-body>
+    <bat-body>Click below to login through the authentication server:</bat-body>
 
     <form @submit.prevent="onSubmit">
       <bat-button type="submit" primary>
