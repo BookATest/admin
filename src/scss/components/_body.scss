@@ -1,3 +1,7 @@
 .body {
-  @include body();
+  @include body;
+}
+
+.title {
+  @include largeTitle;
 }

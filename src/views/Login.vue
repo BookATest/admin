@@ -1,14 +1,17 @@
 <template>
-  <div>
-    <h1>Login</h1>
-
+  <bat-base-layout-main-container>
     <form @submit.prevent="onSubmit">
-      <button type="submit">Login</button>
+      <bat-button type="submit" primary>
+        Login
+      </bat-button>
     </form>
-  </div>
+  </bat-base-layout-main-container>
 </template>
 
 <script>
+import BatBaseLayoutMainContainer from '@/components/BaseLayoutMainContainer.vue';
+import BatButton from '@/components/Button.vue';
+
 export default {
   name: 'LoginView',
 
@@ -17,6 +20,8 @@ export default {
       title: this.$route.meta.title,
     };
   },
+
+  components: { BatBaseLayoutMainContainer, BatButton },
 
   methods: {
     onSubmit() {

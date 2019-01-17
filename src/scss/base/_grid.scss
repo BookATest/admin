@@ -55,3 +55,10 @@ $base-layout-grid--1160-up: (
     }
   }
 }
+
+.base-layout--main-container {
+  margin: 0;
+  padding: 32px;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+}

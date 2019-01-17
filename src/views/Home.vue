@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div>
     <bat-body>Dashboard</bat-body>
   </div>
 </template>
