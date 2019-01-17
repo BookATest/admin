@@ -12,8 +12,10 @@
 export default {
   name: 'LoginView',
 
-  metaInfo: {
-    title: 'Login',
+  metaInfo() {
+    return {
+      title: this.$route.meta.title,
+    };
   },
 
   methods: {

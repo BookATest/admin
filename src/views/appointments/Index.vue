@@ -68,8 +68,10 @@ export default {
     BatBody, BatControls, BatSearch, BatSideBar, BatTable,
   },
 
-  metaInfo: {
-    title: 'Appointments',
+  metaInfo() {
+    return {
+      title: this.$route.meta.title,
+    };
   },
 
   data() {

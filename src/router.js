@@ -12,24 +12,36 @@ const router = new Router({
       path: '/logout',
       name: 'logout',
       component: () => import('./views/Logout.vue'),
+      meta: {
+        title: 'Logout',
+      },
     },
     {
       path: '/login',
       name: 'login',
       component: () => import('./views/Login.vue'),
-      meta: { auth: false },
+      meta: {
+        title: 'Login',
+        auth: false,
+      },
     },
     {
       path: '/',
       name: 'home',
       component: () => import('./views/Home.vue'),
-      meta: { auth: true },
+      meta: {
+        title: 'Dashboard',
+        auth: true,
+      },
     },
     {
       path: '/appointments',
       name: 'appointments.index',
       component: () => import('./views/appointments/Index.vue'),
-      meta: { auth: true },
+      meta: {
+        title: 'Appointments',
+        auth: true,
+      },
     },
   ],
 });

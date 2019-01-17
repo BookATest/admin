@@ -10,8 +10,10 @@ import BatBody from '@/components/Body.vue';
 export default {
   name: 'home',
 
-  metaInfo: {
-    title: 'Home',
+  metaInfo() {
+    return {
+      title: this.$route.meta.title,
+    };
   },
 
   components: { BatBody },
