@@ -1,23 +1,6 @@
 <template>
   <div class="search">
 
-    <!-- Search -->
-    <form class="form">
-      <div class="form__search">
-        <label for="search">Search</label>
-        <div>
-          <input
-            :value="search"
-            @input="$emit('update:search', $event.target.value)"
-            type="text"
-            id="search"
-            name="search"
-          >
-          <button type="submit"><i class="icon icon--arrowright"></i></button>
-        </div>
-      </div>
-    </form>
-
     <form class="form">
 
       <!-- Location -->
@@ -62,11 +45,6 @@ export default {
   name: 'Search',
 
   props: {
-    search: {
-      required: true,
-      type: String,
-    },
-
     clinicId: {
       required: true,
       type: String,

@@ -10,7 +10,6 @@
 
           <!-- Calendar - Search -->
           <bat-search
-            :search.sync="search"
             :clinic-id.sync="clinicId"
             :user-id.sync="userId"
             :edit-mode="editMode"
@@ -77,7 +76,6 @@ export default {
   data() {
     return {
       editMode: false,
-      search: '',
       clinicId: '',
       userId: '',
       date: this.$moment().startOf('isoWeek').format('YYYY-MM-DD'),
