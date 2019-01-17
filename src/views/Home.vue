@@ -1,21 +1,21 @@
 <template>
-  <div class="home">
-    <h2>Welcome {{ name }}</h2>
+  <div>
+    <bat-body>Dashboard</bat-body>
   </div>
 </template>
 
 <script>
+import BatBody from '@/components/Body.vue';
+
 export default {
   name: 'home',
 
-  metaInfo: {
-    title: 'Home',
+  metaInfo() {
+    return {
+      title: this.$route.meta.title,
+    };
   },
 
-  computed: {
-    name() {
-      return `${this.$store.state.user.get().first_name} ${this.$store.state.user.get().last_name}`;
-    },
-  },
+  components: { BatBody },
 };
 </script>

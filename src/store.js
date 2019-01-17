@@ -11,6 +11,7 @@ export default new Vuex.Store({
     isAuthenticated: auth.isAuthenticated(),
     user: new User(),
     settings: null,
+    title: '',
   },
 
   mutations: {
@@ -43,6 +44,15 @@ export default new Vuex.Store({
      */
     settings(state, payload) {
       state.settings = payload;
+    },
+
+    /**
+     * Update the page title.
+     * @param {object} state
+     * @param {string} title
+     */
+    title(state, title) {
+      state.title = title;
     },
   },
 

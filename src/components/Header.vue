@@ -12,7 +12,7 @@
           <div class="main">
             <div class="main__title">
               <h1>{{ $store.state.settings.name }}</h1>
-              <h2>Appointments</h2>
+              <h2>{{ $store.state.title }}</h2>
             </div>
             <div v-if="$store.state.isAuthenticated" class="main__logout">
               <button class="button button__logout" @click="onLogout">

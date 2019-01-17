@@ -1,20 +1,30 @@
 <template>
-  <div>
-    <h1>Login</h1>
+  <bat-base-layout-main-container>
+    <bat-body>Click below to login through the authentication server:</bat-body>
 
     <form @submit.prevent="onSubmit">
-      <button type="submit">Login</button>
+      <bat-button type="submit" primary>
+        Login
+      </bat-button>
     </form>
-  </div>
+  </bat-base-layout-main-container>
 </template>
 
 <script>
+import BatBaseLayoutMainContainer from '@/components/BaseLayoutMainContainer.vue';
+import BatButton from '@/components/Button.vue';
+import BatBody from '@/components/Body.vue';
+
 export default {
   name: 'LoginView',
 
-  metaInfo: {
-    title: 'Login',
+  metaInfo() {
+    return {
+      title: this.$route.meta.title,
+    };
   },
+
+  components: { BatBaseLayoutMainContainer, BatButton, BatBody },
 
   methods: {
     onSubmit() {

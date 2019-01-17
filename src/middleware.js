@@ -2,6 +2,10 @@ import store from './store';
 
 export default function (router) {
   router.beforeEach((to, from, next) => {
+    // Update the page title.
+    const { meta: { title } } = to;
+    store.commit('title', title);
+
     // If route specifies authentication.
     if (to.matched.some(route => Object.prototype.hasOwnProperty.call(route.meta, 'auth'))) {
       // Get the auth requirement from the route.

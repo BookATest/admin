@@ -6,7 +6,7 @@
     <template v-else>
       <bat-header/>
 
-      <bat-side-bar v-if="$store.state.isAuthenticated" :menu="menu"/>
+      <bat-side-bar :menu="menu"/>
 
       <div class="base-layout__main">
         <router-view/>
@@ -35,65 +35,91 @@ export default {
 
   components: { BatLoader, BatHeader, BatSideBar },
 
-  data() {
-    return {
-      menu: [
+  computed: {
+    /**
+     * The sidebar menu items.
+     */
+    menu() {
+      if (this.$store.state.isAuthenticated) {
+        return [
+          {
+            name: 'dashboard',
+            icon: 'icon--power',
+            to: { name: 'home' },
+          },
+          {
+            name: 'appointments',
+            icon: 'icon--appointments',
+            to: { name: 'appointments.index' },
+          },
+          {
+            name: 'reporting',
+            icon: 'icon--reports',
+            to: { name: 'reports.index' },
+          },
+          {
+            name: 'settings',
+            icon: 'icon--settings',
+            to: { name: 'settings.index' },
+            items: [
+              {
+                name: 'my profile',
+                to: { name: 'settings.my-profile' },
+              },
+              {
+                name: 'calendar',
+                to: { name: 'settings.calendar' },
+              },
+              {
+                name: 'notifications',
+                to: { name: 'settings.notifications' },
+              },
+              {
+                name: 'users',
+                to: { name: 'settings.users' },
+              },
+              {
+                name: 'locations',
+                to: { name: 'settings.locations' },
+              },
+              {
+                name: 'branding',
+                to: { name: 'settings.branding' },
+              },
+              {
+                name: 'configuration',
+                to: { name: 'settings.configuration' },
+              },
+              {
+                name: 'audits',
+                to: { name: 'settings.audits' },
+              },
+            ],
+          },
+          {
+            name: 'service users',
+            icon: 'icon--users',
+            to: { name: 'service-users.index' },
+          },
+          {
+            name: 'logout',
+            icon: 'icon--cross',
+            onClick: () => {
+              this.$store.dispatch('logout');
+            },
+          },
+        ];
+      }
+
+      // If not authenticated.
+      return [
         {
-          name: 'appointments',
-          icon: 'icon--appointments',
-          to: { name: 'appointments.index' },
-        },
-        {
-          name: 'reporting',
-          icon: 'icon--reports',
-          to: { name: 'reports.index' },
-        },
-        {
-          name: 'settings',
-          icon: 'icon--settings',
-          to: { name: 'settings.index' },
-          items: [
-            {
-              name: 'my profile',
-              to: { name: 'settings.my-profile' },
-            },
-            {
-              name: 'calendar',
-              to: { name: 'settings.calendar' },
-            },
-            {
-              name: 'notifications',
-              to: { name: 'settings.notifications' },
-            },
-            {
-              name: 'users',
-              to: { name: 'settings.users' },
-            },
-            {
-              name: 'locations',
-              to: { name: 'settings.locations' },
-            },
-            {
-              name: 'branding',
-              to: { name: 'settings.branding' },
-            },
-            {
-              name: 'configuration',
-              to: { name: 'settings.configuration' },
-            },
-            {
-              name: 'audits',
-              to: { name: 'settings.audits' },
-            },
-          ],
-        },
-        {
-          name: 'service users',
+          name: 'login',
           icon: 'icon--users',
-          to: { name: 'service-users.index' },
+          to: { name: 'login' },
         },
-      ],
-    };
+      ];
+    },
   },
 
   methods: {
