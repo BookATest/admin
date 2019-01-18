@@ -51,7 +51,7 @@ export default class Errors {
   get(fields) {
     const fieldNames = Array.isArray(fields) ? fields : [fields];
 
-    for (let i = 0; i < fieldNames.count; i += 1) {
+    for (let i = 0; i < fieldNames.length; i += 1) {
       const field = fieldNames[i].replace(/\./g, '_');
       if (this.errors[field]) {
         return this.errors[field][0];

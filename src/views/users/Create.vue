@@ -17,35 +17,51 @@
             <div class="form__text">
               <label for="first_name"><span>First name</span></label>
               <div>
-                  <input v-model="userForm.first_name" type="text" id="first_name" name="first_name">
+                  <input v-model="userForm.first_name" type="text" id="first_name" name="first_name" @input="userForm.$errors.clear('first_name')">
+                  <bat-body v-if="userForm.$errors.has('first_name')">
+                    {{ userForm.$errors.get('first_name') }}
+                  </bat-body>
               </div>
+
             </div>
 
             <div class="form__text">
               <label for="last_name"><span>Last name</span></label>
               <div>
-                  <input v-model="userForm.last_name" type="text" id="last_name" name="last_name">
+                  <input v-model="userForm.last_name" type="text" id="last_name" name="last_name" @input="userForm.$errors.clear('last_name')">
+                  <bat-body v-if="userForm.$errors.has('last_name')">
+                    {{ userForm.$errors.get('last_name') }}
+                  </bat-body>
               </div>
             </div>
 
             <div class="form__text">
               <label for="email"><span>Email</span></label>
               <div>
-                  <input v-model="userForm.email" type="email" id="email" name="email">
+                  <input v-model="userForm.email" type="email" id="email" name="email" @input="userForm.$errors.clear('email')">
+                  <bat-body v-if="userForm.$errors.has('email')">
+                    {{ userForm.$errors.get('email') }}
+                  </bat-body>
               </div>
             </div>
 
             <div class="form__text">
               <label for="phone"><span>Phone</span></label>
               <div>
-                  <input v-model="userForm.phone" type="tel" id="phone" name="phone">
+                  <input v-model="userForm.phone" type="tel" id="phone" name="phone" @input="userForm.$errors.clear('phone')">
+                  <bat-body v-if="userForm.$errors.has('phone')">
+                    {{ userForm.$errors.get('phone') }}
+                  </bat-body>
               </div>
             </div>
 
             <div class="form__text">
               <label for="password"><span>Password</span></label>
               <div>
-                  <input v-model="userForm.password" type="password" id="password" name="password">
+                  <input v-model="userForm.password" type="password" id="password" name="password" @input="userForm.$errors.clear('password')">
+                  <bat-body v-if="userForm.$errors.has('password')">
+                    {{ userForm.$errors.get('password') }}
+                  </bat-body>
               </div>
             </div>
 
@@ -92,6 +108,7 @@
 <script>
 import Form from '@/classes/Form';
 import BatButton from '@/components/Button.vue';
+import BatBody from '@/components/Body.vue';
 
 export default {
   name: 'UsersCreateView',
@@ -102,7 +119,7 @@ export default {
     };
   },
 
-  components: { BatButton },
+  components: { BatButton, BatBody },
 
   data() {
     return {
@@ -126,7 +143,12 @@ export default {
   methods: {
     async onSubmit() {
       try {
-        const { data: { data: { id } } } = await this.userForm.post('/users');
+        const { data: { data: { id } } } = await this.userForm.post('/users', (data) => {
+          // Remove the profile picture from the request if null.
+          if (data.profile_picture === null) {
+            delete data.profile_picture;
+          }
+        });
         this.$router.push({ name: 'users.show', params: { user: id } });
       } catch (exception) {
         // Supress error from console.

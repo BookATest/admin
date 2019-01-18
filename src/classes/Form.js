@@ -83,11 +83,11 @@ export default class Form {
    */
   submit(requestType, url, callback = null) {
     this.$submitting = true;
-    const config = JSON.parse(JSON.stringify(this.parseConfig()));
     let data = JSON.parse(JSON.stringify(this.data()));
+    const config = JSON.parse(JSON.stringify(this.parseConfig()));
 
     if (callback !== null) {
-      callback(config, data);
+      callback(data, config);
     }
 
     if (this.hasFiles()) {
