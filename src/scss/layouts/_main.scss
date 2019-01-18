@@ -1,7 +1,8 @@
 /* Main */
 .base-layout__main {
   @include grid-container;
-  min-height: calc(100vh - #{$headerHeight});
+  overflow-y: scroll;
+  height: calc(100vh - #{$headerHeight});
 
 
   .help {

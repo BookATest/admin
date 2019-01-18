@@ -22,21 +22,26 @@
 
         <bat-loader v-if="loadingUsers"/>
         <template v-else>
-          <button
+          <router-link
+            tag="button"
             v-for="user in users"
             :key="user.id"
+            :to="{ name: 'users.show', params: { user: user.id } }"
             class="button button--user button--user--edit"
-            onclick="location.href='../settings/user--edit.html'"
           >
             <img :src="apiUrl(`/users/${user.id}/profile-picture.jpg`)">
             <span class="name">{{ user.first_name }} {{ user.last_name }}</span>
             <span class="role">{{ highestUserRole(user) }}</span>
             <span class="edit">Edit <i class="icon icon--edit"></i></span>
-          </button>
+          </router-link>
 
-          <button class="button button--user button--user--add" onclick="location.href='../settings/user--edit.html'">
+          <router-link
+            tag="button"
+            :to="{ name: 'users.create' }"
+            class="button button--user button--user--add"
+          >
             <span class="add">Add <i class="icon icon--pluscircle"></i></span>
-          </button>
+          </router-link>
 
           <div class="users__pagination">
             <bat-body>Showing page {{ currentPage }} of {{ totalPages }}</bat-body>
