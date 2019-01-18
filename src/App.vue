@@ -68,31 +68,31 @@ export default {
               },
               {
                 name: 'calendar',
-                to: { name: 'settings.calendar' },
+                to: { name: 'calendar.index' },
               },
               {
                 name: 'notifications',
-                to: { name: 'settings.notifications' },
+                to: { name: 'notifications.index' },
               },
               {
                 name: 'users',
-                to: { name: 'settings.users' },
+                to: { name: 'users.index' },
               },
               {
                 name: 'locations',
-                to: { name: 'settings.locations' },
+                to: { name: 'locations.index' },
               },
               {
                 name: 'branding',
-                to: { name: 'settings.branding' },
+                to: { name: 'branding.index' },
               },
               {
                 name: 'configuration',
-                to: { name: 'settings.configuration' },
+                to: { name: 'configuration.index' },
               },
               {
                 name: 'audits',
-                to: { name: 'settings.audits' },
+                to: { name: 'audits.index' },
               },
             ],
           },

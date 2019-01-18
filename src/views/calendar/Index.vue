@@ -51,7 +51,7 @@
 
 <script>
 export default {
-  name: 'CalendarView',
+  name: 'CalendarIndexView',
 
   computed: {
     /**

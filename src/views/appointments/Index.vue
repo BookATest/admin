@@ -61,7 +61,7 @@ import BatSideBar from '@/views/appointments/components/SideBar.vue';
 import BatTable from '@/views/appointments/components/Table.vue';
 
 export default {
-  name: 'AppointmentsIndex',
+  name: 'AppointmentsIndexView',
 
   components: {
     BatBody, BatControls, BatSearch, BatSideBar, BatTable,
