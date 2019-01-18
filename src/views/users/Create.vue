@@ -12,7 +12,7 @@
 
       <div class="edit-user__details">
         <div>
-          <form class="form form--edit-user">
+          <form @submit.prevent="onSubmit" class="form form--edit-user">
 
             <div class="form__text">
               <label for="first_name"><span>First name</span></label>
@@ -49,36 +49,39 @@
               </div>
             </div>
 
+            <div class="edit-user__notification">
+              <h2>Display your email to service users?</h2>
+              <label class="button button__radio"><input v-model="userForm.display_email" name="display_email" type="radio" :value="true"><span>Yes<span></span></span></label>
+              <label class="button button__radio"><input v-model="userForm.display_email" name="display_email" type="radio" :value="false"><span>No</span></label>
+            </div>
+
+            <div class="edit-user__notification">
+              <h2>Display your phone to service users?</h2>
+              <label class="button button__radio"><input v-model="userForm.display_phone" name="display_phone" type="radio" :value="true"><span>Yes<span></span></span></label>
+              <label class="button button__radio"><input v-model="userForm.display_phone" name="display_phone" type="radio" :value="false"><span>No</span></label>
+            </div>
+
+            <div class="edit-user__notification">
+              <h2>Received cancellation confirmations?</h2>
+              <label class="button button__radio"><input v-model="userForm.receive_booking_confirmations" name="receive_booking_confirmations" type="radio" :value="true"><span>Yes<span></span></span></label>
+              <label class="button button__radio"><input v-model="userForm.receive_booking_confirmations" name="receive_booking_confirmations" type="radio" :value="false"><span>No</span></label>
+            </div>
+
+            <div class="edit-user__notification">
+              <h2>Received cancellation confirmations?</h2>
+              <label class="button button__radio"><input v-model="userForm.receive_cancellation_confirmations" name="receive_cancellation_confirmations" type="radio" :value="true"><span>Yes<span></span></span></label>
+              <label class="button button__radio"><input v-model="userForm.receive_cancellation_confirmations" name="receive_cancellation_confirmations" type="radio" :value="false"><span>No</span></label>
+            </div>
+
+            <div class="edit-user__action">
+              <bat-button type="submit" primary :disabled="userForm.$submitting">
+                <span v-if="!userForm.$submitting">Save</span>
+                <span v-else>Saving...</span>
+              </bat-button>
+            </div>
+
           </form>
         </div>
-      </div>
-
-      <div class="edit-user__notification">
-        <h2>Display your email to service users?</h2>
-        <label class="button button__radio"><input v-model="userForm.display_email" name="display_email" type="radio" :value="true"><span>Yes<span></span></span></label>
-        <label class="button button__radio"><input v-model="userForm.display_email" name="display_email" type="radio" :value="false"><span>No</span></label>
-      </div>
-
-      <div class="edit-user__notification">
-        <h2>Display your phone to service users?</h2>
-        <label class="button button__radio"><input v-model="userForm.display_phone" name="display_phone" type="radio" :value="true"><span>Yes<span></span></span></label>
-        <label class="button button__radio"><input v-model="userForm.display_phone" name="display_phone" type="radio" :value="false"><span>No</span></label>
-      </div>
-
-      <div class="edit-user__notification">
-        <h2>Received cancellation confirmations?</h2>
-        <label class="button button__radio"><input v-model="userForm.receive_booking_confirmations" name="receive_booking_confirmations" type="radio" :value="true"><span>Yes<span></span></span></label>
-        <label class="button button__radio"><input v-model="userForm.receive_booking_confirmations" name="receive_booking_confirmations" type="radio" :value="false"><span>No</span></label>
-      </div>
-
-      <div class="edit-user__notification">
-        <h2>Received cancellation confirmations?</h2>
-        <label class="button button__radio"><input v-model="userForm.receive_cancellation_confirmations" name="receive_cancellation_confirmations" type="radio" :value="true"><span>Yes<span></span></span></label>
-        <label class="button button__radio"><input v-model="userForm.receive_cancellation_confirmations" name="receive_cancellation_confirmations" type="radio" :value="false"><span>No</span></label>
-      </div>
-
-      <div class="edit-user__action">
-        <button class="button button__primary button__primary--b"><span>Save</span></button>
       </div>
 
     </div>
@@ -88,6 +91,7 @@
 
 <script>
 import Form from '@/classes/Form';
+import BatButton from '@/components/Button.vue';
 
 export default {
   name: 'UsersCreateView',
@@ -97,6 +101,8 @@ export default {
       title: this.$route.meta.title,
     };
   },
+
+  components: { BatButton },
 
   data() {
     return {
@@ -115,6 +121,13 @@ export default {
         profile_picture: null,
       }),
     };
+  },
+
+  methods: {
+    async onSubmit() {
+      const { data: { data: { id } } } = await this.userForm.post('/users');
+      this.$router.push({ name: 'users.show', params: { user: id } });
+    },
   },
 };
 </script>
