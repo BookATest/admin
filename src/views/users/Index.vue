@@ -33,6 +33,34 @@
             <span class="role">{{ highestUserRole(user) }}</span>
             <span class="edit">Edit <i class="icon icon--edit"></i></span>
           </button>
+
+          <button class="button button--user button--user--add" onclick="location.href='../settings/user--edit.html'">
+            <span class="add">Add <i class="icon icon--pluscircle"></i></span>
+          </button>
+
+          <div class="users__pagination">
+            <bat-body>Showing page {{ currentPage }} of {{ totalPages }}</bat-body>
+
+            <div>
+              <bat-button
+                v-if="currentPage > 1"
+                @click="onPrevious"
+                primary
+                type="button"
+              >
+                Previous
+              </bat-button>
+              <!---->&nbsp;<!---->
+              <bat-button
+                v-if="currentPage < totalPages"
+                @click="onNext"
+                primary
+                type="button"
+              >
+                Next
+              </bat-button>
+            </div>
+          </div>
         </template>
 
       </div>
@@ -44,11 +72,13 @@
 
 <script>
 import BatLoader from '@/components/Loader.vue';
+import BatButton from '@/components/Button.vue';
+import BatBody from '@/components/Body.vue';
 
 export default {
   name: 'UsersIndexView',
 
-  components: { BatLoader },
+  components: { BatLoader, BatButton, BatBody },
 
   data() {
     return {
@@ -56,7 +86,7 @@ export default {
       clinics: [],
       loadingUsers: false,
       users: [],
-      usersPage: 1,
+      currentPage: 1,
       totalPages: 1,
     };
   },
@@ -74,7 +104,7 @@ export default {
     // Fetch the users.
     async fetchUsers() {
       this.loadingUsers = true;
-      const { data } = await this.$http.get('/users', { params: { page: this.page } });
+      const { data } = await this.$http.get('/users', { params: { page: this.currentPage } });
       this.users = data.data;
       this.totalPages = data.meta.last_page;
       this.loadingUsers = false;
@@ -102,6 +132,22 @@ export default {
       }
 
       return 'Backend user';
+    },
+
+    /**
+     * Pagination.
+     */
+    onPrevious() {
+      this.currentPage -= 1;
+      this.fetchUsers();
+    },
+
+    /**
+     * Pagination.
+     */
+    onNext() {
+      this.currentPage += 1;
+      this.fetchUsers();
     },
   },
 
