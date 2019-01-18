@@ -8,7 +8,7 @@
 import BatBody from '@/components/Body.vue';
 
 export default {
-  name: 'home',
+  name: 'HomeView',
 
   metaInfo() {
     return {

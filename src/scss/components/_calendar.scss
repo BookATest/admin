@@ -1,6 +1,6 @@
 .settings-calendar {
   background-color: $wildSand;
-  
+
   h2 {
     @include innerPageTitle();
     margin: 0 0 24px;
@@ -13,9 +13,19 @@
     line-height: 15px;
     margin: 0 0 40px;
     padding: 0;
+    display: flex;
+    align-items: center;
   }
 
   .button__inline {
     margin-left: 32px;
+    display: flex;
+  }
+
+  &__feed-url {
+    width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

@@ -43,6 +43,15 @@ const router = new Router({
         auth: true,
       },
     },
+    {
+      path: '/settings/calendar',
+      name: 'settings.calendar',
+      component: () => import('./views/settings/Calendar.vue'),
+      meta: {
+        title: 'Calendar',
+        auth: true,
+      },
+    },
   ],
 });
 
