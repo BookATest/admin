@@ -91,8 +91,8 @@
 
             <div class="edit-user__action">
               <bat-button type="submit" primary :disabled="userForm.$submitting">
-                <span v-if="!userForm.$submitting">Save</span>
-                <span v-else>Saving...</span>
+                <span v-if="!userForm.$submitting">Create</span>
+                <span v-else>Creating...</span>
               </bat-button>
             </div>
 
