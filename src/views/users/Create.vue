@@ -14,56 +14,43 @@
         <div>
           <form @submit.prevent="onSubmit" class="form form--edit-user">
 
-            <div class="form__text">
-              <label for="first_name"><span>First name</span></label>
-              <div>
-                  <input v-model="userForm.first_name" type="text" id="first_name" name="first_name" @input="userForm.$errors.clear('first_name')">
-                  <bat-body v-if="userForm.$errors.has('first_name')">
-                    {{ userForm.$errors.get('first_name') }}
-                  </bat-body>
-              </div>
+            <bat-input
+              label="First name"
+              v-model="userForm.first_name"
+              @input="userForm.$errors.clear('first_name')"
+              :error="userForm.$errors.get('first_name')"
+            />
 
-            </div>
+            <bat-input
+              label="Last name"
+              v-model="userForm.last_name"
+              @input="userForm.$errors.clear('last_name')"
+              :error="userForm.$errors.get('last_name')"
+            />
 
-            <div class="form__text">
-              <label for="last_name"><span>Last name</span></label>
-              <div>
-                  <input v-model="userForm.last_name" type="text" id="last_name" name="last_name" @input="userForm.$errors.clear('last_name')">
-                  <bat-body v-if="userForm.$errors.has('last_name')">
-                    {{ userForm.$errors.get('last_name') }}
-                  </bat-body>
-              </div>
-            </div>
+            <bat-input
+              label="Email"
+              v-model="userForm.email"
+              @input="userForm.$errors.clear('email')"
+              :error="userForm.$errors.get('email')"
+              type="email"
+            />
 
-            <div class="form__text">
-              <label for="email"><span>Email</span></label>
-              <div>
-                  <input v-model="userForm.email" type="email" id="email" name="email" @input="userForm.$errors.clear('email')">
-                  <bat-body v-if="userForm.$errors.has('email')">
-                    {{ userForm.$errors.get('email') }}
-                  </bat-body>
-              </div>
-            </div>
+            <bat-input
+              label="Phone"
+              v-model="userForm.phone"
+              @input="userForm.$errors.clear('phone')"
+              :error="userForm.$errors.get('phone')"
+              type="tel"
+            />
 
-            <div class="form__text">
-              <label for="phone"><span>Phone</span></label>
-              <div>
-                  <input v-model="userForm.phone" type="tel" id="phone" name="phone" @input="userForm.$errors.clear('phone')">
-                  <bat-body v-if="userForm.$errors.has('phone')">
-                    {{ userForm.$errors.get('phone') }}
-                  </bat-body>
-              </div>
-            </div>
-
-            <div class="form__text">
-              <label for="password"><span>Password</span></label>
-              <div>
-                  <input v-model="userForm.password" type="password" id="password" name="password" @input="userForm.$errors.clear('password')">
-                  <bat-body v-if="userForm.$errors.has('password')">
-                    {{ userForm.$errors.get('password') }}
-                  </bat-body>
-              </div>
-            </div>
+            <bat-input
+              label="Password"
+              v-model="userForm.password"
+              @input="userForm.$errors.clear('password')"
+              :error="userForm.$errors.get('password')"
+              type="password"
+            />
 
             <div class="edit-user__notification">
               <h2>Display your email to service users?</h2>
@@ -108,7 +95,7 @@
 <script>
 import Form from '@/classes/Form';
 import BatButton from '@/components/Button.vue';
-import BatBody from '@/components/Body.vue';
+import BatInput from '@/views/users/components/Input.vue';
 
 export default {
   name: 'UsersCreateView',
@@ -119,7 +106,7 @@ export default {
     };
   },
 
-  components: { BatButton, BatBody },
+  components: { BatButton, BatInput },
 
   data() {
     return {
