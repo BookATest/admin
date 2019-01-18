@@ -61,6 +61,15 @@ const router = new Router({
         auth: true,
       },
     },
+    {
+      path: '/settings/users/create',
+      name: 'users.create',
+      component: () => import('./views/users/Create.vue'),
+      meta: {
+        title: 'Create User',
+        auth: true,
+      },
+    },
   ],
 });
 

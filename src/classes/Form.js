@@ -1,20 +1,20 @@
-import Errors from './Erorrs';
+import Vue from 'vue';
+import Errors from './Errors';
 
 export default class Form {
   /**
    * Create a new Form instance.
    *
-   * @param {object} http
    * @param {object} data
    * @param {object} config
    */
-  constructor(http, data, config = {}) {
-    this.$http = http;
+  constructor(data, config = {}) {
     this.$originalData = data;
 
-    Object.entries(data).forEach(([field]) => {
+    for (let i = 0; i < Object.keys(data).length; i += 1) {
+      const field = Object.keys(data)[i];
       this[field] = data[field];
-    });
+    }
 
     this.$errors = new Errors();
     this.$submitting = false;
@@ -27,9 +27,10 @@ export default class Form {
   data() {
     const data = {};
 
-    Object.entries(this.$originalData).forEach(([property]) => {
+    for (let i = 0; i < Object.keys(this.$originalData).length; i += 1) {
+      const property = Object.keys(this.$originalData)[i];
       data[property] = this[property];
-    });
+    }
 
     return data;
   }
@@ -82,8 +83,8 @@ export default class Form {
    */
   submit(requestType, url, callback = null) {
     this.$submitting = true;
-    const config = { ...this.parseConfig() };
-    let data = { ...this.data() };
+    const config = JSON.parse(JSON.stringify(this.parseConfig()));
+    let data = JSON.parse(JSON.stringify(this.data()));
 
     if (callback !== null) {
       callback(config, data);
@@ -94,14 +95,17 @@ export default class Form {
     }
 
     return new Promise((resolve, reject) => {
-      this.$http[requestType](url, data, config)
+      Vue.axios[requestType](url, data, config)
         .then((response) => {
           resolve(response.data);
         })
         .catch((error) => {
-          this.onFail(error.response.data);
+          if (!error.response || error.response.status !== 422) {
+            return reject(error);
+          }
 
-          reject(error.response.data);
+          this.onFail(error.response.data);
+          return reject(error.response.data);
         })
         .then(() => {
           this.$submitting = false;
@@ -159,7 +163,9 @@ export default class Form {
     const fd = form || new FormData();
     let formKey;
 
-    Object.entries(obj).forEach(([property]) => {
+    for (let i = 0; i < Object.keys(obj).length; i += 1) {
+      const property = Object.keys(obj)[i];
+
       if (Object.prototype.hasOwnProperty.call(obj, property) && obj[property]) {
         if (namespace) {
           formKey = `${namespace}[${property}]`;
@@ -180,7 +186,7 @@ export default class Form {
           fd.append(formKey, obj[property]);
         }
       }
-    });
+    }
 
     return fd;
   }
