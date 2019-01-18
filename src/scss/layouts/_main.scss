@@ -4,6 +4,12 @@
   overflow-y: scroll;
   height: calc(100vh - #{$headerHeight});
 
+  > .main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
 
   .help {
     @include grid-column(12, $base-layout-grid);
@@ -70,7 +76,7 @@
     margin: 0;
     padding: 16px;
     width: calc(100% - 32px);
-    height: calc(100vh - 32px);
+    height: 100%;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
   }
@@ -79,7 +85,7 @@
     margin: 0;
     padding: 32px;
     width: calc(100% - 64px);
-    height: calc(100vh - 64px);
+    height: 100%;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
 
@@ -107,7 +113,7 @@
     margin: 0;
     padding: 32px;
     width: calc(100% - 64px);
-    height: calc(100vh - 64px);
+    height: 100%;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
 
@@ -135,7 +141,7 @@
     margin: 0;
     padding: 32px;
     width: calc(100% - 64px);
-    height: calc(100vh - 64px);
+    height: 100%;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
   }
@@ -144,7 +150,7 @@
     margin: 0;
     padding: 32px;
     width: calc(100% - 64px);
-    height: calc(100vh - 64px);
+    height: 100%;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
 
@@ -172,7 +178,7 @@
     margin: 0;
     padding: 32px;
     width: calc(100% - 64px);
-    height: calc(100vh - 64px);
+    height: 100%;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
 
@@ -211,7 +217,7 @@
     margin: 0;
     padding: 32px;
     width: calc(100% - 64px);
-    height: calc(100vh - 64px);
+    height: 100%;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
 
@@ -239,7 +245,7 @@
     margin: 0;
     padding: 32px;
     width: calc(100% - 64px);
-    height: calc(100vh - 64px);
+    height: 100%;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
 
@@ -263,7 +269,7 @@
     margin: 0;
     padding: 32px;
     width: calc(100% - 64px);
-    height: calc(100vh - 64px);
+    height: 100%;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
 
@@ -298,7 +304,7 @@
     margin: 0;
     padding: 32px;
     width: calc(100% - 64px);
-    height: calc(100vh - 64px);
+    height: 100%;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
 
@@ -347,7 +353,7 @@
     margin: 0;
     padding: 32px;
     width: calc(100% - 64px);
-    height: calc(100vh - 64px);
+    height: 100%;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
 
@@ -360,7 +366,7 @@
     margin: 0;
     padding: 32px;
     width: calc(100% - 64px);
-    height: calc(100vh - 64px);
+    height: 100%;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
 
@@ -388,7 +394,7 @@
     margin: 0;
     padding: 32px;
     width: calc(100% - 64px);
-    height: calc(100vh - 64px);
+    height: 100%;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
 
