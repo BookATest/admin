@@ -12,12 +12,16 @@
 
       <div class="users__search">
 
-        <div class="form__search">
-          <label for="search">Search</label>
+        <div class="form__drop-down">
+          <label for="dropdown"><span>Location</span></label>
           <div>
-            <input type="text" id="search" name="search">
-            <button><i class="icon icon--arrowright"></i></button>
+            <select v-model="clinicId">
+              <option value="">All clinics</option>
+              <option v-for="clinic in clinics" :key="clinic.id" :value="clinic.id">{{ clinic.name }}</option>
+            </select>
           </div>
+          <br>
+          &nbsp;
         </div>
 
         <bat-loader v-if="loadingUsers"/>
@@ -93,7 +97,16 @@ export default {
       users: [],
       currentPage: 1,
       totalPages: 1,
+      clinicId: '',
     };
+  },
+
+  watch: {
+    clinicId() {
+      this.currentPage = 1;
+      this.totalPages = 1;
+      this.fetchUsers();
+    },
   },
 
   methods: {
@@ -102,16 +115,28 @@ export default {
      */
     async fetchClinics() {
       this.loadingClinics = true;
+
       this.clinics = await this.fetchAll('/clinics');
+
       this.loadingClinics = false;
     },
 
     // Fetch the users.
     async fetchUsers() {
       this.loadingUsers = true;
-      const { data } = await this.$http.get('/users', { params: { page: this.currentPage } });
+
+      const params = {
+        page: this.currentPage,
+      };
+
+      if (this.clinicId !== '') {
+        params['filter[clinic_id]'] = this.clinicId;
+      }
+
+      const { data } = await this.$http.get('/users', { params });
       this.users = data.data;
       this.totalPages = data.meta.last_page;
+
       this.loadingUsers = false;
     },
 
