@@ -87,6 +87,12 @@ import BatBody from '@/components/Body.vue';
 export default {
   name: 'UsersIndexView',
 
+  metaInfo() {
+    return {
+      title: this.$route.meta.title,
+    };
+  },
+
   components: { BatLoader, BatButton, BatBody },
 
   data() {

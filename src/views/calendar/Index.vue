@@ -53,6 +53,12 @@
 export default {
   name: 'CalendarIndexView',
 
+  metaInfo() {
+    return {
+      title: this.$route.meta.title,
+    };
+  },
+
   computed: {
     /**
      * Get the URL for the calendar feed with only the users appointments.
