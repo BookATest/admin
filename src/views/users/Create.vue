@@ -125,8 +125,12 @@ export default {
 
   methods: {
     async onSubmit() {
-      const { data: { data: { id } } } = await this.userForm.post('/users');
-      this.$router.push({ name: 'users.show', params: { user: id } });
+      try {
+        const { data: { data: { id } } } = await this.userForm.post('/users');
+        this.$router.push({ name: 'users.show', params: { user: id } });
+      } catch (exception) {
+        // Supress error from console.
+      }
     },
   },
 };
