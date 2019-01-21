@@ -76,6 +76,38 @@
               @input="userForm.$errors.clear('receive_cancellation_confirmations')"
             />
 
+            <div class="edit-user__notification" v-for="(role, index) in userForm.roles" :key="role._id">
+              <div class="form__drop-down">
+                <label for="dropdown"><span>Role</span></label>
+                <div>
+                  <select>
+                    <option value="">Select role...</option>
+                    <option v-for="role in roles" :key="role.value" :value="role.value">{{ role.text }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form__drop-down">
+                <label for="dropdown"><span>Location</span></label>
+                <div>
+                  <select>
+                    <option value="">Select clinic...</option>
+                    <option v-for="clinic in clinics" :key="clinic.id" :value="clinic.id">{{ clinic.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <bat-button @click="onRemoveRole(index)" type="button" primary>
+                <span>Remove permission</span>
+              </bat-button>
+            </div>
+
+            <div class="edit-user__notification">
+              <bat-button @click="onAddRole" type="button" primary>
+                <span>Add permission</span>
+              </bat-button>
+            </div>
+
             <div class="edit-user__action">
               <bat-button type="submit" primary :disabled="userForm.$submitting">
                 <span v-if="!userForm.$submitting">Create</span>
@@ -125,6 +157,13 @@ export default {
         roles: [],
         profile_picture: null,
       }),
+      loadingClinics: false,
+      clinics: [],
+      roles: [
+        { value: 'organisation_admin', text: 'Organisation admin' },
+        { value: 'service_admin', text: 'Service admin' },
+        { value: 'community_worker', text: 'Community worker' },
+      ],
     };
   },
 
@@ -141,6 +180,18 @@ export default {
       } catch (exception) {
         // Supress error from console.
       }
+    },
+
+    onAddRole() {
+      this.userForm.roles.push({
+        _id: this.uuid(),
+        role: '',
+        clinic_id: '',
+      });
+    },
+
+    onRemoveRole(index) {
+      this.$delete(this.userForm.roles, index);
     },
   },
 };
