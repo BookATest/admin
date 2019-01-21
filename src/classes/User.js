@@ -1,7 +1,7 @@
 const cacheKey = 'user';
 const organisationAdmin = 'organisation_admin';
 const clinicAdmin = 'clinic_admin';
-const communityWorker = 'communityWorker';
+const communityWorker = 'community_worker';
 
 export default class User {
   /**
