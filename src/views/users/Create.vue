@@ -113,6 +113,12 @@
               </bat-button>
             </div>
 
+            <bat-image
+              v-model="userForm.profile_picture"
+              @input="userForm.$errors.clear('profile_picture')"
+              :error="userForm.$errors.get('profile_picture')"
+            />
+
             <div class="edit-user__action">
               <bat-button type="submit" primary :disabled="userForm.$submitting">
                 <span v-if="!userForm.$submitting">Create</span>
@@ -134,6 +140,8 @@ import Form from '@/classes/Form';
 import BatButton from '@/components/Button.vue';
 import BatInput from '@/views/users/components/Input.vue';
 import BatRadio from '@/views/users/components/Radio.vue';
+import BatImage from '@/views/users/components/Image.vue';
+
 
 export default {
   name: 'UsersCreateView',
@@ -144,7 +152,12 @@ export default {
     };
   },
 
-  components: { BatButton, BatInput, BatRadio },
+  components: {
+    BatButton,
+    BatInput,
+    BatRadio,
+    BatImage,
+  },
 
   data() {
     return {
