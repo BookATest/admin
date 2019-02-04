@@ -80,22 +80,25 @@
               <div class="form__drop-down">
                 <label for="dropdown"><span>Role</span></label>
                 <div>
-                  <select>
+                  <select v-model="role.role">
                     <option value="">Select role...</option>
                     <option v-for="role in roles" :key="role.value" :value="role.value">{{ role.text }}</option>
                   </select>
                 </div>
               </div>
 
-              <div class="form__drop-down">
-                <label for="dropdown"><span>Location</span></label>
-                <div>
-                  <select>
-                    <option value="">Select clinic...</option>
-                    <option v-for="clinic in clinics" :key="clinic.id" :value="clinic.id">{{ clinic.name }}</option>
-                  </select>
+              <template v-if="['service_admin', 'community_worker'].includes(role.role)">
+                <bat-loader v-if="loadingClinics"/>
+                <div v-else class="form__drop-down">
+                  <label for="dropdown"><span>Location</span></label>
+                  <div>
+                    <select v-model="role.clinic_id">
+                      <option value="">Select clinic...</option>
+                      <option v-for="clinic in clinics" :key="clinic.id" :value="clinic.id">{{ clinic.name }}</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
+              </template>
 
               <div class="create-user__remove-permission-button">
                 <bat-button @click="onRemoveRole(index)" type="button" primary>
@@ -169,6 +172,21 @@ export default {
     };
   },
 
+  watch: {
+    'userForm.roles': {
+      handler(roles) {
+        // Loop through each role.
+        roles.forEach((role) => {
+          // Unset the clinic ID if not required for selected role.
+          if (!['service_admin', 'community_worker'].includes(role.role)) {
+            role.clinic_id = '';
+          }
+        });
+      },
+      deep: true,
+    },
+  },
+
   methods: {
     async onSubmit() {
       try {
@@ -195,6 +213,16 @@ export default {
     onRemoveRole(index) {
       this.$delete(this.userForm.roles, index);
     },
+
+    async fetchClinics() {
+      this.loadingClinics = true;
+      this.clinics = await this.fetchAll('/clinics');
+      this.loadingClinics = false;
+    },
+  },
+
+  created() {
+    this.fetchClinics();
   },
 };
 </script>
