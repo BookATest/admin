@@ -97,9 +97,11 @@
                 </div>
               </div>
 
-              <bat-button @click="onRemoveRole(index)" type="button" primary>
-                <span>Remove permission</span>
-              </bat-button>
+              <div class="create-user__remove-permission-button">
+                <bat-button @click="onRemoveRole(index)" type="button" primary>
+                  <span>Remove permission</span>
+                </bat-button>
+              </div>
             </div>
 
             <div class="edit-user__notification">
@@ -196,3 +198,12 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.create-user {
+  &__remove-permission-button {
+    margin-top: 1rem;
+    width: unset !important;
+  }
+}
+</style>
