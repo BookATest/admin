@@ -272,7 +272,24 @@ export default {
       this.userForm.receive_booking_confirmations = this.user.receive_booking_confirmations;
       this.userForm.receive_cancellation_confirmations = this.user.receive_cancellation_confirmations;
       this.userForm.include_calendar_attachment = this.user.include_calendar_attachment;
-      this.userForm.roles = this.user.roles;
+      this.userForm.roles = this.user.roles.filter((role) => {
+        switch (role.role) {
+          // Always show org admin.
+          case 'organisation_admin':
+            return true;
+          // Only show clinic admin if not an org admin.
+          case 'clinic_admin':
+            return this.user.roles
+              .find(foundRole => foundRole.role === 'organisation_admin') === undefined;
+          // Only show community worker if not an org admin or a clinic admin for the same clinic.
+          case 'community_worker':
+            return this.user.roles
+              .find(foundRole => (foundRole.role === 'organisation_admin')
+                  || (foundRole.role === 'clinic_admin' && foundRole.clinic_id === role.id)) === undefined;
+          default:
+            return true;
+        }
+      });
 
       this.loadingUser = false;
     },
