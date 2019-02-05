@@ -101,6 +101,10 @@ class User {
    * @returns {string}
    */
   profilePictureUrl() {
+    if (!this.user) {
+      return null;
+    }
+
     return `${process.env.VUE_APP_API_URI}/v1/users/${this.user.id}/profile-picture.jpg?updated_at=${this.user.updated_at}`;
   }
 

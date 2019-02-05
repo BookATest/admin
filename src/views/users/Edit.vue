@@ -12,6 +12,8 @@
 
       <bat-loader v-if="loadingUser"/>
       <div v-else class="edit-user__details">
+
+        <!-- Form -->
         <div>
           <form @submit.prevent="onSubmit" class="form form--edit-user">
 
@@ -130,6 +132,24 @@
 
           </form>
         </div>
+
+        <div>
+          <bat-card warning>
+            <div class="warning__action">
+              <bat-button @click="onDelete" secondary :disabled="deletingUser">
+                <span v-if="!deletingUser">Delete user</span>
+                <span v-else>Deleting...</span>
+              </bat-button>
+            </div>
+            <div class="warning__icon">
+              <i class="icon icon--warning"></i>
+            </div>
+            <div class="warning__content">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit quisque dictum</p>
+            </div>
+          </bat-card>
+        </div>
+
       </div>
 
     </div>
@@ -141,6 +161,7 @@
 import Form from '@/classes/Form';
 import BatButton from '@/components/Button.vue';
 import BatLoader from '@/components/Loader.vue';
+import BatCard from '@/components/Card.vue';
 import BatInput from '@/views/users/components/Input.vue';
 import BatRadio from '@/views/users/components/Radio.vue';
 import BatImage from '@/views/users/components/Image.vue';
@@ -158,6 +179,7 @@ export default {
   components: {
     BatButton,
     BatLoader,
+    BatCard,
     BatInput,
     BatRadio,
     BatImage,
@@ -166,6 +188,7 @@ export default {
   data() {
     return {
       loadingUser: false,
+      deletingUser: false,
       user: null,
       userForm: new Form({
         first_name: '',
@@ -293,6 +316,24 @@ export default {
       });
 
       this.loadingUser = false;
+    },
+
+    async onDelete() {
+      this.deletingUser = true;
+
+      try {
+        await this.userForm.delete(`/users/${this.$route.params.user}`);
+
+        // Logout if the user deleted their own account.
+        if (this.$store.state.user.get().id === this.$route.params.user) {
+          this.$store.dispatch('logout');
+          return;
+        }
+
+        this.$router.push({ name: 'users.index' });
+      } catch (exception) {
+        this.deletingUser = false;
+      }
     },
   },
 
