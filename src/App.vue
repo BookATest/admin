@@ -64,7 +64,7 @@ export default {
             items: [
               {
                 name: 'my profile',
-                to: { name: 'settings.my-profile' },
+                to: { name: 'users.edit', params: { user: this.$store.state.user.get().id } },
               },
               {
                 name: 'calendar',
