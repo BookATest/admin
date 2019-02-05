@@ -209,31 +209,32 @@ export default {
   methods: {
     async onSubmit() {
       try {
-        const { data: { id } } = await this.userForm.put(`/users/${this.$route.params.user}`, (data) => {
+        const { data } = await this.userForm.put(`/users/${this.$route.params.user}`, (payload) => {
           // Remove the password from the request if empty.
-          if (data.password === '') {
-            delete data.password;
+          if (payload.password === '') {
+            delete payload.password;
           }
 
           // Remove clinic ID from roles that don't need it.
-          data.roles.forEach((role) => {
+          payload.roles.forEach((role) => {
             if (!['clinic_admin', 'community_worker'].includes(role.role)) {
               delete role.clinic_id;
             }
           });
 
           // Remove the profile picture from the request if null.
-          if (data.profile_picture === null) {
-            delete data.profile_picture;
+          if (payload.profile_picture === null) {
+            delete payload.profile_picture;
           }
 
           // Setting the profile picture to false indicates it should be removed.
-          if (data.profile_picture === false) {
-            data.profile_picture = null;
+          if (payload.profile_picture === false) {
+            payload.profile_picture = null;
           }
         });
 
-        this.$router.push({ name: 'users.edit', params: { user: id } });
+        this.$store.commit('user', data);
+        this.$router.push({ name: 'users.edit', params: { user: data.id } });
       } catch (exception) {
         // Supress error from console.
       }

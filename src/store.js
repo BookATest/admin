@@ -10,6 +10,7 @@ export default new Vuex.Store({
   state: {
     isAuthenticated: auth.isAuthenticated(),
     user: new User(),
+    userProfilePictureUrl: null,
     settings: null,
     title: '',
   },
@@ -32,8 +33,10 @@ export default new Vuex.Store({
     user(state, payload) {
       if (payload !== null) {
         state.user.set(payload);
+        state.userProfilePictureUrl = `${process.env.VUE_APP_API_URI}/v1/users/${payload.id}/profile-picture.jpg?updated_at=${payload.updated_at}`;
       } else {
         state.user.clear();
+        state.userProfilePictureUrl = null;
       }
     },
 
