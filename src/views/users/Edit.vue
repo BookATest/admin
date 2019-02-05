@@ -309,7 +309,7 @@ export default {
           case 'community_worker':
             return this.user.roles
               .find(foundRole => (foundRole.role === 'organisation_admin')
-                  || (foundRole.role === 'clinic_admin' && foundRole.clinic_id === role.id)) === undefined;
+                  || (foundRole.role === 'clinic_admin' && foundRole.clinic_id === role.clinic_id)) === undefined;
           default:
             return true;
         }
