@@ -79,6 +79,15 @@ const router = new Router({
         auth: true,
       },
     },
+    {
+      path: '/settings/clinics',
+      name: 'clinics.index',
+      component: () => import('./views/clinics/Index.vue'),
+      meta: {
+        title: 'Locations',
+        auth: true,
+      },
+    },
   ],
 });
 

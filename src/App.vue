@@ -80,7 +80,7 @@ export default {
               },
               {
                 name: 'locations',
-                to: { name: 'locations.index' },
+                to: { name: 'clinics.index' },
               },
               {
                 name: 'branding',
