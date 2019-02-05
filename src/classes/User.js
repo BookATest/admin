@@ -3,7 +3,7 @@ const organisationAdmin = 'organisation_admin';
 const clinicAdmin = 'clinic_admin';
 const communityWorker = 'community_worker';
 
-export default class User {
+class User {
   /**
    * Constructor.
    * @param {object|null} user
@@ -98,6 +98,13 @@ export default class User {
   }
 
   /**
+   * @returns {string}
+   */
+  profilePictureUrl() {
+    return `${process.env.VUE_APP_API_URI}/v1/users/${this.user.id}/profile-picture.jpg?updated_at=${this.user.updated_at}`;
+  }
+
+  /**
    * Check if the user exists in local cache.
    * @returns {boolean}
    */
@@ -130,3 +137,5 @@ export default class User {
     localStorage.removeItem(cacheKey);
   }
 }
+
+export default new User();

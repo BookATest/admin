@@ -2,15 +2,15 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import auth from './auth';
 import router from './router';
-import User from './classes/User';
+import user from './classes/User';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     isAuthenticated: auth.isAuthenticated(),
-    user: new User(),
-    userProfilePictureUrl: null,
+    user,
+    userProfilePictureUrl: user.profilePictureUrl(),
     settings: null,
     title: '',
   },
@@ -33,7 +33,7 @@ export default new Vuex.Store({
     user(state, payload) {
       if (payload !== null) {
         state.user.set(payload);
-        state.userProfilePictureUrl = `${process.env.VUE_APP_API_URI}/v1/users/${payload.id}/profile-picture.jpg?updated_at=${payload.updated_at}`;
+        state.userProfilePictureUrl = user.profilePictureUrl();
       } else {
         state.user.clear();
         state.userProfilePictureUrl = null;
