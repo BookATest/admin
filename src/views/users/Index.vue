@@ -133,6 +133,7 @@ export default {
 
       const params = {
         page: this.currentPage,
+        'filter[disabled]': false,
       };
 
       if (this.clinicId !== '') {
