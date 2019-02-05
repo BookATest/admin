@@ -29,6 +29,10 @@ export default {
       requred: false,
       default: false,
     },
+
+    to: {
+      requred: false,
+    },
   },
 
   methods: {
@@ -36,6 +40,10 @@ export default {
      * Proxy the click event.
      */
     onClick(event) {
+      if (this.to) {
+        this.$router.push(this.to);
+      }
+
       this.$emit('click', event);
     },
   },
