@@ -1,7 +1,11 @@
 <template>
   <div>
     <button @click="onClick" type="button" class="button button--upload button--upload--avatar">
+
       <img v-if="value" :src="value">
+
+      <img v-else-if="existingUrl && !removeExisting" :src="existingUrl">
+
       <span>{{ label }}</span>
       <input
         style="display: none;"
@@ -10,9 +14,10 @@
         accept="image/jpeg"
         ref="file"
       >
+
     </button>
 
-    <div v-if="value">
+    <div v-if="value || (existingUrl && !removeExisting)">
       <bat-button @click="onRemove" type="button" secondary>Remove image</bat-button>
     </div>
 
@@ -36,6 +41,11 @@ export default {
       required: true,
     },
 
+    existingUrl: {
+      required: false,
+      type: String,
+    },
+
     label: {
       required: false,
       type: String,
@@ -51,6 +61,7 @@ export default {
   data() {
     return {
       fileReader: new FileReader(),
+      removeExisting: false,
     };
   },
 
@@ -73,6 +84,15 @@ export default {
     },
 
     onRemove() {
+      if (this.existingUrl && this.removeExisting === false) {
+        this.removeExisting = true;
+      }
+
+      if (this.existingUrl) {
+        this.$emit('input', false);
+        return;
+      }
+
       this.$emit('input', null);
     },
   },

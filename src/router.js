@@ -70,6 +70,15 @@ const router = new Router({
         auth: true,
       },
     },
+    {
+      path: '/settings/users/:user/edit',
+      name: 'users.edit',
+      component: () => import('./views/users/Edit.vue'),
+      meta: {
+        title: 'Edit User',
+        auth: true,
+      },
+    },
   ],
 });
 

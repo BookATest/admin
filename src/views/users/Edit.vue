@@ -6,11 +6,12 @@
 
       <div class="edit-user__intro">
         <div>
-          <h2>Create User <i class="icon icon--edit"></i></h2>
+          <h2>Update User <i class="icon icon--edit"></i></h2>
         </div>
       </div>
 
-      <div class="edit-user__details">
+      <bat-loader v-if="loadingUser"/>
+      <div v-else class="edit-user__details">
         <div>
           <form @submit.prevent="onSubmit" class="form form--edit-user">
 
@@ -45,7 +46,7 @@
             />
 
             <bat-input
-              label="Password"
+              label="Change password"
               v-model="userForm.password"
               @input="userForm.$errors.clear('password')"
               :error="userForm.$errors.get('password')"
@@ -76,7 +77,7 @@
               @input="userForm.$errors.clear('receive_cancellation_confirmations')"
             />
 
-            <div class="edit-user__notification" v-for="(role, index) in userForm.roles" :key="role._id">
+            <div class="edit-user__notification" v-for="(role, index) in userForm.roles" :key="role.id || role._id">
               <div class="form__drop-down">
                 <label for="dropdown"><span>Role</span></label>
                 <div>
@@ -115,14 +116,15 @@
 
             <bat-image
               v-model="userForm.profile_picture"
+              :existing-url="apiUrl(`/users/${this.$route.params.user}/profile-picture.jpg`)"
               @input="userForm.$errors.clear('profile_picture')"
               :error="userForm.$errors.get('profile_picture')"
             />
 
             <div class="edit-user__action">
               <bat-button type="submit" primary :disabled="userForm.$submitting">
-                <span v-if="!userForm.$submitting">Create</span>
-                <span v-else>Creating...</span>
+                <span v-if="!userForm.$submitting">Update</span>
+                <span v-else>Updating...</span>
               </bat-button>
             </div>
 
@@ -138,13 +140,14 @@
 <script>
 import Form from '@/classes/Form';
 import BatButton from '@/components/Button.vue';
+import BatLoader from '@/components/Loader.vue';
 import BatInput from '@/views/users/components/Input.vue';
 import BatRadio from '@/views/users/components/Radio.vue';
 import BatImage from '@/views/users/components/Image.vue';
 
 
 export default {
-  name: 'UsersCreateView',
+  name: 'UsersEditView',
 
   metaInfo() {
     return {
@@ -154,6 +157,7 @@ export default {
 
   components: {
     BatButton,
+    BatLoader,
     BatInput,
     BatRadio,
     BatImage,
@@ -161,6 +165,8 @@ export default {
 
   data() {
     return {
+      loadingUser: false,
+      user: null,
       userForm: new Form({
         first_name: '',
         last_name: '',
@@ -203,7 +209,12 @@ export default {
   methods: {
     async onSubmit() {
       try {
-        const { data: { id } } = await this.userForm.post('/users', (data) => {
+        const { data: { id } } = await this.userForm.put(`/users/${this.$route.params.user}`, (data) => {
+          // Remove the password from the request if empty.
+          if (data.password === '') {
+            delete data.password;
+          }
+
           // Remove clinic ID from roles that don't need it.
           data.roles.forEach((role) => {
             if (!['clinic_admin', 'community_worker'].includes(role.role)) {
@@ -214,6 +225,11 @@ export default {
           // Remove the profile picture from the request if null.
           if (data.profile_picture === null) {
             delete data.profile_picture;
+          }
+
+          // Setting the profile picture to false indicates it should be removed.
+          if (data.profile_picture === false) {
+            data.profile_picture = null;
           }
         });
 
@@ -240,9 +256,30 @@ export default {
       this.clinics = await this.fetchAll('/clinics');
       this.loadingClinics = false;
     },
+
+    async fetchUser() {
+      this.loadingUser = true;
+
+      const { data: { data: user } } = await this.$http.get(`/users/${this.$route.params.user}`);
+      this.user = user;
+
+      this.userForm.first_name = this.user.first_name;
+      this.userForm.last_name = this.user.last_name;
+      this.userForm.email = this.user.email;
+      this.userForm.phone = this.user.phone;
+      this.userForm.display_email = this.user.display_email;
+      this.userForm.display_phone = this.user.display_phone;
+      this.userForm.receive_booking_confirmations = this.user.receive_booking_confirmations;
+      this.userForm.receive_cancellation_confirmations = this.user.receive_cancellation_confirmations;
+      this.userForm.include_calendar_attachment = this.user.include_calendar_attachment;
+      this.userForm.roles = this.user.roles;
+
+      this.loadingUser = false;
+    },
   },
 
   created() {
+    this.fetchUser();
     this.fetchClinics();
   },
 };

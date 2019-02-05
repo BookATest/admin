@@ -30,7 +30,7 @@
             tag="button"
             v-for="user in users"
             :key="user.id"
-            :to="{ name: 'users.show', params: { user: user.id } }"
+            :to="{ name: 'users.edit', params: { user: user.id } }"
             class="button button--user button--user--edit"
           >
             <img :src="apiUrl(`/users/${user.id}/profile-picture.jpg`)">
