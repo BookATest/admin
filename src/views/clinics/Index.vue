@@ -12,13 +12,13 @@
 
       <div class="locations__search">
 
-        <div class="form__search">
-          <label for="search">Search</label>
+        <form @submit.prevent="onFilter" class="form__search">
+          <label for="filters[name]">Search</label>
           <div>
-            <input type="text" id="search" name="search">
-            <button><i class="icon icon--arrowright"></i></button>
+            <input v-model="filters.name" type="text" id="filters[name]">
+            <button type="submit"><i class="icon icon--arrowright"></i></button>
           </div>
-        </div>
+        </form>
 
         <bat-loader v-if="loadingClinics"/>
         <template v-else>
@@ -33,7 +33,6 @@
             <span class="role">{{ clinic.address_line_1 }}, {{ clinic.city }}</span>
             <span class="edit">Edit <i class="icon icon--edit"></i></span>
           </router-link>
-
 
           <router-link
             tag="button"
@@ -97,6 +96,9 @@ export default {
       loadingClinics: false,
       currentPage: 1,
       totalPages: 1,
+      filters: {
+        name: '',
+      },
     };
   },
 
@@ -107,11 +109,15 @@ export default {
     async fetchClinics() {
       this.loadingClinics = true;
 
-      const { data } = await this.$http.get('/clinics', {
-        params: {
-          page: this.currentPage,
-        },
-      });
+      const params = {
+        page: this.currentPage,
+      };
+
+      if (this.filters.name !== '') {
+        params['filter[name]'] = this.filters.name;
+      }
+
+      const { data } = await this.$http.get('/clinics', { params });
       this.clinics = data.data;
       this.totalPages = data.meta.last_page;
 
@@ -131,6 +137,14 @@ export default {
      */
     onNext() {
       this.currentPage += 1;
+      this.fetchClinics();
+    },
+
+    /**
+     * Filter.
+     */
+    onFilter() {
+      this.currentPage = 1;
       this.fetchClinics();
     },
   },
