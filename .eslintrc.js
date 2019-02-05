@@ -15,6 +15,8 @@ module.exports = {
     'prefer-destructuring': 'off',
     'max-len': 'off',
     'no-await-in-loop': 'off',
+    'no-bitwise': 'off',
+    'no-mixed-operators': 'off',
   },
   parserOptions: {
     parser: 'babel-eslint',

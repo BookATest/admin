@@ -2,14 +2,15 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import auth from './auth';
 import router from './router';
-import User from './classes/User';
+import user from './classes/User';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     isAuthenticated: auth.isAuthenticated(),
-    user: new User(),
+    user,
+    userProfilePictureUrl: user.profilePictureUrl(),
     settings: null,
     title: '',
   },
@@ -32,8 +33,10 @@ export default new Vuex.Store({
     user(state, payload) {
       if (payload !== null) {
         state.user.set(payload);
+        state.userProfilePictureUrl = user.profilePictureUrl();
       } else {
         state.user.clear();
+        state.userProfilePictureUrl = null;
       }
     },
 
@@ -131,21 +134,23 @@ export default new Vuex.Store({
      */
     logout(context) {
       // Clear the user sessions on the API.
-      Vue.axios.delete(`${process.env.VUE_APP_API_URI}/v1/users/user/sessions`).then(() => {
-        // Clear the token cached locally.
-        auth.logout().then(() => {
-          // Forward the user.
-          router.push({ name: 'logout' });
+      Vue.axios.delete(`${process.env.VUE_APP_API_URI}/v1/users/user/sessions`)
+        .catch(error => error)
+        .then(() => {
+          // Clear the token cached locally.
+          auth.logout().then(() => {
+            // Forward the user.
+            router.push({ name: 'logout' });
 
-          // Update the authentication state.
-          context.commit('isAuthenticated', {
-            isAuthenticated: auth.isAuthenticated(),
+            // Update the authentication state.
+            context.commit('isAuthenticated', {
+              isAuthenticated: auth.isAuthenticated(),
+            });
+
+            // Update the user state.
+            context.commit('user', null);
           });
-
-          // Update the user state.
-          context.commit('user', null);
         });
-      });
     },
   },
 });

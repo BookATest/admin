@@ -18,6 +18,13 @@ export default class Errors {
   }
 
   /**
+   * @param {string|null} field
+   */
+  state(field) {
+    return this.has(field) ? 'invalid' : null;
+  }
+
+  /**
    * Determine if we have any errors.
    *
    * @returns {boolean}
@@ -42,19 +49,16 @@ export default class Errors {
    * @returns {string|null}
    */
   get(fields) {
-    const fieldsArray = Array.isArray(fields) ? fields : [fields];
+    const fieldNames = Array.isArray(fields) ? fields : [fields];
 
-    let error = null;
-
-    fieldsArray.forEach((field) => {
-      const fieldName = field.replace(/\./g, '_');
-
-      if (this.errors[fieldName]) {
-        error = this.errors[fieldName][0];
+    for (let i = 0; i < fieldNames.length; i += 1) {
+      const field = fieldNames[i].replace(/\./g, '_');
+      if (this.errors[field]) {
+        return this.errors[field][0];
       }
-    });
+    }
 
-    return error;
+    return null;
   }
 
   /**

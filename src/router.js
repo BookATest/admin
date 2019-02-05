@@ -45,10 +45,37 @@ const router = new Router({
     },
     {
       path: '/settings/calendar',
-      name: 'settings.calendar',
-      component: () => import('./views/settings/Calendar.vue'),
+      name: 'calendar.index',
+      component: () => import('./views/calendar/Index.vue'),
       meta: {
         title: 'Calendar',
+        auth: true,
+      },
+    },
+    {
+      path: '/settings/users',
+      name: 'users.index',
+      component: () => import('./views/users/Index.vue'),
+      meta: {
+        title: 'Users',
+        auth: true,
+      },
+    },
+    {
+      path: '/settings/users/create',
+      name: 'users.create',
+      component: () => import('./views/users/Create.vue'),
+      meta: {
+        title: 'Create User',
+        auth: true,
+      },
+    },
+    {
+      path: '/settings/users/:user/edit',
+      name: 'users.edit',
+      component: () => import('./views/users/Edit.vue'),
+      meta: {
+        title: 'Edit User',
         auth: true,
       },
     },

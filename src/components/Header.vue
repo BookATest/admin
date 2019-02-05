@@ -16,7 +16,7 @@
             </div>
             <div v-if="$store.state.isAuthenticated" class="main__logout">
               <button class="button button__logout" @click="onLogout">
-                <img class="profile-picture" :src="apiUrl(`/users/${$store.state.user.get().id}/profile-picture.jpg`)">
+                <img class="profile-picture" :src="$store.state.userProfilePictureUrl">
                 <span class="name">{{ $store.state.user.fullName() }}</span>
                 <span class="role">{{ highestRole }}</span>
                 <span class="logout"><i class="icon icon--power"></i> Logout</span>

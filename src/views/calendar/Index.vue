@@ -51,7 +51,13 @@
 
 <script>
 export default {
-  name: 'CalendarView',
+  name: 'CalendarIndexView',
+
+  metaInfo() {
+    return {
+      title: this.$route.meta.title,
+    };
+  },
 
   computed: {
     /**
