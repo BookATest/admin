@@ -131,21 +131,23 @@ export default new Vuex.Store({
      */
     logout(context) {
       // Clear the user sessions on the API.
-      Vue.axios.delete(`${process.env.VUE_APP_API_URI}/v1/users/user/sessions`).then(() => {
-        // Clear the token cached locally.
-        auth.logout().then(() => {
-          // Forward the user.
-          router.push({ name: 'logout' });
+      Vue.axios.delete(`${process.env.VUE_APP_API_URI}/v1/users/user/sessions`)
+        .catch(error => error)
+        .then(() => {
+          // Clear the token cached locally.
+          auth.logout().then(() => {
+            // Forward the user.
+            router.push({ name: 'logout' });
 
-          // Update the authentication state.
-          context.commit('isAuthenticated', {
-            isAuthenticated: auth.isAuthenticated(),
+            // Update the authentication state.
+            context.commit('isAuthenticated', {
+              isAuthenticated: auth.isAuthenticated(),
+            });
+
+            // Update the user state.
+            context.commit('user', null);
           });
-
-          // Update the user state.
-          context.commit('user', null);
         });
-      });
     },
   },
 });
