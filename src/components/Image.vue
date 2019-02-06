@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="form__text">
     <button @click="onClick" type="button" class="button button--upload button--upload--avatar">
 
       <img v-if="value" :src="value">

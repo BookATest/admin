@@ -140,9 +140,9 @@
 <script>
 import Form from '@/classes/Form';
 import BatButton from '@/components/Button.vue';
-import BatInput from '@/views/users/components/Input.vue';
-import BatRadio from '@/views/users/components/Radio.vue';
-import BatImage from '@/views/users/components/Image.vue';
+import BatInput from '@/components/Input.vue';
+import BatRadio from '@/components/Radio.vue';
+import BatImage from '@/components/Image.vue';
 
 
 export default {
