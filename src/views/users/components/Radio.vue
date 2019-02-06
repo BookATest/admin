@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-user__notification">
+  <div class="form__text">
 
     <h2>{{ label }}</h2>
 

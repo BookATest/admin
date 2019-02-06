@@ -88,6 +88,15 @@ const router = new Router({
         auth: true,
       },
     },
+    {
+      path: '/settings/clinics/create',
+      name: 'clinics.create',
+      component: () => import('./views/clinics/Create.vue'),
+      meta: {
+        title: 'Create Location',
+        auth: true,
+      },
+    },
   ],
 });
 
