@@ -72,6 +72,28 @@
               @input="clinicForm.$errors.clear('directions')"
               :error="clinicForm.$errors.get('directions')"
             />
+
+            <bat-input
+              label="Appointment duration (in minutes)"
+              v-model="clinicForm.appointment_duration"
+              @input="clinicForm.$errors.clear('appointment_duration')"
+              :error="clinicForm.$errors.get('appointment_duration')"
+              type="number"
+              step="1"
+              min="1"
+              max="1440"
+            />
+
+            <bat-input
+              label="Appointment booking threshold (in minutes)"
+              v-model="clinicForm.appointment_booking_threshold"
+              @input="clinicForm.$errors.clear('appointment_booking_threshold')"
+              :error="clinicForm.$errors.get('appointment_booking_threshold')"
+              type="number"
+              step="1"
+              min="1"
+              max="1440"
+            />
           </form>
         </div>
 
@@ -147,8 +169,8 @@ export default {
         city: '',
         postcode: '',
         directions: '',
-        appointment_duration: this.$store.state.settings.default_appointment_duration,
-        appointment_booking_threshold: this.$store.state.settings.appointment_booking_threshold,
+        appointment_duration: `${this.$store.state.settings.default_appointment_duration}`,
+        appointment_booking_threshold: `${this.$store.state.settings.default_appointment_booking_threshold}`,
         send_cancellation_confirmations: true,
         send_dna_follow_ups: true,
       }),
