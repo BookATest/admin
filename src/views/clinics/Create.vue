@@ -94,6 +94,18 @@
               min="1"
               max="1440"
             />
+
+            <bat-radio
+              label="Send cancellation confirmations?"
+              v-model="clinicForm.send_cancellation_confirmations"
+              @input="clinicForm.$errors.clear('send_cancellation_confirmations')"
+            />
+
+            <bat-radio
+              label="Send DNA follow up notifications?"
+              v-model="clinicForm.send_dna_follow_ups"
+              @input="clinicForm.$errors.clear('send_dna_follow_ups')"
+            />
           </form>
         </div>
 
@@ -145,6 +157,7 @@
 import Form from '@/classes/Form';
 import BatInput from '@/components/Input.vue';
 import BatTextarea from '@/components/Textarea.vue';
+import BatRadio from '@/components/Radio.vue';
 
 export default {
   name: 'ClinicsCreateView',
@@ -155,7 +168,7 @@ export default {
     };
   },
 
-  components: { BatInput, BatTextarea },
+  components: { BatInput, BatTextarea, BatRadio },
 
   data() {
     return {
