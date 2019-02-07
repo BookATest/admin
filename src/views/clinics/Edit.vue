@@ -181,11 +181,14 @@
                 <bat-input
                   v-model="eligibleAnswer.answer.interval"
                   @input="eligibleAnswersForm.$errors.clear(`answers.${eligibleAnswerIndex}`)"
-                  label="Interval (in minutes)"
+                  label="Interval (in seconds)"
                   type="number"
                   step="1"
                   min="0"
                 />
+                <p v-if="eligibleAnswer.answer.interval !== ''">
+                  {{ $moment().add(eligibleAnswer.answer.interval, 'seconds').fromNow(true) }}
+                </p>
               </div>
 
               <p v-if="eligibleAnswersForm.$errors.has(`answers.${eligibleAnswerIndex}`)">
