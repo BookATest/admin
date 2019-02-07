@@ -109,39 +109,6 @@
           </form>
         </div>
 
-        <div class="">
-          <h2>Pre triage questions</h2>
-
-          <div class="button button__amend button__amend--edit">
-            <button class="button__amend__reorder"><i class="icon icon--reorder"></i></button>
-            <input type="text" id="sexuality" name="sexuality" value="Gender" class="button__amend__input"/>
-            <button class="button__amend__edit" onclick="location.href='../settings/pre-triage-edit.html'"><span>Edit</span><i class="icon icon--edit"></i></button>
-          </div>
-
-          <div class="button button__amend button__amend--edit">
-            <button class="button__amend__reorder"><i class="icon icon--reorder"></i></button>
-            <input type="text" id="sexuality" name="sexuality" value="Sexuality" class="button__amend__input"/>
-            <button class="button__amend__edit" onclick="location.href='../settings/pre-triage-edit.html'"><span>Edit</span><i class="icon icon--edit"></i></button>
-          </div>
-
-          <div class="button button__amend button__amend--edit">
-            <button class="button__amend__reorder"><i class="icon icon--reorder"></i></button>
-            <input type="text" id="sexuality" name="sexuality" value="Age" class="button__amend__input"/>
-            <button class="button__amend__edit" onclick="location.href='../settings/pre-triage-edit.html'"><span>Edit</span><i class="icon icon--edit"></i></button>
-          </div>
-
-          <div class="button button__amend button__amend--add">
-            <button class="button__amend__add" onclick="location.href='../settings/pre-triage-edit.html'"><span>Add</span><i class="icon icon--pluscircle"></i></button>
-          </div>
-
-          <!--
-            <div class="button button__amend button__amend--add button__amend--add--inactive">
-              <button class="button__amend__add"><span>Add</span><i class="icon icon--pluscircle"></i></button>
-            </div>
-          -->
-
-        </div>
-
       </div>
 
       <div class="location-edit__action">
