@@ -97,6 +97,15 @@ const router = new Router({
         auth: true,
       },
     },
+    {
+      path: '/settings/clinics/:clinic/edit',
+      name: 'clinics.edit',
+      component: () => import('./views/clinics/Edit.vue'),
+      meta: {
+        title: 'Edit Location',
+        auth: true,
+      },
+    },
   ],
 });
 
