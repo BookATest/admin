@@ -4,7 +4,7 @@
     <!-- Location Edit -->
     <div class="location-edit">
 
-      <bat-loader v-if="loadingClinic || loadingQuestions || loadingEligibleAnswers"/>
+      <bat-loader v-if="loadingClinic || loadingEligibleAnswers"/>
       <div v-else class="location-edit__form">
 
         <!-- Clinic form -->
@@ -135,17 +135,17 @@
           </bat-card>
 
           <form @submit.prevent="onSubmitEligibleAnswers">
-            <div v-for="question in questions" :key="question.id" class="bat-eligible-answer">
-              <h3>{{ question.question }}</h3>
+            <div v-for="(eligibleAnswer, eligibleAnswerIndex) in eligibleAnswersForm.answers" :key="`Question${eligibleAnswer.question_id}`" class="bat-eligible-answer">
+              <h3>{{ eligibleAnswer.question.question }}</h3>
 
               <!-- Select -->
-              <div v-if="question.type === 'select'">
+              <div v-if="eligibleAnswer.question.type === 'select'">
                 <button
-                  @click="toggleAnswerOption(question, option)"
+                  @click="toggleAnswerOption(eligibleAnswer.question, option); eligibleAnswersForm.$errors.clear(`answers.${eligibleAnswerIndex}`);"
                   class="bat-button"
-                  :class="{ 'bat-button--selected': optionSelected(question, option) }"
-                  v-for="(option, index) in question.options"
-                  :key="`QuestionOption${question.id}${index}`"
+                  :class="{ 'bat-button--selected': optionSelected(eligibleAnswer.question, option) }"
+                  v-for="(option, index) in eligibleAnswer.question.options"
+                  :key="`QuestionOption${eligibleAnswer.question_id}-${index}`"
                   type="button"
                 >
                   {{ option }}
@@ -153,13 +153,13 @@
               </div>
 
               <!-- Checkbox -->
-              <div v-else-if="question.type === 'checkbox'">
+              <div v-else-if="eligibleAnswer.question.type === 'checkbox'">
                 <button
-                  @click="toggleAnswerOption(question, option)"
+                  @click="selectCheckbox(eligibleAnswer.question, option); eligibleAnswersForm.$errors.clear(`answers.${eligibleAnswerIndex}`);"
                   class="bat-button"
-                  :class="{ 'bat-button--selected': optionSelected(question, option) }"
+                  :class="{ 'bat-button--selected': checkboxSelected(eligibleAnswer.question, option) }"
                   v-for="(option, index) in [true, false]"
-                  :key="`QuestionOption${question.id}${index}`"
+                  :key="`QuestionOption${eligibleAnswer.question_id}-${index}`"
                   type="button"
                 >
                   {{ option ? 'Yes' : 'No' }}
@@ -167,25 +167,30 @@
               </div>
 
               <!-- Date -->
-              <div v-else-if="question.type === 'date'">
+              <div v-else-if="eligibleAnswer.question.type === 'date'">
                 <button
-                  @click="selectComparison(question, option)"
+                  @click="selectComparison(eligibleAnswer.question, option); eligibleAnswersForm.$errors.clear(`answers.${eligibleAnswerIndex}`);"
                   class="bat-button"
-                  :class="{ 'bat-button--selected': comparisonSelected(question, option) }"
+                  :class="{ 'bat-button--selected': comparisonSelected(eligibleAnswer.question, option) }"
                   v-for="(option, index) in ['<', '>']"
-                  :key="`QuestionOption${question.id}${index}`"
+                  :key="`QuestionOption${eligibleAnswer.question_id}-${index}`"
                   type="button"
                 >
                   {{ option === '>' ? 'Greater than' : 'Less than' }}
                 </button>
                 <bat-input
-                  v-model="eligibleAnswersForm.answers.find(i => i.question_id === question.id).answer.interval"
+                  v-model="eligibleAnswer.answer.interval"
+                  @input="eligibleAnswersForm.$errors.clear(`answers.${eligibleAnswerIndex}`)"
                   label="Interval (in minutes)"
                   type="number"
                   step="1"
                   min="0"
                 />
               </div>
+
+              <p v-if="eligibleAnswersForm.$errors.has(`answers.${eligibleAnswerIndex}`)">
+                {{ eligibleAnswersForm.$errors.get(`answers.${eligibleAnswerIndex}`) }}
+              </p>
             </div>
 
             <div class="location-edit__action">
@@ -237,8 +242,6 @@ export default {
       deletingClinic: false,
       clinic: null,
       clinicForm: null,
-      loadingQuestions: false,
-      questions: null,
       loadingEligibleAnswers: false,
       eligibleAnswersForm: null,
       answersExist: false,
@@ -297,34 +300,39 @@ export default {
     },
 
     async fetchQuestions() {
-      this.loadingQuestions = true;
-
-      const { data: { data: questions } } = await this.$http.get('/questions');
-      this.questions = questions.filter(question => question.type !== 'text');
-
-      await this.fetchEligibleAnswers();
-
-      this.loadingQuestions = false;
-    },
-
-    async fetchEligibleAnswers() {
       this.loadingEligibleAnswers = true;
 
+      let { data: { data: questions } } = await this.$http.get('/questions');
+      questions = questions.filter(question => question.type !== 'text');
+
+      await this.fetchEligibleAnswers(questions);
+
+      this.loadingEligibleAnswers = false;
+    },
+
+    async fetchEligibleAnswers(questions) {
       try {
         const { data: { data: eligibleAnswers } } = await this.$http.get(`/clinics/${this.$route.params.clinic}/eligible-answers`);
+        eligibleAnswers.forEach((eligibleAnswer) => {
+          eligibleAnswer.question = questions.find(question => question.id === eligibleAnswer.question_id);
+        });
+
         this.eligibleAnswersForm = new Form({
           answers: eligibleAnswers,
         });
+
         this.answersExist = true;
       } catch (exception) {
         this.eligibleAnswersForm = new Form({
-          answers: this.questions.map((question) => {
+          answers: questions.map((question) => {
             let answer = null;
 
             switch (question.type) {
               case 'select':
-              case 'checkbox':
                 answer = [];
+                break;
+              case 'checkbox':
+                answer = null;
                 break;
               case 'date':
                 answer = {
@@ -337,14 +345,13 @@ export default {
             }
 
             return {
+              question,
               question_id: question.id,
               answer,
             };
           }),
         });
       }
-
-      this.loadingEligibleAnswers = false;
     },
 
     /**
@@ -372,6 +379,19 @@ export default {
       }
     },
 
+    selectCheckbox(question, option) {
+      const answer = this.eligibleAnswersForm.answers
+        .find(foundEligibleAnswer => foundEligibleAnswer.question_id === question.id);
+
+      answer.answer = answer.answer === option ? null : option;
+    },
+
+    checkboxSelected(question, option) {
+      return this.eligibleAnswersForm.answers
+        .find(foundEligibleAnswer => foundEligibleAnswer.question_id === question.id)
+        .answer === option;
+    },
+
     selectComparison(question, comparison) {
       this.eligibleAnswersForm.answers
         .find(foundEligibleAnswer => foundEligibleAnswer.question_id === question.id)
@@ -388,7 +408,7 @@ export default {
 
     async onSubmitEligibleAnswers() {
       try {
-        await this.eligibleAnswersForm.put(`/clinics/${this.$route.params.clinic}/eligible-answers`, (data) => {
+        const { data: { id } } = await this.eligibleAnswersForm.put(`/clinics/${this.$route.params.clinic}/eligible-answers`, (data) => {
           // Parse date answer interval as integer.
           data.answers
             .filter(answer => answer.type === 'date')
@@ -396,9 +416,11 @@ export default {
               answer.interval = parseInt(answer.interval, 10);
             });
         });
+        this.answersExist = true;
 
-        this.$router.push({ name: 'clinics.edit', params: { clinic: this.$route.params.clinic } });
+        this.$router.push({ name: 'clinics.edit', params: { clinic: id } });
       } catch (exception) {
+        console.log(exception);
         // Supress error from console.
       }
     },

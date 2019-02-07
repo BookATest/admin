@@ -13,8 +13,7 @@ export default class Errors {
    * @returns {boolean}
    */
   has(field) {
-    const fieldName = field.replace(/\./g, '_');
-    return Object.prototype.hasOwnProperty.call(this.errors, fieldName);
+    return Object.prototype.hasOwnProperty.call(this.errors, field);
   }
 
   /**
@@ -52,9 +51,8 @@ export default class Errors {
     const fieldNames = Array.isArray(fields) ? fields : [fields];
 
     for (let i = 0; i < fieldNames.length; i += 1) {
-      const field = fieldNames[i].replace(/\./g, '_');
-      if (this.errors[field]) {
-        return this.errors[field][0];
+      if (this.errors[fieldNames[i]]) {
+        return this.errors[fieldNames[i]][0];
       }
     }
 
@@ -67,16 +65,6 @@ export default class Errors {
    * @param {object} errors
    */
   record(errors) {
-    const keys = Object.keys(errors);
-
-    keys.forEach((key) => {
-      if (key.includes('.')) {
-        const newKey = key.replace(/\./g, '_');
-        errors[newKey] = errors[key];
-        delete errors[key];
-      }
-    });
-
     this.errors = errors;
   }
 
@@ -87,8 +75,7 @@ export default class Errors {
    */
   clear(field) {
     if (field) {
-      const fieldName = field.replace(/\./g, '_');
-      delete this.errors[fieldName];
+      delete this.errors[field];
 
       return;
     }
