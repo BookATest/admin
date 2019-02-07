@@ -414,9 +414,9 @@ export default {
         const { data: { id } } = await this.eligibleAnswersForm.put(`/clinics/${this.$route.params.clinic}/eligible-answers`, (data) => {
           // Parse date answer interval as integer.
           data.answers
-            .filter(answer => answer.type === 'date')
+            .filter(answer => answer.question.type === 'date')
             .forEach((answer) => {
-              answer.interval = parseInt(answer.interval, 10);
+              answer.answer.interval = parseInt(answer.answer.interval, 10);
             });
         });
         this.answersExist = true;
