@@ -9,7 +9,7 @@
 
         <!-- Clinic form -->
         <div>
-          <form @submit.prevent="onSubmit" class="form form--location-edit">
+          <form @submit.prevent="onSubmitClinic" class="form form--location-edit">
             <bat-input
               label="Name"
               v-model="clinicForm.name"
@@ -134,7 +134,7 @@
             </div>
           </bat-card>
 
-          <form>
+          <form @submit.prevent="onSubmitEligibleAnswers">
             <div v-for="question in questions" :key="question.id" class="bat-eligible-answer">
               <h3>{{ question.question }}</h3>
 
@@ -179,10 +179,20 @@
                   {{ option === '>' ? 'Greater than' : 'Less than' }}
                 </button>
                 <bat-input
-                  v-model="eligibleAnswers.find(i => i.question_id === question.id).answer.interval"
-                  label="Interval"
+                  v-model="eligibleAnswersForm.answers.find(i => i.question_id === question.id).answer.interval"
+                  label="Interval (in minutes)"
+                  type="number"
+                  step="1"
+                  min="0"
                 />
               </div>
+            </div>
+
+            <div class="location-edit__action">
+              <bat-button type="submit" primary :disabled="eligibleAnswersForm.$submitting">
+                <span v-if="!eligibleAnswersForm.$submitting">Update</span>
+                <span v-else>Updating...</span>
+              </bat-button>
             </div>
           </form>
         </div>
@@ -230,13 +240,13 @@ export default {
       loadingQuestions: false,
       questions: null,
       loadingEligibleAnswers: false,
-      eligibleAnswers: null,
+      eligibleAnswersForm: null,
       answersExist: false,
     };
   },
 
   methods: {
-    async onSubmit() {
+    async onSubmitClinic() {
       try {
         const { data: { id } } = await this.clinicForm.put(`/clinics/${this.$route.params.clinic}`, (data) => {
           data.appointment_duration = parseInt(data.appointment_duration, 10);
@@ -302,31 +312,35 @@ export default {
 
       try {
         const { data: { data: eligibleAnswers } } = await this.$http.get(`/clinics/${this.$route.params.clinic}/eligible-answers`);
-        this.eligibleAnswers = eligibleAnswers;
+        this.eligibleAnswersForm = new Form({
+          answers: eligibleAnswers,
+        });
         this.answersExist = true;
       } catch (exception) {
-        this.eligibleAnswers = this.questions.map((question) => {
-          let answer = null;
+        this.eligibleAnswersForm = new Form({
+          answers: this.questions.map((question) => {
+            let answer = null;
 
-          switch (question.type) {
-            case 'select':
-            case 'checkbox':
-              answer = [];
-              break;
-            case 'date':
-              answer = {
-                comparison: '',
-                interval: 0,
-              };
-              break;
-            default:
-              throw new Error(`Invalid question type [${question.type}]`);
-          }
+            switch (question.type) {
+              case 'select':
+              case 'checkbox':
+                answer = [];
+                break;
+              case 'date':
+                answer = {
+                  comparison: '',
+                  interval: 0,
+                };
+                break;
+              default:
+                throw new Error(`Invalid question type [${question.type}]`);
+            }
 
-          return {
-            question_id: question.id,
-            answer,
-          };
+            return {
+              question_id: question.id,
+              answer,
+            };
+          }),
         });
       }
 
@@ -339,14 +353,14 @@ export default {
      * @returns {Boolean}
      */
     optionSelected(question, option) {
-      return this.eligibleAnswers
+      return this.eligibleAnswersForm.answers
         .find(foundEligibleAnswer => foundEligibleAnswer.question_id === question.id)
         .answer
         .find(answer => answer === option) !== undefined;
     },
 
     toggleAnswerOption(question, option) {
-      const eligibleAnswer = this.eligibleAnswers
+      const eligibleAnswer = this.eligibleAnswersForm.answers
         .find(foundEligibleAnswer => foundEligibleAnswer.question_id === question.id);
 
       const alreadySelected = eligibleAnswer.answer.indexOf(option) === -1;
@@ -359,17 +373,34 @@ export default {
     },
 
     selectComparison(question, comparison) {
-      this.eligibleAnswers
+      this.eligibleAnswersForm.answers
         .find(foundEligibleAnswer => foundEligibleAnswer.question_id === question.id)
         .answer
         .comparison = comparison;
     },
 
     comparisonSelected(question, comparison) {
-      return this.eligibleAnswers
+      return this.eligibleAnswersForm.answers
         .find(foundEligibleAnswer => foundEligibleAnswer.question_id === question.id)
         .answer
         .comparison === comparison;
+    },
+
+    async onSubmitEligibleAnswers() {
+      try {
+        await this.eligibleAnswersForm.put(`/clinics/${this.$route.params.clinic}/eligible-answers`, (data) => {
+          // Parse date answer interval as integer.
+          data.answers
+            .filter(answer => answer.type === 'date')
+            .forEach((answer) => {
+              answer.interval = parseInt(answer.interval, 10);
+            });
+        });
+
+        this.$router.push({ name: 'clinics.edit', params: { clinic: this.$route.params.clinic } });
+      } catch (exception) {
+        // Supress error from console.
+      }
     },
   },
 
@@ -390,6 +421,8 @@ export default {
   padding: .5rem 1rem;
   margin-right: .5rem;
   border-radius: 8px;
+  background: none;
+  border: 1px solid #000;
 
   &:hover {
     cursor: pointer;
@@ -397,6 +430,7 @@ export default {
 
   &--selected {
     background-color: #5593f0;
+    border-color: #5593f0;
     color: #fff;
   }
 }
