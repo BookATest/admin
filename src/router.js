@@ -79,6 +79,33 @@ const router = new Router({
         auth: true,
       },
     },
+    {
+      path: '/settings/clinics',
+      name: 'clinics.index',
+      component: () => import('./views/clinics/Index.vue'),
+      meta: {
+        title: 'Locations',
+        auth: true,
+      },
+    },
+    {
+      path: '/settings/clinics/create',
+      name: 'clinics.create',
+      component: () => import('./views/clinics/Create.vue'),
+      meta: {
+        title: 'Create Location',
+        auth: true,
+      },
+    },
+    {
+      path: '/settings/clinics/:clinic/edit',
+      name: 'clinics.edit',
+      component: () => import('./views/clinics/Edit.vue'),
+      meta: {
+        title: 'Edit Location',
+        auth: true,
+      },
+    },
   ],
 });
 

@@ -76,6 +76,8 @@
               @input="userForm.$errors.clear('receive_cancellation_confirmations')"
             />
 
+            <h2>Permissions</h2>
+
             <div class="edit-user__notification" v-for="(role, index) in userForm.roles" :key="role._id">
               <div class="form__drop-down">
                 <label for="dropdown"><span>Role</span></label>
@@ -138,9 +140,9 @@
 <script>
 import Form from '@/classes/Form';
 import BatButton from '@/components/Button.vue';
-import BatInput from '@/views/users/components/Input.vue';
-import BatRadio from '@/views/users/components/Radio.vue';
-import BatImage from '@/views/users/components/Image.vue';
+import BatInput from '@/components/Input.vue';
+import BatRadio from '@/components/Radio.vue';
+import BatImage from '@/components/Image.vue';
 
 
 export default {
@@ -251,8 +253,10 @@ export default {
 <style lang="scss">
 .create-user {
   &__remove-permission-button {
-    margin-top: 1rem;
+    padding-top: 1rem;
     width: unset !important;
+    float: none !important;
+    clear: both;
   }
 }
 </style>

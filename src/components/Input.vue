@@ -11,6 +11,9 @@
         @input="onInput"
         :type="type"
         :id="`input-${_uid}`"
+        :step="step"
+        :min="min"
+        :max="max"
       >
       <bat-body v-if="error">
         {{ error }}
@@ -47,6 +50,21 @@ export default {
       required: false,
       type: String,
       default: 'text',
+    },
+
+    step: {
+      required: false,
+      step: String,
+    },
+
+    min: {
+      required: false,
+      step: String,
+    },
+
+    max: {
+      required: false,
+      step: String,
     },
   },
 
