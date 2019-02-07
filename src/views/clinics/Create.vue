@@ -7,7 +7,7 @@
       <div class="location-edit__form">
 
         <div class="">
-          <form class="form form--location-edit">
+          <form @submit.prevent="onSubmit" class="form form--location-edit">
             <bat-input
               label="Name"
               v-model="clinicForm.name"
@@ -106,13 +106,16 @@
               v-model="clinicForm.send_dna_follow_ups"
               @input="clinicForm.$errors.clear('send_dna_follow_ups')"
             />
+
+            <div class="location-edit__action">
+              <bat-button type="submit" primary :disabled="clinicForm.$submitting">
+                <span v-if="!clinicForm.$submitting">Create</span>
+                <span v-else>Creating...</span>
+              </bat-button>
+            </div>
           </form>
         </div>
 
-      </div>
-
-      <div class="location-edit__action">
-        <button class="button button__primary button__primary--b"><span>Save</span></button>
       </div>
 
     </div>
@@ -125,6 +128,7 @@ import Form from '@/classes/Form';
 import BatInput from '@/components/Input.vue';
 import BatTextarea from '@/components/Textarea.vue';
 import BatRadio from '@/components/Radio.vue';
+import BatButton from '@/components/Button.vue';
 
 export default {
   name: 'ClinicsCreateView',
@@ -135,7 +139,12 @@ export default {
     };
   },
 
-  components: { BatInput, BatTextarea, BatRadio },
+  components: {
+    BatInput,
+    BatTextarea,
+    BatRadio,
+    BatButton,
+  },
 
   data() {
     return {
@@ -155,6 +164,21 @@ export default {
         send_dna_follow_ups: true,
       }),
     };
+  },
+
+  methods: {
+    async onSubmit() {
+      try {
+        const { data: { id } } = await this.clinicForm.post('/clinics', (data) => {
+          data.appointment_duration = parseInt(data.appointment_duration, 10);
+          data.appointment_booking_threshold = parseInt(data.appointment_booking_threshold, 10);
+        });
+
+        this.$router.push({ name: 'clinics.edit', params: { clinic: id } });
+      } catch (exception) {
+        // Supress error from console.
+      }
+    },
   },
 };
 </script>
