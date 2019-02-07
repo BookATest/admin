@@ -4,10 +4,11 @@
     <!-- Location Edit -->
     <div class="location-edit">
 
-      <bat-loader v-if="loadingClinic"/>
+      <bat-loader v-if="loadingClinic || loadingQuestions || loadingEligibleAnswers"/>
       <div v-else class="location-edit__form">
 
-        <div class="">
+        <!-- Clinic form -->
+        <div>
           <form @submit.prevent="onSubmit" class="form form--location-edit">
             <bat-input
               label="Name"
@@ -117,6 +118,57 @@
           </form>
         </div>
 
+        <!-- Eligible answers form -->
+        <div>
+          <h2>Eligible answers</h2>
+
+          <bat-card warning v-if="!answersExist">
+            <div class="warning__icon">
+              <i class="icon icon--warning"></i>
+            </div>
+            <div class="warning__content">
+              <p>
+                This clinic has not yet set their eligible answers, therefore it
+                will not be available for appointments until they have been set.
+              </p>
+            </div>
+          </bat-card>
+
+          <form>
+            <div v-for="question in questions" :key="question.id" class="bat-eligible-answer">
+              <h3>{{ question.question }}</h3>
+
+              <!-- Select -->
+              <div v-if="question.type === 'select'">
+                <button
+                  @click="toggleAnswerOption(question, option)"
+                  class="bat-button"
+                  :class="{ 'bat-button--selected': optionSelected(question, option) }"
+                  v-for="(option, index) in question.options"
+                  :key="`QuestionOption${question.id}${index}`"
+                  type="button"
+                >
+                  {{ option }}
+                </button>
+              </div>
+
+              <!-- Checkbox -->
+              <div v-else-if="question.type === 'checkbox'">
+                <button
+                  @click="toggleAnswerOption(question, option)"
+                  class="bat-button"
+                  :class="{ 'bat-button--selected': optionSelected(question, option) }"
+                  v-for="(option, index) in [true, false]"
+                  :key="`QuestionOption${question.id}${index}`"
+                  type="button"
+                >
+                  {{ option ? 'Yes' : 'No' }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
       </div>
 
     </div>
@@ -131,6 +183,7 @@ import BatInput from '@/components/Input.vue';
 import BatTextarea from '@/components/Textarea.vue';
 import BatRadio from '@/components/Radio.vue';
 import BatButton from '@/components/Button.vue';
+import BatCard from '@/components/Card.vue';
 
 export default {
   name: 'ClinicsEditView',
@@ -147,6 +200,7 @@ export default {
     BatTextarea,
     BatRadio,
     BatButton,
+    BatCard,
   },
 
   data() {
@@ -155,6 +209,11 @@ export default {
       deletingClinic: false,
       clinic: null,
       clinicForm: null,
+      loadingQuestions: false,
+      questions: null,
+      loadingEligibleAnswers: false,
+      eligibleAnswers: null,
+      answersExist: false,
     };
   },
 
@@ -208,10 +267,104 @@ export default {
         this.deletingClinic = false;
       }
     },
+
+    async fetchQuestions() {
+      this.loadingQuestions = true;
+
+      const { data: { data: questions } } = await this.$http.get('/questions');
+      this.questions = questions.filter(question => question.type !== 'text');
+
+      await this.fetchEligibleAnswers();
+
+      this.loadingQuestions = false;
+    },
+
+    async fetchEligibleAnswers() {
+      this.loadingEligibleAnswers = true;
+
+      try {
+        const { data: { data: eligibleAnswers } } = await this.$http.get(`/clinics/${this.$route.params.clinic}/eligible-answers`);
+        this.eligibleAnswers = eligibleAnswers;
+        this.answersExist = true;
+      } catch (exception) {
+        this.eligibleAnswers = this.questions.map((question) => {
+          let answer = null;
+
+          switch (question.type) {
+            case 'select':
+            case 'checkbox':
+              answer = [];
+              break;
+            case 'date':
+              answer = {
+                comparison: '',
+                interval: 0,
+              };
+              break;
+            default:
+              throw new Error(`Invalid question type [${question.type}]`);
+          }
+
+          return {
+            question_id: question.id,
+            answer,
+          };
+        });
+      }
+
+      this.loadingEligibleAnswers = false;
+    },
+
+    /**
+     * Determined whether the option has bee selected as an eligible answer.
+     *
+     * @returns {Boolean}
+     */
+    optionSelected(question, option) {
+      return this.eligibleAnswers
+        .find(foundEligibleAnswer => foundEligibleAnswer.question_id === question.id)
+        .answer
+        .find(answer => answer === option) !== undefined;
+    },
+
+    toggleAnswerOption(question, option) {
+      const eligibleAnswer = this.eligibleAnswers
+        .find(foundEligibleAnswer => foundEligibleAnswer.question_id === question.id);
+
+      const alreadySelected = eligibleAnswer.answer.indexOf(option) === -1;
+
+      if (alreadySelected) {
+        eligibleAnswer.answer.push(option);
+      } else {
+        eligibleAnswer.answer.splice(eligibleAnswer.answer.indexOf(option), 1);
+      }
+    },
   },
 
   created() {
     this.fetchClinic();
+    this.fetchQuestions();
   },
 };
 </script>
+
+<style lang="scss">
+.bat-eligible-answer {
+  margin-bottom: 1rem;
+}
+
+.bat-button {
+  padding: .5rem 1rem;
+  margin-right: .5rem;
+  border-radius: 8px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &--selected {
+    background-color: #5593f0;
+    color: #fff;
+  }
+}
+</style>
