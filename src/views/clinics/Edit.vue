@@ -165,6 +165,24 @@
                   {{ option ? 'Yes' : 'No' }}
                 </button>
               </div>
+
+              <!-- Date -->
+              <div v-else-if="question.type === 'date'">
+                <button
+                  @click="selectComparison(question, option)"
+                  class="bat-button"
+                  :class="{ 'bat-button--selected': comparisonSelected(question, option) }"
+                  v-for="(option, index) in ['<', '>']"
+                  :key="`QuestionOption${question.id}${index}`"
+                  type="button"
+                >
+                  {{ option === '>' ? 'Greater than' : 'Less than' }}
+                </button>
+                <bat-input
+                  v-model="eligibleAnswers.find(i => i.question_id === question.id).answer.interval"
+                  label="Interval"
+                />
+              </div>
             </div>
           </form>
         </div>
@@ -339,6 +357,20 @@ export default {
         eligibleAnswer.answer.splice(eligibleAnswer.answer.indexOf(option), 1);
       }
     },
+
+    selectComparison(question, comparison) {
+      this.eligibleAnswers
+        .find(foundEligibleAnswer => foundEligibleAnswer.question_id === question.id)
+        .answer
+        .comparison = comparison;
+    },
+
+    comparisonSelected(question, comparison) {
+      return this.eligibleAnswers
+        .find(foundEligibleAnswer => foundEligibleAnswer.question_id === question.id)
+        .answer
+        .comparison === comparison;
+    },
   },
 
   created() {
@@ -350,7 +382,8 @@ export default {
 
 <style lang="scss">
 .bat-eligible-answer {
-  margin-bottom: 1rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px dashed #ddd;
 }
 
 .bat-button {
