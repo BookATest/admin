@@ -106,6 +106,15 @@ const router = new Router({
         auth: true,
       },
     },
+    {
+      path: '/settings/reports',
+      name: 'reports.index',
+      component: () => import('./views/reports/Index.vue'),
+      meta: {
+        title: 'Reporting',
+        auth: true,
+      },
+    },
   ],
 });
 

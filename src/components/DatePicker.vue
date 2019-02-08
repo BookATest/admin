@@ -6,15 +6,13 @@
     </label>
 
     <div>
-      <input
+      <vue-datepicker
         :value="value"
-        @input="onInput"
-        :type="type"
-        :id="`input-${_uid}`"
-        :step="step"
-        :min="min"
-        :max="max"
-      >
+        @selected="onSelected"
+        :monday-first="true"
+        :format="dateFormatter"
+      />
+
       <bat-body v-if="error">
         {{ error }}
       </bat-body>
@@ -24,12 +22,13 @@
 </template>
 
 <script>
+import VueDatepicker from 'vuejs-datepicker';
 import BatBody from '@/components/Body.vue';
 
 export default {
-  name: 'TextInput',
+  name: 'DatePickerInput',
 
-  components: { BatBody },
+  components: { VueDatepicker, BatBody },
 
   props: {
     value: {
@@ -45,32 +44,15 @@ export default {
       required: false,
       default: null,
     },
-
-    type: {
-      required: false,
-      type: String,
-      default: 'text',
-    },
-
-    step: {
-      required: false,
-      step: String,
-    },
-
-    min: {
-      required: false,
-      step: String,
-    },
-
-    max: {
-      required: false,
-      step: String,
-    },
   },
 
   methods: {
-    onInput(event) {
-      this.$emit('input', event.target.value);
+    onSelected(date) {
+      this.$emit('input', this.$moment(date).format('YYYY-MM-DD'));
+    },
+
+    dateFormatter(date) {
+      return this.$moment(date).format('Do MMM YYYY');
     },
   },
 };
