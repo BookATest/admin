@@ -70,10 +70,10 @@ export default {
                 name: 'calendar',
                 to: { name: 'calendar.index' },
               },
-              {
-                name: 'notifications',
-                to: { name: 'notifications.index' },
-              },
+              // {
+              //   name: 'notifications',
+              //   to: { name: 'notifications.index' },
+              // },
               {
                 name: 'users',
                 to: { name: 'users.index' },
@@ -82,25 +82,25 @@ export default {
                 name: 'locations',
                 to: { name: 'clinics.index' },
               },
-              {
-                name: 'branding',
-                to: { name: 'branding.index' },
-              },
-              {
-                name: 'configuration',
-                to: { name: 'configuration.index' },
-              },
-              {
-                name: 'audits',
-                to: { name: 'audits.index' },
-              },
+              // {
+              //   name: 'branding',
+              //   to: { name: 'branding.index' },
+              // },
+              // {
+              //   name: 'configuration',
+              //   to: { name: 'configuration.index' },
+              // },
+              // {
+              //   name: 'audits',
+              //   to: { name: 'audits.index' },
+              // },
             ],
           },
-          {
-            name: 'service users',
-            icon: 'icon--users',
-            to: { name: 'service-users.index' },
-          },
+          // {
+          //   name: 'service users',
+          //   icon: 'icon--users',
+          //   to: { name: 'service-users.index' },
+          // },
           {
             name: 'logout',
             icon: 'icon--cross',
