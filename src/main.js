@@ -1,3 +1,6 @@
+// Import polyfills.
+import '@babel/polyfill';
+
 import Vue from 'vue';
 import Meta from 'vue-meta';
 import Moment from 'vue-moment';
