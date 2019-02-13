@@ -362,7 +362,6 @@ export default {
      * When the user selects an appointment.
      */
     onSelect(appointment) {
-      console.log(JSON.stringify(appointment));
       this.$emit('input', appointment);
     },
 

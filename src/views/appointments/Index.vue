@@ -130,7 +130,6 @@ export default {
      */
     async onCreate() {
       await this.$refs.table.fetchAppointments();
-      console.log(JSON.stringify(this.$refs.table.appointments), JSON.stringify(this.appointment));
       this.appointment = this.$refs.table.appointments.find(appointment => appointment.user_id === this.$store.state.user.get().id && this.$moment(appointment.start_at).isSame(this.$moment(this.appointment.start_at)));
     },
   },
