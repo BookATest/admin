@@ -78,7 +78,7 @@ export default {
       editMode: false,
       clinicId: '',
       userId: '',
-      date: this.$moment().startOf('isoWeek').format('YYYY-MM-DD'),
+      date: this.$moment.utc().startOf('isoWeek').format('YYYY-MM-DD'),
       appointment: null,
     };
   },
@@ -122,7 +122,7 @@ export default {
      */
     async onCancel() {
       await this.$refs.table.fetchAppointments();
-      this.appointment = this.$refs.table.appointments.find(appointment => appointment.user_id === this.$store.state.user.get().id && appointment.start_at === this.appointment.start_at);
+      this.appointment = this.$refs.table.appointments.find(appointment => appointment.user_id === this.$store.state.user.get().id && this.$moment(appointment.start_at).isSame(this.$moment(this.appointment.start_at)));
     },
 
     /**
@@ -130,7 +130,7 @@ export default {
      */
     async onCreate() {
       await this.$refs.table.fetchAppointments();
-      this.appointment = this.$refs.table.appointments.find(appointment => appointment.user_id === this.$store.state.user.get().id && appointment.start_at === this.appointment.start_at);
+      this.appointment = this.$refs.table.appointments.find(appointment => appointment.user_id === this.$store.state.user.get().id && this.$moment(appointment.start_at).isSame(this.$moment(this.appointment.start_at)));
     },
   },
 };

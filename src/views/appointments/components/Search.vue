@@ -9,7 +9,7 @@
         <div>
           <select
             :value="clinicId"
-            @input="$emit('update:clinicId', $event.target.value)"
+            @change="$emit('update:clinicId', $event.target.value)"
           >
             <option value="">Select clinic...</option>
             <option v-for="clinic in clinics" :key="clinic.id" :value="clinic.id">{{ clinic.name }}</option>
@@ -26,7 +26,7 @@
         <div>
           <select
             :value="userId"
-            @input="$emit('update:userId', $event.target.value)"
+            @change="$emit('update:userId', $event.target.value)"
             :disabled="clinicId === '' || editMode"
           >
             <option value="">All users</option>

@@ -8,7 +8,7 @@
     <div>
       <select
         :value="value"
-        @input="onInput"
+        @change="onInput"
         :id="`Select::${_uid}`"
       >
         <option
