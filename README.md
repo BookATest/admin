@@ -47,7 +47,7 @@ You should now have you app up and running, ready to use.
 # All tests.
 npm run test
 
-# Only init tests.
+# Only unit tests.
 npm run test:unit
 
 # Only end-to-end tests.
