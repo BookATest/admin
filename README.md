@@ -63,10 +63,10 @@ This project is intended to be hosted on AWS infrastructure and includes a deplo
 
 ```bash
 # Build.
-node_modules/.bin/vue-cli-service build
+npm run build
 
 # Deploy.
-node_modules/.bin/vue-cli-service s3-deploy
+npm run deploy
 ```
 
 ## Built with
