@@ -6,7 +6,7 @@
     <label class="button button__radio">
       <input
         :checked="value === true"
-        @input="onInput"
+        @change="onInput"
         :name="`input-${_uid}`"
         type="radio"
         value="true"
@@ -17,7 +17,7 @@
     <label class="button button__radio">
       <input
         :checked="value === false"
-        @input="onInput"
+        @change="onInput"
         :name="`input-${_uid}`"
         type="radio"
         value="false"

@@ -232,7 +232,7 @@ export default {
       for (let slot = 0; slot < slotCount; slot += 1) {
         const appointmentTimeInMinutes = slot * appointmentDuration;
 
-        const time = this.$moment()
+        const time = this.$moment.utc()
           .startOf('day')
           .add(appointmentTimeInMinutes, 'minutes');
 
@@ -388,8 +388,8 @@ export default {
       const params = {
         sort: 'start_at',
         append: ['service_user_name', 'user_first_name', 'user_last_name'].join(','),
-        'filter[starts_after]': this.$moment(this.date).startOf('isoWeek').format('Y-MM-DD[T]HH:mm:ssZ'),
-        'filter[starts_before]': this.$moment(this.date).endOf('isoWeek').format('Y-MM-DD[T]HH:mm:ssZ'),
+        'filter[starts_after]': this.$moment.utc(this.date).startOf('isoWeek').format('Y-MM-DD[T]HH:mm:ssZ'),
+        'filter[starts_before]': this.$moment.utc(this.date).endOf('isoWeek').format('Y-MM-DD[T]HH:mm:ssZ'),
       };
 
       // Filter clinic ID's to ones user is a community worker for.
@@ -427,7 +427,7 @@ export default {
      * @returns {object}
      */
     getEmptyMorningAppointment(day, slot) {
-      const startAt = this.$moment(this.date)
+      const startAt = this.$moment.utc(this.date)
         .add(day - 1, 'days')
         .add(slot * this.clinic.appointment_duration, 'minutes');
 
