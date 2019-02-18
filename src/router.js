@@ -115,6 +115,15 @@ const router = new Router({
         auth: true,
       },
     },
+    {
+      path: '/service-users',
+      name: 'service-users.index',
+      component: () => import('./views/service-users/Index.vue'),
+      meta: {
+        title: 'Service Users',
+        auth: true,
+      },
+    },
   ],
 });
 
