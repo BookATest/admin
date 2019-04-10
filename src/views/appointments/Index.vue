@@ -78,7 +78,7 @@ export default {
       editMode: false,
       clinicId: '',
       userId: '',
-      date: this.$moment.utc().startOf('isoWeek').format('YYYY-MM-DD'),
+      date: this.$moment().startOf('isoWeek').format('YYYY-MM-DD'),
       appointment: null,
     };
   },
