@@ -6,57 +6,17 @@
 
       <!-- Filter -->
       <div class="service-users__filter">
-        <form class="form">
+        <form @submit.prevent="fetchServiceUsers" class="form">
           <div>
             <div class="form__search">
               <label for="search">Search</label>
 
               <div>
-                <input type="text" id="search" />
+                <input v-model="filters.name" type="text" id="search" />
 
-                <button>
+                <button type="submit">
                   <i class="icon icon--arrowright" />
                 </button>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="form__drop-down">
-              <label for="dropdown">Filter by</label>
-
-              <div>
-                <select id="dropdown">
-                  <option>Unique ID</option>
-                  <option>Option 2</option>
-                  <option>Option 3</option>
-                  <option>Option 4</option>
-                  <option>Option 5</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form__drop-down">
-              <div>
-                <select id="dropdown" name="dropdown">
-                  <option>Name</option>
-                  <option>Option 2</option>
-                  <option>Option 3</option>
-                  <option>Option 4</option>
-                  <option>Option 5</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form__drop-down">
-              <div>
-                <select id="dropdown" name="dropdown">
-                  <option>Last Appointment</option>
-                  <option>Option 2</option>
-                  <option>Option 3</option>
-                  <option>Option 4</option>
-                  <option>Option 5</option>
-                </select>
               </div>
             </div>
           </div>
@@ -64,7 +24,9 @@
       </div>
 
       <!-- Table -->
-      <div class="service-users__table">
+      <bat-loader v-if="loadingServiceUsers"/>
+
+      <div v-else class="service-users__table">
         <table class="table table--4col" cellpadding="16">
           <thead>
             <tr>
@@ -76,32 +38,44 @@
           </thead>
 
           <tbody>
-            <bat-loader v-if="loadingServiceUsers"/>
+            <tr
+              v-for="(serviceUser, index) in serviceUsers"
+              :key="`service-users::index::serviceUser::${index}`"
+            >
+              <td><span>{{ serviceUser.name }}</span></td>
 
-            <template v-else>
-              <tr
-                v-for="(serviceUser, index) in serviceUsers"
-                :key="`service-users::index::serviceUser::${index}`"
-              >
-                <td><span>{{ serviceUser.name }}</span></td>
+              <td><span>{{ serviceUser.phone }}</span></td>
 
-                <td><span>{{ serviceUser.phone }}</span></td>
+              <td><span>{{ serviceUser.email || '-' }}</span></td>
 
-                <td><span>{{ serviceUser.email || '-' }}</span></td>
-
-                <td>
-                  <router-link
-                    tag="button"
-                    :to="{ name: 'service-users.show', params: { service_user: serviceUser.id } }"
-                    class="button button__primary button__primary--b"
-                  >
-                    <span>View</span>
-                  </router-link>
-                </td>
-              </tr>
-            </template>
+              <td>
+                <router-link
+                  tag="button"
+                  :to="{ name: 'service-users.show', params: { service_user: serviceUser.id } }"
+                  class="button button__primary button__primary--b"
+                >
+                  <span>View</span>
+                </router-link>
+              </td>
+            </tr>
           </tbody>
         </table>
+
+        <button
+          @click="onPrevious"
+          type="button"
+          :disabled="currentPage <= 1"
+        >
+          Previous
+        </button>
+
+        <button
+          @click="onNext"
+          type="button"
+          :disabled="currentPage >= totalPages"
+        >
+          Next
+        </button>
       </div>
     </div>
   </div>
@@ -127,6 +101,9 @@ export default {
       serviceUsers: [],
       currentPage: 1,
       totalPages: 1,
+      filters: {
+        name: '',
+      },
     };
   },
 
@@ -138,6 +115,10 @@ export default {
       const params = {
         page: this.currentPage,
       };
+
+      if (this.filters.name !== '') {
+        params['filter[name]'] = this.filters.name;
+      }
 
       const {
         data: {
