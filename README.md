@@ -24,14 +24,7 @@ Set the configuration by creating the environment file.
 
 ```bash
 # If needed, change the values to fit in with your installation.
-cat > .env.local << EOF
-VUE_APP_URI=http://localhost:8080
-VUE_APP_API_URI=http://localhost
-VUE_APP_OAUTH_CLIENT_ID=1
-
-VUE_APP_S3D_BUCKET=name_of_s3_bucket_to_host_site_on
-VUE_APP_S3D_CLOUDFRONT_ID=id_of_cloudfront_distribution
-EOF
+cp .env.example .env.local
 ```
 
 Run a server with hot reload.
