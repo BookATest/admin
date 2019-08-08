@@ -84,9 +84,20 @@
                 :key="`service-users::index::serviceUser::${index}`"
               >
                 <td><span>{{ serviceUser.name }}</span></td>
+
                 <td><span>{{ serviceUser.phone }}</span></td>
+
                 <td><span>{{ serviceUser.email || '-' }}</span></td>
-                <td><button class="button button__primary button__primary--b" onclick="location.href='../users/user--view.html'"><span>View</span></button></td>
+
+                <td>
+                  <router-link
+                    tag="button"
+                    :to="{ name: 'service-users.show', params: { service_user: serviceUser.id } }"
+                    class="button button__primary button__primary--b"
+                  >
+                    <span>View</span>
+                  </router-link>
+                </td>
               </tr>
             </template>
           </tbody>
