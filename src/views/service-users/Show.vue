@@ -40,7 +40,6 @@
               <tr>
                 <th><span>Date</span></th>
                 <th><span>Location</span></th>
-                <th><span>Feedback</span></th>
               </tr>
             </thead>
 
@@ -49,24 +48,12 @@
                 v-for="(appointment, index) in appointments"
                 :key="`service-users::show::appointment::${index}`"
               >
-                <td><span>{{ appointment.start_at }}</span></td>
-                <td><span>{{ appointment.clinic_id }}</span></td>
-                <td>
-                  <router-link
-                    tag="button"
-                    :to="{
-                      name: 'appointments.show',
-                      params: { appointment: appointment.id },
-                    }"
-                    class="button button__primary button__primary--b"
-                  >
-                    <span>View</span>
-                  </router-link>
-                </td>
+                <td><span>{{ appointment.start_at | moment('DD/MM/YYYY \\a\\t hh:mma') }}</span></td>
+                <td><span>{{ appointment.clinic.name }}</span></td>
               </tr>
 
               <tr v-if="appointments.length === 0">
-                <td colspan="3">No appointments.</td>
+                <td colspan="2">No appointments.</td>
               </tr>
             </tbody>
           </table>
@@ -108,8 +95,8 @@ export default {
       const allAppointments = this.appointments.length;
       const unattendedAppointments = this.appointments.filter(appointment => appointment.did_not_attend === true).length;
 
-      if (unattendedAppointments === 0) {
-        return allAppointments;
+      if (allAppointments === 0) {
+        return 0;
       }
 
       return Math.round((unattendedAppointments / allAppointments) * 100);
@@ -134,11 +121,34 @@ export default {
     async fetchAppointments() {
       this.loadingAppointments = true;
 
-      this.appointments = await this.fetchAll('/appointments', {
+      let appointments = await this.fetchAll('/appointments', {
         'filter[service_user_id]': this.serviceUser.id,
       });
+      appointments = await this.assignClinics(appointments);
+      this.appointments = appointments;
 
       this.loadingAppointments = false;
+    },
+
+    // Fetch the clinics for the appointments.
+    async assignClinics(appointments) {
+      const clinicIds = [];
+
+      appointments.forEach((appointment) => {
+        if (!clinicIds.includes(appointment.clinic_id)) {
+          clinicIds.push(appointment.clinic_id);
+        }
+      });
+
+      const clinics = await this.fetchAll('/clinics', {
+        'filter[id]': clinicIds.join(','),
+      });
+
+      return appointments.map((appointment) => {
+        appointment.clinic = clinics.find(clinic => clinic.id === appointment.clinic_id);
+
+        return appointment;
+      });
     },
   },
 
