@@ -96,11 +96,11 @@ export default {
               // },
             ],
           },
-          // {
-          //   name: 'service users',
-          //   icon: 'icon--users',
-          //   to: { name: 'service-users.index' },
-          // },
+          {
+            name: 'service users',
+            icon: 'icon--users',
+            to: { name: 'service-users.index' },
+          },
           {
             name: 'logout',
             icon: 'icon--cross',
