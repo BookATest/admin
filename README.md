@@ -9,7 +9,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 * [Book A Test - API](https://github.com/BookATest/api)
-* [Node.js](https://nodejs.org)
+* [Node.js 8](https://nodejs.org)
 * [AWS CLI (for deploying)](https://aws.amazon.com/cli)
 
 ### Installing
