@@ -15,54 +15,66 @@
       </div>
 
       <div class="configuration__options">
-        <div>
-          <div class="button button__amend button__amend--edit" onclick="location.href='../settings/configuration--edit.html'">
-            <input
-              type="text"
-              id="one"
-              name="one"
-              value="Pick up milk"
-              class="button__amend__input"
-            >
-            <button class="button__amend__edit">
-              <span>Edit</span><i class="icon icon--edit"></i>
-            </button>
-          </div>
+        <form @submit.prevent="onSubmit">
+          <fieldset :disabled="submitting">
+            <div>
+              <label>
+                Name
+                <input v-model="settings.name" type="text">
+              </label>
+            </div>
 
-          <div class="button button__amend button__amend--edit" onclick="location.href='../settings/configuration--edit.html'">
-            <input
-              type="text"
-              id="two"
-              name="two"
-              value="See GP"
-              class="button__amend__input"
-            >
-            <button class="button__amend__edit">
-              <span>Edit</span><i class="icon icon--edit"></i>
-            </button>
-          </div>
+            <div>
+              <label>
+                Email
+                <input v-model="settings.email" type="email">
+              </label>
+            </div>
 
-          <div
-            class="button button__amend button__amend--add"
-            onclick="location.href='../settings/configuration--edit.html'"
-          >
-            <button class="button__amend__add">
-              <span>Add</span><i class="icon icon--pluscircle"></i>
-            </button>
-          </div>
-        </div>
-      </div>
+            <div>
+              <label>
+                Phone
+                <input v-model="settings.phone" type="tel">
+              </label>
+            </div>
 
-      <div class="configuration__feedback">
-        <h2>Follow-up feedback?</h2>
+            <div>
+              <label>
+                Primary colour
+                <input v-model="settings.primary_colour" type="color">
+              </label>
+            </div>
 
-        <label class="button button__radio">
-          <input checked="checked" name="group" type="radio"><span>Enable</span>
-        </label>
+            <div>
+              <label>
+                Secondary colour
+                <input v-model="settings.secondary_colour" type="color">
+              </label>
+            </div>
 
-        <label class="button button__radio">
-          <input name="group" type="radio"><span>Disable</span>
-        </label>
+            <div>
+              <label>
+                Default appointment booking threshold (minutes)
+                <input
+                  v-model="settings.default_appointment_booking_threshold"
+                  type="number"
+                >
+              </label>
+            </div>
+
+            <div>
+              <label>
+                Default appointment duration (minutes)
+                <input
+                  v-model="settings.default_appointment_duration"
+                  type="number"
+                >
+              </label>
+            </div>
+
+            <button type="submit">{{ submitting ? 'Saving' : 'Save' }}</button>
+          </fieldset>
+        </form>
       </div>
     </div>
   </div>
@@ -76,6 +88,28 @@ export default {
     return {
       title: this.$route.meta.title,
     };
+  },
+
+  data() {
+    return {
+      settings: JSON.parse(JSON.stringify(this.$store.state.settings)),
+      submitting: false,
+    };
+  },
+
+  methods: {
+    async onSubmit() {
+      this.submitting = true;
+
+      try {
+        await this.$http.put('/settings', this.settings);
+        this.$store.dispatch('reloadSettings');
+      } catch (exception) {
+        console.log(exception);
+      }
+
+      this.submitting = false;
+    },
   },
 };
 </script>
