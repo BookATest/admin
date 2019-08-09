@@ -44,6 +44,15 @@ const router = new Router({
       },
     },
     {
+      path: '/settings',
+      name: 'settings.index',
+      component: () => import('./views/settings/Index.vue'),
+      meta: {
+        title: 'Settings',
+        auth: true,
+      },
+    },
+    {
       path: '/settings/calendar',
       name: 'calendar.index',
       component: () => import('./views/calendar/Index.vue'),
