@@ -36,10 +36,12 @@
               Primary colour
               <input v-model="settings.primary_colour" type="color">
             </label>
+
             <label>
               Secondary colour
               <input v-model="settings.secondary_colour" type="color">
             </label>
+
             <label>
               Default appointment booking threshold (minutes)
               <input
@@ -47,12 +49,18 @@
                 type="number"
               >
             </label>
+
             <label>
               Default appointment duration (minutes)
               <input
                 v-model="settings.default_appointment_duration"
                 type="number"
               >
+            </label>
+
+            <label>
+              Custom CSS
+              <textarea class="css-input" v-model="settings.styles" />
             </label>
 
             <h3>CMS</h3>
@@ -427,5 +435,9 @@ h5 {
 button {
   padding: .5rem;
   font-size: 1rem;
+}
+
+.css-input {
+  font-family: monospace;
 }
 </style>
