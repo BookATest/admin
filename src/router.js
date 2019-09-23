@@ -125,6 +125,24 @@ const router = new Router({
       },
     },
     {
+      path: '/settings/audits',
+      name: 'audits.index',
+      component: () => import('./views/audits/Index.vue'),
+      meta: {
+        title: 'Audits',
+        auth: true,
+      },
+    },
+    {
+      path: '/settings/audits/:audit',
+      name: 'audits.show',
+      component: () => import('./views/audits/Show.vue'),
+      meta: {
+        title: 'Audit',
+        auth: true,
+      },
+    },
+    {
       path: '/service-users',
       name: 'service-users.index',
       component: () => import('./views/service-users/Index.vue'),
