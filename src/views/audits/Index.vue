@@ -19,12 +19,16 @@
               :key="`audits::index::audit::${index}`"
             >
               <td>
-                <span>{{ audit.description }} on {{ audit.created_at | moment('Do MMMM HH:mm') }}</span>
+                <span>{{ audit.description || audit.action }} on {{ audit.created_at | moment('Do MMMM HH:mm') }}</span>
               </td>
               <td>
-                <button class="button button__primary button__primary--b">
+                <router-link
+                  tag="button"
+                  :to="{ name: 'audits.show', params: { audit: audit.id } }"
+                  class="button button__primary button__primary--b"
+                >
                   <span>View</span>
-                </button>
+                </router-link>
               </td>
             </tr>
           </tbody>
