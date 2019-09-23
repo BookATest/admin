@@ -2,95 +2,119 @@
   <div class="main">
     <!-- Audit Logging -->
     <div class="audit-logging">
-      <!-- Filter -->
-      <div class="audit-logging__filter">
-        <form class="form">
-          <div>
-            <div class="form__search">
-              <label for="search">Search</label>
-              <div>
-                <input type="text" id="search" name="search">
-                <button><i class="icon icon--arrowright"></i></button>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="form__drop-down">
-              <label for="dropdown">Filter by</label>
-
-              <div>
-                <select id="dropdown" name="dropdown">
-                  <option>User</option>
-                  <option>Option 2</option>
-                  <option>Option 3</option>
-                  <option>Option 4</option>
-                  <option>Option 5</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form__date">
-              <div>
-                <input type="text" id="date_one" name="date_one" placeholder="March 1st 2018">
-              </div>
-              -
-              <div>
-                  <input type="text" id="date_two" name="date_two" placeholder="March 20th 2018">
-              </div>
-              <button><i class="icon icon--arrowright"></i></button>
-            </div>
-          </div>
-        </form>
-      </div>
-
       <!-- Table -->
-      <div class="audit-logging__table">
+      <bat-loader v-if="loadingAudits"/>
+
+      <div v-else class="audit-logging__table">
         <table class="table table--2col" cellpadding="16">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th></th>
+            </tr>
+          </thead>
           <tbody>
-            <tr>
-              <td><span>Joe Bloggs added a new appointment for 12th March</span></td>
-              <td><button class="button button__primary button__primary--b"><span>View</span></button></td>
-            </tr>
-            <tr>
-              <td><span>Joe Bloggs added a new appointment for 12th March</span></td>
-              <td><button class="button button__primary button__primary--b"><span>View</span></button></td>
-            </tr>
-            <tr>
-              <td><span>Joe Bloggs added a new appointment for 12th March</span></td>
-              <td><button class="button button__primary button__primary--b"><span>View</span></button></td>
-            </tr>
-            <tr>
-              <td><span>Joe Bloggs added a new appointment for 12th March</span></td>
-              <td><button class="button button__primary button__primary--b"><span>View</span></button></td>
-            </tr>
-            <tr>
-              <td><span>Joe Bloggs added a new appointment for 12th March</span></td>
-              <td><button class="button button__primary button__primary--b"><span>View</span></button></td>
-            </tr>
-            <tr>
-              <td><span>Joe Bloggs added a new appointment for 12th March</span></td>
-              <td><button class="button button__primary button__primary--b"><span>View</span></button></td>
-            </tr>
-            <tr>
-              <td><span>Joe Bloggs added a new appointment for 12th March</span></td>
-              <td><button class="button button__primary button__primary--b"><span>View</span></button></td>
-            </tr>
-            <tr>
-              <td><span>Joe Bloggs added a new appointment for 12th March</span></td>
-              <td><button class="button button__primary button__primary--b"><span>View</span></button></td>
-            </tr>
-            <tr>
-              <td><span>Joe Bloggs added a new appointment for 12th March</span></td>
-              <td><button class="button button__primary button__primary--b"><span>View</span></button></td>
-            </tr>
-            <tr>
-              <td><span>Joe Bloggs added a new appointment for 12th March</span></td>
-              <td><button class="button button__primary button__primary--b"><span>View</span></button></td>
+            <tr
+              v-for="(audit, index) in audits"
+              :key="`audits::index::audit::${index}`"
+            >
+              <td>
+                <span>{{ audit.description }} on {{ audit.created_at | moment('Do MMMM HH:mm') }}</span>
+              </td>
+              <td>
+                <button class="button button__primary button__primary--b">
+                  <span>View</span>
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
+
+        <button
+          @click="onPrevious"
+          type="button"
+          :disabled="currentPage <= 1"
+        >
+          Previous
+        </button>
+
+        <button
+          @click="onNext"
+          type="button"
+          :disabled="currentPage >= totalPages"
+        >
+          Next
+        </button>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import BatLoader from '@/components/Loader.vue';
+
+export default {
+  name: 'AuditsIndexView',
+
+  metaInfo() {
+    return {
+      title: this.$route.meta.title,
+    };
+  },
+
+  components: {
+    BatLoader,
+  },
+
+  data() {
+    return {
+      loadingAudits: false,
+      audits: [],
+      currentPage: 1,
+      totalPages: 1,
+    };
+  },
+
+  methods: {
+    // Fetch the audits.
+    async fetchAudits() {
+      this.loadingAudits = true;
+
+      const params = {
+        page: this.currentPage,
+      };
+
+      const {
+        data: {
+          data: audits,
+          meta: { last_page: lastPage },
+        },
+      } = await this.$http.get('/audits', { params });
+      this.audits = audits;
+      this.totalPages = lastPage;
+
+      this.loadingAudits = false;
+    },
+
+    /**
+     * Pagination.
+     */
+    onPrevious() {
+      this.currentPage -= 1;
+      this.fetchAudits();
+    },
+
+    /**
+     * Pagination.
+     */
+    onNext() {
+      this.currentPage += 1;
+      this.fetchAudits();
+    },
+  },
+
+  created() {
+    this.fetchAudits();
+  },
+};
+</script>
