@@ -82,18 +82,10 @@ export default {
                 name: 'locations',
                 to: { name: 'clinics.index' },
               },
-              // {
-              //   name: 'branding',
-              //   to: { name: 'branding.index' },
-              // },
-              // {
-              //   name: 'configuration',
-              //   to: { name: 'configuration.index' },
-              // },
-              // {
-              //   name: 'audits',
-              //   to: { name: 'audits.index' },
-              // },
+              {
+                name: 'audits',
+                to: { name: 'audits.index' },
+              },
             ],
           },
           {
