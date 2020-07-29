@@ -300,10 +300,10 @@ export default {
         send_cancellation_confirmations: this.clinic.send_cancellation_confirmations,
         send_dna_follow_ups: this.clinic.send_dna_follow_ups,
         language: {
-          'make-bookings': {
+          'make-booking': {
             appointments: {
-              title: `${this.clinic.language['make-bookings'].appointments.title}`,
-              content: `${this.clinic.language['make-bookings'].appointments.content}`,
+              title: `${this.clinic.language['make-booking'].appointments.title}`,
+              content: `${this.clinic.language['make-booking'].appointments.content}`,
             },
           },
         },
