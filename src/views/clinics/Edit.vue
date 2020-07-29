@@ -302,8 +302,8 @@ export default {
         language: {
           'make-booking': {
             appointments: {
-              title: `${this.clinic.language['make-booking'].appointments.title}`,
-              content: `${this.clinic.language['make-booking'].appointments.content}`,
+              title: this.clinic.language['make-booking'].appointments.title || '',
+              content: this.clinic.language['make-booking'].appointments.content || '',
             },
           },
         },
