@@ -109,6 +109,20 @@
               @input="clinicForm.$errors.clear('send_dna_follow_ups')"
             />
 
+            <bat-input
+              label="Appointments title"
+              v-model="clinicForm.language['make-booking'].appointments.title"
+              @input="clinicForm.$errors.clear('language.make-booking.appointments.title')"
+              :error="clinicForm.$errors.get('language.make-booking.appointments.title')"
+            />
+
+            <bat-input
+              label="Appointments content"
+              v-model="clinicForm.language['make-booking'].appointments.content"
+              @input="clinicForm.$errors.clear('language.make-booking.appointments.content')"
+              :error="clinicForm.$errors.get('language.make-booking.appointments.content')"
+            />
+
             <div class="location-edit__action">
               <bat-button type="submit" primary :disabled="clinicForm.$submitting">
                 <span v-if="!clinicForm.$submitting">Update</span>
@@ -285,6 +299,14 @@ export default {
         appointment_booking_threshold: `${this.clinic.appointment_booking_threshold}`,
         send_cancellation_confirmations: this.clinic.send_cancellation_confirmations,
         send_dna_follow_ups: this.clinic.send_dna_follow_ups,
+        language: {
+          'make-bookings': {
+            appointments: {
+              title: `${this.clinic.language['make-bookings'].appointments.title}`,
+              content: `${this.clinic.language['make-bookings'].appointments.content}`,
+            },
+          },
+        },
       });
 
       this.loadingClinic = false;
