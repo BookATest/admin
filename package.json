@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "bourbon": "^5.1.0",
     "bourbon-neat": "^3.0.0",
     "file-saver": "^2.0.0",
